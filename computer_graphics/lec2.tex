@@ -1,0 +1,150 @@
+\lesson{2}{tuesday 17 jan 2023 10:15}{Graphics programming}
+
+
+\section{Graphics programming}
+Typicalli deals with how to define 3d scene, with virtual camera, how to create a 2d projection of the 3d scene
+
+\subsection*{Real time vs ofline}
+real time used in games, scene must be updated 30-60 fps
+speed > im quality, but today hardware can do pretty much both
+
+offline is used for animatied movies and visual effects. not meant to be used interactivly 
+rendering a single frame can take several hours 
+image qualite > speed. Movie production uses clusters to calculate the renders in pareallell
+
+\subsection*{how do we draw}
+version 1
+for every pixel on the screen query all objects to be drawn there is a outher loop - ray tracing
+
+
+version 2
+iterate over objects
+for every object draw the objects to the screen- rasterization
+dont need to keep the whole scen in memory
+
+\subsection*{Representation}
+
+typically used for represent 3d models, vertices, edges and faces. faces can be arbritary polygons. Why do we split them in triangels? The implementation gets simpler 
+
+\subsection*{vertex data}
+polygonal mesh has one or several attributes 
+
+\begin{itemize}
+	\item Position
+	\item Color
+	\item Normal vector
+	\item texture coordinate
+\end{itemize}
+
+vertex data is loaded on the cpu uploaded to the gpu \textcolor{red}{correct}
+
+\subsection*{transform}
+Use transforms to maniuplate positions orentation
+use transforms to define our virtual camera
+basic transforms:
+
+\begin{itemize}
+	\item scale ... \textcolor{red}{cont..} 
+\end{itemize}
+
+
+\subsection*{Cooerdinate systms}
+
+THe OpenGL pipeline has 6 differnte systems
+
+\begin{itemize}
+	\item Object 
+	\item World
+	\item Eye (or camera)
+	\item Clip
+	\item Nomalized devices
+	\item Window (or screen)
+\end{itemize}
+
+\subsection*{Surface normals}
+a normal vector that points outwards from the surface..
+descrives a local orientation. super important to lighting. Useful to know if the surface is pointing towards me or not 
+
+Can visualize it with RGB vector for example.
+
+\subsection*{Shaderds}
+shader is a small program that is commpiled on the cpu and exectuted on the GPU. Common use is to apply fransfromations on vertices and compute 
+\textcolor{red}{cont..} 
+
+\subsection*{pipeline}
+vertives -> sent to gpu -> assign attributes -> sent to clipper (remove what is not seen) and primitive assembler (takes vertices and conncect them to triangles) -> rasterized (converted into pixels or fragments) -> fragmen shader
+
+We have controll of the vertices and the fragment shader from the cpu
+
+\subsection*{OpenGL}
+
+statebased maintain a currents state of things. what shader is being used etc. 
+openGL for desktop
+openGL ES for embedded
+WebGl for 
+
+it is a state machine
+
+\subsection*{OpenGL functions}
+executed in the host CPU application. It is responsible for creating and init buffers, shaders, tecture etc. 
+uploading data to gpu 
+
+\subsection*{The CPU and GPU}
+
+\begin{wbox}{Simplified algorithm "immediate mode"}
+init_system();
+for (each object to be drawn)
+	o = generate_object();
+	draw_object
+
+clean_up()
+\end{wbox}
+
+\begin{wbox}{Simplified algorithm v2}
+init_system();
+for (each object to be drawn)
+	o = generate_object();
+
+send objects to GPU
+draw_all_objects()
+clean_up()
+\end{wbox}
+
+sending objects complicated can become the bottleneck between the cpu and gpu
+
+
+\subsection*{utility libraries}
+
+glfw create and manage window
+glew extension loader
+glm mathematics library
+imgui GUI
+
+\subsection*{GLFW}
+Give a interface between the windowing system and graphics system
+allow us to create a window, ecectue tendering loop
+cont..
+
+\subsection*{GLEW}
+cross platform search for extensions
+
+\subsection*{GLM}
+vector matrix datatypes  got a similar syntax as GLSL. Used in the hos 
+
+\subsection*{ImGui}
+Gui library for tweaking th e renderiung parameters
+uses OoenGL so easy to implement 
+
+\subsection*{RenderDoc}
+can be useful in the project. hard to debug otherwise
+
+
+\section{OpenGL}
+\subsection*{vertex buffer}
+
+
+
+
+
+
+

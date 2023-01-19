@@ -1,5 +1,139 @@
-\lesson{1}{monday 15 jan 2023 10:15}{Introduction}
+\lesson{1}{monday 16 jan 2023 10:15}{Introduction}
 
-\section{Introduction to the course}
+\section{Introduction to computer graphics}
+What can it be used for
 
+\begin{itemize}
+	\item Entertainment
+	\begin{itemize}
+		\item Games, pushing graphic card development forward.. 
+	\end{itemize}
+	\item User interfaces
+	\item Applications
+	\item Data visualization
+	\begin{itemize}
+		\item Information Visualixation
+		\begin{itemize}
+			\item Charts diagrams etc
+			\item Plots of N-d data after dimensonality
+		\end{itemize}
+		\item Data visulization
+		\begin{itemize}
+			\item ... 
+		\end{itemize}
+
+	\end{itemize}
+	\item Image procsessing
+	\begin{itemize}
+		\item Extracts information
+		\item producess outputs like: calssifications and segmented objects
+	\end{itemize}
+	\item Computer vision
+	\begin{itemize}
+		\item feature tracking
+		\item Tracking
+		\item \textbf{3D reconstruction}
+	\end{itemize}
+	\item Photogrammetry?
+	\begin{itemize}
+		\item Reconstruct 3d models from photos taken from different viewpoints. How do the different points align. Use \textbf{CG} to view result. 
+	\end{itemize}
+	\item Cultural heritage?
+	\begin{itemize}
+		\item preserve art works, 3D scanning and other techniuques. 
+		\item Display the result for the audience with \textbf{CG}
+	\end{itemize}
+	\item CAD
+	\begin{itemize}
+		\item 3d modeling
+	\end{itemize}
+	\item much much more..
+\end{itemize}
+
+\section{Digital images}
+Grayscale image a (raster graphics) is stored as a matrix with intensity representing each pixel.
+
+\subsection{Spatial resolution}
+Modern computer 2660x1600 pixels, picture element
+
+
+\subsection*{Color depth}
+Bit depth, how many bits are used to represent the intensity?
+True color 24 bit, 8bit per color channel
+
+
+\subsection{Color images}
+Three color images RGB, some times an additional channel \textbf{alpha} for storing opacity
+
+\section{High dynamic range \textbf{HDR} images}
+8 bits per collor channnel often sufficient. In many computer graphics applications a higher dynamic range is needed. It is therefore common to use mere bits per color channel, e.g. 16 or 32 bit floating point values
+
+\begin{itemize}
+	\item When images are manipulated, 
+\end{itemize}
+
+\textcolor{red}{more from slides}
+
+Image based lightning with high dynamic range images of real world enviroment. 
+
+useful to create a realistic illuminations. 
+
+To capturing a the great contrast between sky and the ground, 8 bit depth is not usually enough.  
+
+\section{Computer graphics history}
+University of Utah prominent sections that did a lot of work in this are during 70s. Many methods invented by people from this sections, Sutherland, Blinn, Phong, Guoraud, Catmull (Turing awards winner), Newell and others. During the 80s we got Graphical user interfaces, Mac, Amiga and graphics in movies. 
+
+\begin{itemize}
+	\item Utah teapot
+	\item Stanford bunny
+\end{itemize}
+
+In the 90s fully animated CG movies and special effects. 00s Rise of the GPU's, start to be able to program and do custom things on GPUs. A move toward physically based rendering, start to use more correct models of illumination thanks to better computational recourses. 10s saw fusion with Image processing and computer vision.. Film rendering to \textbf{path tracing}. Real-time \textbf{ray tracing}. 20s machine learning?? this would mean new principles. Neuro .... \textcolor{red}{read more of own intrest} 
+
+
+\section{Quick look at what we will learn}
+\begin{itemize}
+	\item Transformation
+	\begin{itemize}
+		\item Affine transformations in homogenous coordinates
+		\item Orthographic and perpspective projecteions for cameras.
+	\end{itemize}
+	\item Shading
+	\begin{itemize}
+		\item Going from geometry to what color to put 
+		\item Gouraud shading (computed per-vertex)
+		\item Phong \textcolor{red}{cont...} 
+	\end{itemize}
+	\item Illumination
+	\begin{itemize}
+		\item The Phon refleciton model
+		\item BLinn-Phong
+	\end{itemize}
+	\item Texure mapping
+	\begin{itemize}
+		\item Texture mapping
+		\item Bump mapping
+		\item Environment mappong
+		\item Geometry
+		\item Normal
+	\end{itemize}
+	\item The programmable \textbf{Graphics pipeline}
+\end{itemize}
+
+
+
+\section{Pipeline}
+\begin{itemize}
+	\item Input are the objects and their vertices
+	\item The output are the pixels on the screen
+	\item Performs:
+	\begin{itemize}
+		\item transformations
+		\item clippin and assembly
+		\item shadding, textureing and illumination
+	\end{itemize}
+\end{itemize}
+
+\section{Conclusion for this lecture}
+Study the slides but also the other recoursces. Prepare for tbe practicals (assignment and prjoject) and start to play around with graphics programming.   
 
