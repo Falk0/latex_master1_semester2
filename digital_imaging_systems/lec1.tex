@@ -148,6 +148,12 @@ The visual perception by the human eye is the result of the application of the t
 
 For capturing a color image we need three spectral samples which can be captured in different ways where the \textbf{Bayer filter} is the most common. This pattern leads to loss of resolution but is restored by interpolation of some sort. The alternative to having the \textbf{Bayer filter} is to have three sensor chips each color, splitting the image with a prism. This solution is expensive and requires also high mechanical precision. A third option is to stack the three sensing layers for the different color channels which have the benefit of not losing resolution/not need of interpolation. 
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=70mm]{figures/CCDandCMOS.pdf}
+\caption{Bayer filter}
+\label{fig:example}
+\end{figure}
 
 What limit us to only use three spectral channels in image analysis is conventional thinking and that there are many cost effective camera in this range. When we register more than one spectral channel we need to use multiplexing, switching between channels either spatially or temporally. Ultimately it should be the application that decides how wide the spectral range should be and the number of channels. It is possible to achieve spectral imaging in a method similar to the Bayer filter, there are cameras with 9 (3 $\times$3) visible light channels and 16 (4 $\times$4) infrared channels that together can give us 25 channels simultaneously. As the number of channels increase to several hundred we call it \textbf{imaging spectroscopy} or hyperspectral imaging. This type of imaging creates a large amount of data and needs effective transmission and compression. 
 
