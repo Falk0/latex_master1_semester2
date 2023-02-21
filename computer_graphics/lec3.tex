@@ -1,0 +1,72 @@
+\section{Transformations}
+This section covers following:
+\begin{itemize}
+	\item Obejct representation in computer graphics
+	\item Some review of linear algebra
+	\item Linear transformations such as: rotation and scaling with matrices
+	\item Translation and homogeneous coordinates
+	\item A lot of transforms can be expressed with matrix multiplications
+\end{itemize}
+
+
+\textcolor{red}{Computer graphics pipeline image here!}
+
+	\subsection*{Object representations for computer graphics}
+	In computer graphics objects is described by its surface, this means that they are hollow. These objects are specified by a sets of 3D points, so called vertices. An object can be approximated by a multiple convex polygons. We can transform the object by transforming these vertices. We can approximate objects with small polygons, but if each polygon is smaller or in same size of a pixel there is no visual difference. Modern graphics hardware have the capability to render a lot of polygons fast. 
+
+	\subsection*{Other object representations}
+	Objects can also be expressed as a solid with Voxels = 3D pixels. An object can be described implicitly with coordinates and functions: $F(x,y,z) = C$.
+
+	\subsection*{Math: linear algebra review}
+	Scalars are real or complex numbers, real number most often used. Points are locations in space and don't have any size or shape while vectors are directions in space with a magnitude but don't have any position. Review of vector operations:
+
+	\begin{itemize}
+		\item Addition and subtraction
+		\item Multiplication by scalar
+		\item Magnitude, Euclidian norm \textbf{a} = $(a_x,a_y), ||\textbf{a}|| = \sqrt{(a_x,a_y)} = \sqrt{ \textbf{a} \cdot \textbf{a} }$
+		\item Normalizing $\hat{\textbf{a}} = \frac{\textbf{a}} {||\textbf{a}||} $ \textcolor{red}{look out for division by zero!!!} 
+	\end{itemize}
+
+	Matrix multiplication:
+	\begin{equation}
+	\begin{bmatrix} a& b& c \\ 
+	                d& e& f \\
+	                g& h& i\end{bmatrix} 
+	                \begin{bmatrix} x \\ y \\ z \end{bmatrix} = 
+	                \begin{bmatrix} ax& by& cz \\ 
+	                dx& ey& fz \\
+	                gx& hy& iz\end{bmatrix}           
+	\end{equation}
+
+	\subsection*{Linear combinations of vectors} 
+	%https://en.wikipedia.org/wiki/Convex_combination 
+	\textbf{Convex combinations}, that are coefficients are all positive and add up up to 1. For example linear interpolation: $\textbf{p}(t) = (t)\textbf{a} + (1-t)\textbf{b}$, where \textbf{a} and \textbf{b} are points and t: $0 \le t \le 1$. 
+
+	\textbf{Dot product}: $\textbf{a} \cdot \textbf{b} = \sum_{i=1}^{n} a_i b_i = a_1b_1 + a_2b_2 + \ldots + a_nb_n$. Notice that vectors are orthogonal when the dot product is equal to zero and that vectors are less than 90 degrees apart if the dot product is positive. 
+
+	The dot product can be used to calculate the perpendicular \textbf{projection} of a vector onto another vector: $\textbf{c} = (\textbf{a} \cdot \textbf{b})\textbf{c}$. 
+
+	It can also be used for the \textbf{reflection} of a vector over the normal vector $\hat{\textbf{n}}$ : $b = -a + 2(\textbf{a} \cdot \hat{\textbf{n}})\hat{\textbf{n}}$
+
+	The \textbf{cross product} with $u = (u_x,u_y,u_z), v = (v_x,v_y,v_z)$ : 
+	\begin{equation}
+	 	u \times v = \begin{vmatrix}
+     \textbf{x} & \textbf{y} & \textbf{z}\\ 
+     u_{x} & u_{y} & u_{z}\\
+     v_{x} & v_{y} & v_{z} 
+	\end{vmatrix} = (u_yv_z-u_zv_y)\textbf{x} - (u_xv_z - u_zv_x)\textbf{y} + (u_xv_y-u_yv_x)\textbf{z}
+	\end{equation} 
+
+	The cross product $u \times v$ is perpendicular to both \textbf{u} and \textbf{v} and the orientation of it follows the right hand rule. The norm : $||\textbf{u} \times \textbf{v}|| = ||\textbf{u}|| ||\textbf{v}|| \sin \theta$
+
+	\subsection*{Transformations}
+	  
+
+
+
+
+
+
+
+
+
