@@ -89,9 +89,22 @@ Ultrasound is therefore mechanical oscillations with a frequency above 20 kHz th
 
 
 	\subsection*{Image quality}
-	Contrast is what assesses visibility, so by comparing the image appearance between two distinct regions we want to be able to distinguish between object and background. 
+	Contrast is what assesses visibility, so by comparing the image appearance between two distinct regions we want to be able to distinguish between object and background. The spatial resolution is the minimum distance at which is possible to distinguish two distinct point individually. The resolution of the ultrasound imaging system can be separated into \textbf{Axial resolution} and \textbf{Lateral resolution}. Axial resolution in which separating two reflectors or scatterers along the beams axis. This resolution depends on the length of the pulse, which need to be short for good axial resolution but needs to be long to deliver sufficient power for good signal to noise ratio. The lateral resolution separating reflectors side by side. This resolution depends on the focusing/beamforming. 
 
+	\textbf{Artifacts} in ultrasound images are not uncommon and can even be used to interpret underlying causes some times. Examples of artifacts are: \textbf{Shadowing, speed-of-sound abberation, mirroring, reverberations and refraction} 
 
+	\subsection*{Safety}
+	In comparison with many other imaging systems in medicine, minimal. There are however four different metrics of safety that is regulated: 
+
+		\begin{itemize}
+			\item \textbf{Thermal index} (TI): quantifies/limit the acoustic power to avoid overheating the tissue internally
+			\item \textbf{Surface temperature}: limit how hot the probe can be, to avoid burn injuries 
+			\item \textbf{Spatial peak temporal average} (SPTA): limit the cumulative power at focus over time
+			\item \textbf{Mechanical index} (MI):  limit peak negative acoustic pressure to avoid cavitation and streaming
+		\end{itemize}
+
+	\subsection*{Other ultrasound imaging techniques}
+	With \textbf{Harmonic (b-mode) imaging} method we transmit a signal at a frequency f and then listen at frequency 2 times f. Comparing this to the fundamental B-mode we here get better resolution and reduced noise. \textbf{Doppler} technique uses the shift in of frequency relative to the motion of the object, compare to red and blue light shift in optics. With this technique its possible to quantitatively predict the blood flow velocity for an example. \textbf{Functional ultrasound} (fUS) can be seen as an extension of Doppler imaging and is used to examine brain activity (blood flow in the brain) with high frame-rate. \textbf{Elastography}, due to pathological process there may be changes in stiffness of the tissue, this technique estimate the tissue biomechanical characteristics. \textbf{Strain imaging}, since a stiff tissue compresses less it possible to detect differences inside a tissue by compressing while imaging, then measure local displacement and look at relative values/axial derivative \textcolor{red}{?}. \textbf{Acoustic Radiation Force} (ARF) uses focused acoustic energy to exert force in tissue by pushing it, remotely and locally, also known as "remote palpation". \textbf{Shear-wave Elastography} (SWE), here ultrasound is used to generate a \textbf{shear-wave} and then the temporal propagation is observed on consecutive ultrasound frames to infer the shear-wave speed. Stiffness difference in tissue can be observed that may indicate pathology. \textbf{Ultrasound computed tomography}. \textbf{Optoacoustic imaging} combines the use of the light pulses and ultrasound. Here is a light pulse transmitted and ultrasound received. The thermal expansion in the tissue creates the sound.  
 
 
 
