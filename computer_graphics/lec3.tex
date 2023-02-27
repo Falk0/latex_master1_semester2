@@ -42,11 +42,7 @@ This section covers following:
 	%https://en.wikipedia.org/wiki/Convex_combination 
 	\textbf{Convex combinations}, that are coefficients are all positive and add up up to 1. For example linear interpolation: $\textbf{p}(t) = (t)\textbf{a} + (1-t)\textbf{b}$, where \textbf{a} and \textbf{b} are points and t: $0 \le t \le 1$. 
 
-	\textbf{Dot product}: $\textbf{a} \cdot \textbf{b} = \sum_{i=1}^{n} a_i b_i = a_1b_1 + a_2b_2 + \ldots + a_nb_n$. Notice that vectors are orthogonal when the dot product is equal to zero and that vectors are less than 90 degrees apart if the dot product is positive. 
-
-	The dot product can be used to calculate the perpendicular \textbf{projection} of a vector onto another vector: $\textbf{c} = (\textbf{a} \cdot \textbf{b})\textbf{c}$. 
-
-	It can also be used for the \textbf{reflection} of a vector over the normal vector $\hat{\textbf{n}}$ : $b = -a + 2(\textbf{a} \cdot \hat{\textbf{n}})\hat{\textbf{n}}$
+	\noindent \textbf{Dot product}: $\textbf{a} \cdot \textbf{b} = \sum_{i=1}^{n} a_i b_i = a_1b_1 + a_2b_2 + \ldots + a_nb_n$. Notice that vectors are orthogonal when the dot product is equal to zero and that vectors are less than 90 degrees apart if the dot product is positive. The dot product can be used to calculate the perpendicular \textbf{projection} of a vector onto another vector: $\textbf{c} = (\textbf{a} \cdot \textbf{b})\textbf{c}$. It can also be used for the \textbf{reflection} of a vector over the normal vector $\hat{\textbf{n}}$ : $b = -a + 2(\textbf{a} \cdot \hat{\textbf{n}})\hat{\textbf{n}}$
 
 	The \textbf{cross product} with $u = (u_x,u_y,u_z), v = (v_x,v_y,v_z)$ : 
 	\begin{equation}
@@ -60,7 +56,63 @@ This section covers following:
 	The cross product $u \times v$ is perpendicular to both \textbf{u} and \textbf{v} and the orientation of it follows the right hand rule. The norm : $||\textbf{u} \times \textbf{v}|| = ||\textbf{u}|| ||\textbf{v}|| \sin \theta$
 
 	\subsection*{Transformations}
-	  
+	In order to create and move objects we need to be able to transform the objects in different ways. Transformations are divided into many classes:
+	\begin{itemize}
+		\item Translation (move the object around)
+		\item Rotation
+		\item Scaling
+		\item Shear
+		\item Mirroring/Flipping
+		\item ...
+	\end{itemize}
+
+	\noindent \textbf{Translation} is simply adding a constant to all points. $x^{\prime} = x + \text{d}x$ and  $y^{\prime} = y + \text{d}y$. \textbf{Scaling} an object by making it either smaller or bigger by a constant scaling factor. Here we multiply each point of the object with the scaling factor: $x^{\prime} = s_x x $ and $y^{\prime} = s_y y $. \textbf{Rotation} (about the origin) is easist described with the rotation matrix:
+
+		\begin{equation}
+			\begin{pmatrix} x^{\prime} \\ y^{\prime} \end{pmatrix} =
+			\begin{pmatrix} \cos(\theta)& -\sin(\theta) \\ \sin(\theta)& \cos(\theta) \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix}
+		\end{equation}
+
+	The process goes: translate the rotation centre to the origin, rotate and then translate back. 
+	\noindent \textbf{Translation} looks different in matrix form, here we need to introduce an extra dimension.
+
+		\begin{equation}
+			\begin{pmatrix} x^{\prime} \\ y^{\prime} \\ W \end{pmatrix} =
+			\begin{pmatrix} 1& 0& dx \\ 0& 1& dy \\ 0& 0& 1 \end{pmatrix} 
+			\begin{pmatrix} x \\ y \\ 1 \end{pmatrix}
+		\end{equation}
+	Note, if W = 0 then the point is not affected by translations. Using this extra dimension for the other translations also is called: Using homogenous coordninates:
+
+	\begin{itemize}
+		\item Translation 
+			\begin{equation}
+				\begin{pmatrix} x^{\prime} \\ y^{\prime} \\ 1 \end{pmatrix} =
+				\begin{pmatrix} 1& 0& dx \\ 0& 1& dy \\ 0& 0& 1 \end{pmatrix} 
+				\begin{pmatrix} x \\ y \\ 1 \end{pmatrix}
+			\end{equation}
+		\item Rotation
+			\begin{equation}
+				\begin{pmatrix} x^{\prime} \\ y^{\prime} \\ 1 \end{pmatrix} =
+				\begin{pmatrix} \cos(\theta)& -\sin(\theta)& 0 \\ \sin(\theta)& \cos(\theta)& 0 \\ 0& 0& 1 \end{pmatrix} 
+				\begin{pmatrix} x \\ y \\ 1 \end{pmatrix}
+			\end{equation}
+		\item Scaling
+			\begin{equation}
+				\begin{pmatrix} x^{\prime} \\ y^{\prime} \\ 1 \end{pmatrix} =
+				\begin{pmatrix} s_x& 0& 0 \\ 0& s_y& 0 \\ 0& 0& 1 \end{pmatrix} 
+				\begin{pmatrix} x \\ y \\ 1 \end{pmatrix}
+			\end{equation}
+	\end{itemize}
+
+	\noindent The order of the matrices is important:
+		\begin{equation}
+			P^{\prime} = T^{-1} (S(R(T(P)))) = (T^{-1}SRT)P
+		\end{equation}
+
+	\noindent When moving in to 3D are translation and scaling basically the same as in 2D. Rotation becomes a bit more comlicated: Rx,Ry and Rz. Obersve also that RxRy $\neq$ RyRx.
+
+	
+		  
 
 
 

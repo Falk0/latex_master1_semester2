@@ -1,0 +1,124 @@
+\section{3D viewing and projection}
+This lecture will cover rotation around arbritary axis, the "view" coordinate system, change of coordinate system, change of frame (change of coordinate system + translation), how to postion a camera and projections (orthogonal and perspective).
+
+	\subsection*{Rotation around an arbitary axis}
+	For rotation around an arbritary axis \textbf{v}, we need to find a matrix \textbf{M} that aligns (1,0,0) with \textbf{v}, then apply \textbf{M$^{-1}$} , apply rotation and \textbf{M} to the object. Here \textbf{M} is the change of coordinate system. But how do we find \textbf{M}?
+
+	\subsection*{Change of coordinate system}
+	The goal of change of coordinate system is to express a point with two different sets of basis vectors:
+	
+		\begin{equation}
+			\textbf{P} = x \textbf{e}_1 + y\textbf{e}_2 = 
+			x^{\prime} \textbf{f}_1 + y^{\prime}\textbf{f}_2
+		\end{equation}
+	If we assume to know the basis vectors of the new coordinate system \textbf{f}, in terms of the old coordinate system \textbf{e}.
+
+		\begin{equation}
+		\begin{aligned}
+				\textbf{f}_1 = a \textbf{e}_1 + b \textbf{e}_2 \\ \textbf{f}_2 = c \textbf{e}_1 + d \textbf{e}_2 
+		\end{aligned}
+		\end{equation}
+	Applying this gives us:
+
+	\begin{equation}
+	\textbf{P} = x \textbf{e}_1 + y\textbf{e}_2 = 
+	x^{\prime} \textbf{f}_1 + y^{\prime}\textbf{f}_2 =
+	x^{\prime}(a \textbf{e}_1 + b \textbf{e}_2) + y^{\prime}(c \textbf{e}_1 + d \textbf{e}_2)
+	\end{equation}
+
+	Coordinates in \textbf{f} transferred to \textbf{e}:
+
+		\begin{equation}
+			\begin{bmatrix} x \\ y \end{bmatrix} =
+			\begin{bmatrix} a& c \\b& d \end{bmatrix}
+			\begin{bmatrix} x^{\prime} \\ y^{\prime} \end{bmatrix} = \textbf{M} \begin{bmatrix} x^{\prime} \\ y^{\prime} \end{bmatrix}
+		\end{equation}
+	If we want coordinates in \textbf{e} transferred to \textbf{f}:
+
+		\begin{equation}
+			\begin{bmatrix} x^{\prime} \\ y^{\prime} \end{bmatrix} =
+			\begin{bmatrix} a& c \\b& d \end{bmatrix}^{-1}
+			\begin{bmatrix} x \\ y \end{bmatrix} = \textbf{M}^{-1} \begin{bmatrix} x \\ y \end{bmatrix}		
+		\end{equation}
+	\textbf{M} is a pure rotation matrix if and only if the basis are Ortho-Normal (ON)-bases. In that case is \textbf{M} orthogonal and $\textbf{M}^{-1}=\textbf{M}^{T}$. An orthogonal matrix is a matrix where the rows and columns are mutually orthogonal unit-length vectors \textcolor{red}{?}. Some properties of two orthogonal matrices are: the product is always orthogonal, always invertible and the inverse of an orthogonal matrix is equal to the \textbf{transpose} of the matrix. 
+
+	\noindent How do we construct this ON basis if we only have one vector \textbf{v}
+		\begin{equation}
+		\begin{aligned}
+			v_1 = \frac{\textbf{v}} {|\textbf{v}|} 	 \\
+			v_2 = \frac{v_1 \times v^{\prime}} {|v_1 \times v^{\prime}|} \\
+			v_3 = v_1 \times v_2 
+		\end{aligned}
+		\end{equation}
+	How do we find a vector $v^{\prime}$ that is not parallel to $v_1$? We could just pick a random vector and check if the norm of the cross product is non zero. The problem with that is the risk of numerical error if the cross product is close to 0. A better way is to pick two orthogonal vectors \textbf{u}$_1$ (1,0,0) and \textbf{u}$_2$ (0,1,0). If $|\textbf{u}_1 \times \textbf{v}_1| > |\textbf{u}_2 \times \textbf{v}_1|$, set \textbf{v}$^\prime$ = \textbf{u}$_1$, otherwise \textbf{v}$^\prime$ = \textbf{u}$_2$.
+
+	\noindent We now have rotation about an arbitrary axis \textbf{v}:
+
+		\begin{itemize}
+			\item Construct an \textbf{ON}-basis where \textbf{v}$_1$=\textbf{v} is the first basis vector, 
+			\item Construct a corresponding "change of coordinates" matrix \textbf{M}, which align (1,0,0) with \textbf{v}
+			\item Apply \textbf{M}$^{-1}$ to object (transfering coordinates to a coordinate system where \textbf{v} is aligned with (1,0,0))
+			\item Rotate around (1,0,0)
+			\item Apply \textbf{M} (transfers coordinates back to the original coordinate system)
+		\end{itemize}
+
+		\subsection*{Some coordinate systems}
+		Here follows some examples of coordinate systems in the pipeline:
+
+			\begin{equation}
+				p^{\prime} = V_p * P * C * V_t * M * p			
+			\end{equation}
+
+		\noindent The \textbf{view transform} v$_t$ puts the observer at the origin and align x and y axes with the ones of the screen. Uses a right hand coordinate system so the z-axis is pointing backwards. This simplifies the clipping, light perspective and HSR (\textcolor{red}{?}). The view transformation is a so called change of frame, a change of origin + a change of coordinate system. This can be split into a translation and a change of coordinate system :
+
+		\begin{equation}
+		 	\begin{bmatrix} x^{\prime} \\ y^{\prime} \end{bmatrix}= 
+		 	\textbf{M}^{-1}\textbf{T}(-P_0)\begin{bmatrix} x \\ y \end{bmatrix}	
+		 \end{equation} 	
+		
+		\noindent glm::lookAt creates a viewing matrix that is derived from an eye point indicating the center of the scene and an UP vector. This build the 4x4 matrix for you but what is described above is what going on behind the scenes. 
+
+		\noindent The \textbf{projection} p. Two types of projections: \textbf{Perspective} and \textbf{Orthographic} projection. In the orthographic projection is the "center of projection" at infinity and the projected points are along the direction of projection DOP. This projection is easy to implement since we only need to set z = 0. 
+			\begin{equation}
+		 		\begin{bmatrix} x^{\prime} \\ y^{\prime} \\z^{\prime} \\ 1 \end{bmatrix} = \begin{bmatrix} 1& 0& 0& 0\\ 
+		 		                0& 1& 0& 0\\
+		 		                0& 0& 0& 0\\
+		 		                0& 0& 0& 1\end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
+		 	\end{equation} 
+		 \noindent \textbf{Perspective} projection is a linear equation:
+			 \begin{equation}
+			 \begin{aligned}
+			 	(1) \quad \textbf{p}^{\prime} = t \textbf{p} \\
+			 	(2) \quad d = tp_z
+			 \end{aligned}
+			 \end{equation}
+		if we solve for  (2) for t, we get:
+
+			\begin{equation}
+				\textbf{p}^{\prime} = \frac{d}{p_z} \textbf{p} 
+			\end{equation}
+
+		Here we use W to fit the perspective transformation into a matrix multiplication:
+
+			\begin{equation}
+			\begin{aligned}
+				x^{\prime} = x \frac{d} {z}\\
+				y^{\prime} = y \frac{d} {z}\\
+				z^{\prime} = z \frac{d} {z}  
+			\end{aligned}
+			\end{equation}
+
+			\begin{equation}
+				\begin{bmatrix} x\\ y \\z  \\ \frac{z} {d}  \end{bmatrix} = \begin{bmatrix} 1& 0& 0& 0\\ 
+			 		                0& 1& 0& 0\\
+			 		                0& 0& 1& 0\\
+			 		                0& 0& \frac{1}{d} & 0\end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
+			\end{equation}
+
+		We divide by the homogeneous coordinate W to obtain the final projection, not that this is not a linear transformation. 
+
+		\noindent glm::perspective(fovy, aspect, near, far) can create the projection matrix. 
+
+
+
+
