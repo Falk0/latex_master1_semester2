@@ -31,33 +31,6 @@
 
 \def\bibsection{\section*{}} %Removes black line above refrences
 
-%--------------------------%
-%----- COLOURED BOXES -----%
-%--------------------------%
-
-%Blue equation box
-%\tcbhighmath[colframe=RoyalBlue!70!black,colback=RoyalBlue!25!white]{
-
-%Orange equation box
-%\tcbhighmath[colframe=BurntOrange!95!black,colback=BurntOrange!45!white]{
-
-%Purple equation box
-%\tcbhighmath[colframe=Purple!150!black,colback=Purple!30!white]{
-
-%Green equation box
-%\tcbhighmath[colframe=ForestGreen,colback=ForestGreen!25!white]{
-
-%Grey equation box
-%\tcbhighmath[colframe=Black,colback=Black!10!white]{
-
-%Pink equation box
-%\tcbhighmath[colframe=magenta,colback=magenta!20!white]{
-
-%Blue and red equation box
-%\tcbhighmath[frame style={left color=RoyalBlue!70!black,right color=Red!95!black},interior style={left color=RoyalBlue!35!white,right color=Red!50!white}]{
-
-%Red and green equation box
-%\tcbhighmath[frame style={left color=Red!95!black,right color=ForestGreen},interior style={left color=Red!50!white,right color=ForestGreen!25!white}]{
 
 \begin{document}
 
@@ -75,7 +48,6 @@
 
 \affiliation{Digital imaging systems - 1MD130}
 
-
 \maketitle
 
 \newpage
@@ -83,10 +55,11 @@
 %-----EXAMPLE SLIDES-----%
 
 \newpage
-\DIV[1]{section}{Introduction}\label{Ueff}
-\vspace{-0.2cm}\hrule
-
-\vspace{0.5cm}
+\DIV[1]{section}{Introduction}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
 
 %What is it and what is it used for- images of system and example images the system creates
 
@@ -100,15 +73,17 @@
     \end{itemize}
   \end{itemize}
 
-\vspace{1cm}
+\end{minipage}
+\vspace{\fill}
 
+% ------------------------------------------------- %
 
 \newpage
-
-\DIV[1]{section}{Introduction}\label{Ueff}
-\vspace{-0.2cm}\hrule
-
-\vspace{2cm}
+\DIV[1]{section}{Introduction}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
 
 %What is it and what is it used for- images of system and example images the system creates
   \begin{itemize}
@@ -122,20 +97,17 @@
       \end{itemize}
   \end{itemize}
 
-
-\vspace{1cm}
+\end{minipage}
 \vspace{\fill}
 
-
+% ------------------------------------------------- %
 
 \newpage
 \DIV[1]{section}{Brief History}
 \vspace{-0.2cm}
 \hrule
 \vspace{0.8cm}
-
 \begin{minipage}{0.6\textwidth}
-
   \begin{itemize}
     \item +30 Years of hyperspectral satellite imaging
     \begin{itemize}
@@ -145,27 +117,18 @@
       \end{itemize}
       \item For a long time was the spectral regions with atmospheric absorption seen as drawback
       \item Better algorithms and hardware made it possible to correct for this
-      \item First commercial hyperspectral imaging systems for airborne use (DAIS 1989)
-      \item Hyperion - \textbf{2000 NASA} %https://earthobservatory.nasa.gov/features/EO1/eo1_2.php
+      \item First commercial hyperspectral imaging systems for airborne use (DAIS \textbf{1989})
+      \item EO1 - Hyperion sensor - \textbf{2000 NASA} %https://earthobservatory.nasa.gov/features/EO1/eo1_2.php
       \item EnMAP - \textbf{2022 DLR}
     \end{itemize}
   \end{itemize}
 
   %https://www.weather.gov/jetstream/absorb
   %https://www.l3harrisgeospatial.com/Support/Maintenance-Detail/ArtMID/13350/ArticleID/17333/Atmospheric-Windows-and-Optical-Sensors
-
-
-
-\end{minipage}
-
-\begin{minipage}{0.39\textwidth}
-
-
-
 \end{minipage}
 \vspace{\fill}
 
-
+% ------------------------------------------------- %
 
 \newpage
 \DIV[1]{section}{Use today \& limiting factors}
@@ -184,17 +147,194 @@
 \end{itemize}
 
 \end{minipage}
+\vspace{\fill}
 
-\begin{minipage}{0.39\textwidth}
+% ------------------------------------------------- %
 
+\newpage
+\DIV[1]{section}{How is the image formed}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
 
+\begin{minipage}{0.6\textwidth}
+
+\begin{itemize}
+  \item Sun the source of energy 
+  \item Sensor type:
+  \begin{itemize}
+    \item Diffraction Grating Spectrometers
+    \item Prism Spectrometers
+  \end{itemize}
+  \item Imaging: 
+  \begin{itemize}
+    \item Push-broom
+    \item Whiskbroom
+  \end{itemize}
+\end{itemize}
 
 \end{minipage}
-
 \vspace{\fill}
-\centering
 
+% ------------------------------------------------- %
 
+\newpage
+\DIV[1]{section}{What property of the sample is imaged?}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+\begin{itemize}
+  \item Each material has a unique spectral characteristic
+  \item Interaction radiation
+  \begin{itemize}
+    \item Absorbtion - material and wavelenght
+    \item Reflection
+    \item Transmission 
+  \end{itemize}
+\end{itemize}
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Resolution and sample size}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+
+\begin{itemize}
+  \item Spatial resolution
+  \begin{itemize}
+    \item Field-of-view (\textbf{FOV})
+    \item Instantaneous-field-of-view (\textbf{IFOV}) 
+    \item Ground-projected instantaneous-field-of-view (\textbf{GIFOV})
+    \begin{itemize}
+      \item depends on the satellite elevation and varies with the viewing angle
+    \end{itemize}
+    \item Across-track (ACT) and along-track (ALT) resolution
+    \begin{itemize}
+      \item affected by integration time and smearing effects
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Resolution and sample size}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+
+\begin{itemize}
+  \item Spectral resolution
+  \begin{itemize}
+    \item Portion of the \textbf{EMS} to which an instrument is sensitive
+    \item Hyperspectral imaging - hundred of channels
+  \end{itemize}
+  \item Radiometric resolution
+  \begin{itemize}
+    \item Ability of the sensor to register differences in radiation
+    \item Typically 8 and 12 bit, (EnMAP 14 bits)
+  \end{itemize}
+  \item Temporal resolution
+  \begin{itemize}
+    \item Time between two acquisitions
+    \item Depends on satelite orbit 
+    \item Vary greatly depending on cloud coverege
+  \end{itemize}
+\end{itemize}
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Resolution and sample size}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+\begin{itemize}
+  \item Trade off
+\end{itemize}
+
+In the relationship of spatial and spectral
+resolution, as one increases the other needs to decrease to gain the same amount
+of photons on the detector. That means you either get an image with high spectral
+but rather low spatial resolution (1), an image with high spatial but low spectral
+resolution (2) or something in-between (both medium resolution). Sensor design tries
+to avoid low SNR (3) and tries to achieve the best trade-off between spectral, spatial
+resolution and high SNR for a certain application.
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Calibration and correction}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+% https://elib.dlr.de/124009/1/Delosreyes_L2A_DESIS_EnMAP_V02.pdf
+
+\begin{itemize}
+  \item 
+  \item topographic 
+  %https://www.enmap.org/data/doc/EN-PCV-TN-6007_Level_2A_Processor_Atmospheric_Correction_Land.pdf
+  % https://www.enmap.org/data/doc/Science_Plan_EnMAP_2022_final.pdf
+\end{itemize}
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Cost and limiting factors}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Variants and future use}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
+
+\newpage
+\DIV[1]{section}{Title}
+\vspace{-0.2cm}
+\hrule
+\vspace{0.8cm}
+\begin{minipage}{0.6\textwidth}
+
+\end{minipage}
+\vspace{\fill}
+
+% ------------------------------------------------- %
 \newpage 
 \DIV[2]{section}{References}
 \vspace{-0.2cm}\hrule
@@ -209,3 +349,5 @@
 
 
 \end{document}
+
+
