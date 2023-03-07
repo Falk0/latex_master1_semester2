@@ -1,0 +1,44 @@
+\section{Global illumination}
+So far in this course we have used local illumination models such as Phong and environment mapping which are simplified models of illumination. In global illumination there will be bounces and reflections of light that was not present in previous methods. Some thing will come for "free" with global illumination: 
+
+\begin{itemize}
+	\item Environment mapping - multiple inter-reflections
+	\item Shadows
+	\item Colour bleeding
+	\item Refraction
+\end{itemize}
+
+But all this comes at the high computational cost. 
+
+The main techniques in global illuminations are:
+
+\begin{itemize}
+	\item Raytracing
+	\begin{itemize}
+		\item Works well for specular and translucent surfaces
+	\end{itemize}
+	\item Radiosity
+	\begin{itemize}
+		\item Works well for matte surfaces
+	\end{itemize}
+	\item Photon mapping
+	\begin{itemize}
+		\item Works for both translucent and matte surface (not covered)
+	\end{itemize}
+\end{itemize}
+
+\subsection*{The rendering equation}
+The goal of global illumination methods is to compute both the direct and indirect light. The theoretical light can be computed with the \textbf{rendering equation}. The methods above tries to approximate this equation:
+
+\begin{equation}
+L_0(\textbf{x},\omega,\lambda, t) = L_e(\textbf{x},\omega,\lambda, t) + \int_{\Omega} f_r(\textbf{x},\omega^{\prime},\omega,\lambda, t)+L_i(\textbf{x},\omega^{\prime},\lambda, t)(-\omega^{\prime} \cdot \textbf{n}) \,\text{d}\omega^{\prime}
+\end{equation}
+
+Where L$_e$ are a light source or fluorescent \textcolor{red}{?},L$_i$ incoming light,  f$_r$ is the surface behavior (BRDF) and $(-\omega^{\prime} \cdot \textbf{n})$ is the Lambert.
+
+\subsection*{BRDF}
+The Bidirectional Reflection Distribution Function describes how the incoming light interacts with the surface of the object: absorption, transmission and reflectance. Described by a "surface"
+that is spanned by the vectors of the incoming light. The physically based BRDF should be reciprocal, conserve the energy and be measured for any physical material. The Phong method doesn't conserve energy and is there for \textbf{not} physically based!
+
+\subsection*{Raytracing}
+The basic idea is to cast rays through our viewing window against the target and let it interact with it, getting the attenuation of the color of the light ray eventually to output in the pixel the ray was cast through. 

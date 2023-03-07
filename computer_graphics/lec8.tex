@@ -13,3 +13,126 @@ Texture mapping allows us to add more detail without adding more geometry. In th
 
 	\subsection*{Textures}
 	In most real-time rendering is textures of image-based 2D arrays of data used. The textures can be created from photos or hand drawn images. There are also textures in 1D and 3D used in some applications. The elements of these textures are called texels, can hold many types of information such as: Colors, normals, opacity, intensity gloss, height and ambient occlusion for mentioning some. 
+
+	\subsection*{Texture coordinates}
+	The range of texture coordinates are 0 to 1 and are commonly denoted s,t and p. s is used for 1D textures, (s,t) for 2D and (s,t,p) for 3D textures. In some applications can (u,v,w) occur. 
+
+	\subsection*{Assigning texture coordinates to models}
+	For assigning 2D textures to 3D models must each vertex be assigned a texture coordinate. This is possible to do manually for simple models like planes, spheres and cubes. For more complex models are the texture coordinates usually assigned by a semi-automatic process of \textbf{unwrapping} the mesh on a 2D grid in a 3D modelling software. One other possibility is to use a \textbf{projector function} to generate the coordinates automatically. Mapping a 2D map of the earth onto a sphere is done using longitude/latitude as texture coordinates. 
+
+	 \subsection*{Loading texture images from file}
+	 There is no function for loading textures provided by OpenGL. This is done by one of many third-party libraries available, such as: stb-image, LodePNG and FreeImage. 
+
+	 \subsection*{Outside the coordinate range}
+	 What happens if we would go outside the range of the texture? There are different alternative provided by OpenGL:
+
+	 \begin{itemize}
+	 	\item GL\_CLAMP\_TO\_EDGE
+	 	\item GL\_CLAMP\_TO\_BORDER
+	 	\item GL\_REPEAT
+	 	\item GL\_MIRRORED\_REPEAT
+	 \end{itemize}
+
+	 This alternatives determines how the image should be wrapped when outside the range of 0-1. They have different advantages and choosing depends on the use case.
+
+
+	 \subsection*{Texture filtering}
+	 When the texture coordinate doesn't correspond to the center of the texture element (texel) there are different options to choose from. There might be many texels in the same pixel which is called \textbf{minification} or many pixels representing one texel, \textbf{magnification}. In OpenGL there are some options how to handle these \textbf{filter operations}:
+	 \begin{itemize}
+	 	\item GL\_NEAREST
+	 	\item GL\_LINEAR
+	 	\item GL\_NEAREST\_MIMAP,GL\_NEAREST\_MIPMAP\_LINEAR ...
+	 \end{itemize}
+
+	 One could also implement their own filtering operations in the fragment shader. Aliasing in something the be aware of in minification, here doesn't the choice of filter operations matter.
+
+	 \subsection*{Mipmapping}
+	 We need a method to suppress the aliasing problem from minification. One way to do it is by using \textbf{mipmapping}. In mipmapping is the original texture filtered down repeatedly into smaller images to create a chain of mipmaps. During the rendering can then OpenGL select higher level mipmaps for distant object and lower for closer. It is convenient to have textures which are in the dimensions of a power of two for this case. 
+	 Mipmaps can be created automatically with the function:
+
+	 \begin{itemize}
+	 	\item void glGenerateMipmap(GLenum, target);
+	 \end{itemize}
+
+	 The resulting texture is only 33  larger than the original texture. This technique improves both image quality and rendering performance. 
+
+
+	 \subsection*{Displacement mapping}
+	 By using a 2D \textbf{height map} texture for displacing the vertices in the normal direction we can create a structured surface. The mesh has in this case to be subdivided into smaller triangles to incorporate the height map. The main drawback of this is of course that it's expensive to store and render the extra geometry.
+
+	 \subsection*{Bump mapping}
+	  An alternative way is to use \textbf{Bump mapping} where a 2D height map texture is used to perturb (interfere?) the surface normals of the rendered object. This technique is more efficient than displacement mapping since there is no extra geometry involved. The eye is tricked to believe the surface is bumpy. What gives it away is the contour and shadows that is unchanged (unlike in displacement mapping).
+
+	  \subsection*{Normal mapping}
+	  Similar to bump mapping but here it uses a 2D RGB texture containing the normal vectors, we call these kind of maps of the normal vector in a texture: \textbf{normal map}. The RGB colors represent the displacement direction. 
+	  The normal vectors are used to perturb the the surface normals of the object we are rendering.  
+	 
+
+	  \subsection*{Bump vs Normal mapping}
+	  Comparing the two methods: 
+		  \begin{table}[ht!]
+		  \centering
+		  \begin{tabular}{ll}\hline
+		   \textbf{Bump}&    \textbf{Normal}\\
+		   Gray-value map&   RGB map \\
+		   Smaller on disk&   Larger on disk\\ 
+		   Normals computed on the fly& Normals already computed\\
+		   Somewhat slower rendering& Somewhat faster rendering\\
+		   & \\ \hline
+		  \end{tabular}
+		  \caption{example}
+		  \label{tab:tab1}
+		  \end{table}
+
+
+	\subsection*{Tangent space}
+	For normal and bump mapping we need a coordinate system that is local for each vertex to displace the normal in that coordinate system. We call this space \textbf{tangent space}. It is defined by three orthogonal unit vectors:
+
+		\begin{itemize}
+			\item The surface normal \textbf{n}
+			\item The binormal \textbf{b}
+			\item and the tangent \textbf{t}
+		\end{itemize}
+
+	We can either pre-compute these vectors from the texture coordinate or compute them directly in the fragment shader. 
+
+	\subsection*{Environment mapping}
+	Is an \textbf{image-based lightning} IBL technique used to approximate global illumination effect such as reflection and refraction. Here is the incoming light from the environment stored in textures and then mapped onto the reflecting or refracting object. 
+
+	\subsection*{Cube environment mapping}
+	A cube map is a type of texture that stores the incoming light from the environment in a cube with six sides. For cube mapping we find where a perfect reflection would hit the cube map. This is done by calculating a reflection vector \textbf{R} from the surface normal \textbf{N} and the incident vector \textbf{I}. The incident vector is a vector that points from the camera to the reflecting point at the surface. 
+
+	\begin{equation}
+	 \textbf{R} = \textbf{I} - (\textbf{N} \cdot \textbf{I}) \textbf{N}
+	 \end{equation} 
+
+	 Using this reflection vector as a texture coordinate to fetch the incoming light from the cube coordinate. 
+
+	 \subsection*{Procedural textures}
+	 Procedural textures are textures that can be generate \textbf{on-the-fly} on the GPU by evaluating a function that describes a pattern of interest. Unlike image-based textures these doesn't need any storage since they are generated on the fly. They can also be rendered at arbitrary resolution thanks to this. Example of such patterns are chessboard pattern and different randomly generated, smoke like textures. They are easy to use for creating seamless or animated patterns. 
+
+	 \subsection*{Perlin noise}
+	 A method to produce "\textbf{structured chaos}". Have been widely used for rendering natural looking object with noisy or fractal patterns such as terrain, fur, vegetation, clouds, water, smoke, fire and so on. 
+
+
+	 \subsection*{Skyboxes}
+	 Are used for rendering backgrounds in a 3D scene. The idea is to place the viewer/camera inside a large cube and use cube mapping for projecting 2D background images on the cube's faces. This creates the illusion of a 3D surrounding. 
+
+
+	 \subsection*{Alpha mapping and billboarding}
+	 Trees and grass can be represented as set of \textbf{billboards} instead of solid surfaces. By using a set of billboards, quads with semi-transparent textures we can create the illusion of a 3D object.
+
+
+	 \subsection*{Imposter rendering}
+	 A view aligned billboard is called an \textbf{impostor}. By doing this can thousands or even millions billboards be rendered at very little cost. Very useful for molecule visualizations for an example. 
+
+	 \subsection*{Particle systems}
+	 Particle systems are used for modelling realistic visual effects suchs as explosion, smoke, fire, water and dust. The idea is to define a set of initial attributes such as: position, color, opacity size etc for all particles. In each frame we update the particle simulation on the CPU/GPU and render the particles as semi-transparent texture quads.  
+
+
+
+
+
+
+
+
