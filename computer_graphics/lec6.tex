@@ -1,0 +1,51 @@
+\section{Shading with shaders}
+This lectures topics are: shading in modern OpenGL, per-vertex shading, per-fragment shading, the Lambertian reflectance model, Blinn-phong shading and some more advanced lightning techniques.
+Starting of with a bit of recap. The host CPU application loads/creates vertex data, shaders, texture and more, uploads them to the GPU accessible memory and submit draw calls. It's the shaders that do all the visual magic. Vertices and fragments are processed in parallel on the GPU.
+
+
+	\subsection*{Shading in modern OpenGL}
+	The lightning computations are performed on the GPU by GLSL shaders. On the CPU are transforms, material properties and light sources defined and passed on to the shaders as \textbf{uniform} variables. 
+
+	\subsection*{Lightnings vs shading}
+	Lightning models describe the interaction between light sources and materials while shading is the process of computing the color of a pixel. 
+
+	\subsection*{Vectors}
+	For computing the lightning contribution a point \textbf{p} on a surface we will need: 
+	\begin{itemize}
+		\item \textbf{N}, the normal vector at the point \textbf{p}
+		\item \textbf{V} or \textbf{E}, the vector pointing to the viewer
+		\item \textbf{L}, a vector pointing to the light source from point \textbf{p}
+	\end{itemize}
+	All these vectors are typically defined in the so called - view space. \textbf{Surface normals} are vectors that the describes the surface orientation at some vertex or face, can be uploaded to the GPU memory along with vertex position. \textbf{Material properties} like diffuse color and specular color can be passed as vectors as uniform variables (or stored in textures). \textbf{Light sources}: directional, positional, spotlight and area lights are also passed to the shaders as uniform variables. 
+
+	\subsection*{Per-vertex shading}
+	The lightning is computed in the vertex shader and interpolated over the triangle. The fragment shader only receives the interpolated result in this case and set it as fragment color. The \textbf{advantage} of this is that it's cheap to compute. The \textbf{disadvantage} is that it produces not good looking specular highlights for objects with a small amount of polygons. 
+
+
+	\subsection*{Per-fragment shading}
+	Here is lightning computed in the fragment shader, using interpolated normal, view and light vectors from the vertex shader as input. The \textbf{Advantage} is the resulting specular highlights will look better even if the number of polygons are small. It can be combined with techniques such as texture mapping to produce detailed and realistic surfaces. The \textbf{disadvantage} is more expensive to compute compared to per-vertex shading. 
+
+	\subsection*{Gamma correction}
+	Since LCD monitors have a non-linear response curve we need to correct the pixel values. 
+
+		\begin{equation}
+			I_{corrected} = I^{\frac{1} {2.2} }		
+		\end{equation}
+
+	\subsection*{Anisotropic shading}
+	Some materials doesnt scatter light evenly in all directions, examples of such materials are: hair, brushed steel, cloth and wood. The \textbf{Ward} anisotropic shading model uses two parameters: \textbf{ax} and \textbf{ay}, to control the the specular reflections. 
+
+	\subsection*{Wrap shading}
+	This method wraps the diffuse lightning towards the camera. This is to simulate subsurface scattering in the material. Material that behave like this are: wax, skin and marble. Can be implemented in the Lambertian diffuse term by adding wrap parameters to control the amount of wrap. 
+
+	\subsection*{The Fresnel effect}
+	Surfaces become more reflective at the grazing view angles (90 - incident angle = grazing angle), shallower angle, more reflection. Materials to be used on: water, glossy surfaces, wet asphalt etc. In GLSL can the Schlicks approximation be used, (computational cheap and commonly used). 
+
+	\subsection*{Gloss and roughness}
+	This is a common parameter used in physically-based materials. And since they are linear they are more intuitive to adjust than the specular power. The gloss factor = $1.0 -$ roughnessFactor. 
+	
+
+
+
+
+		

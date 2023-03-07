@@ -1,0 +1,179 @@
+\section{Rasterization and clipping}
+During rasterization are colour set in a scan line fashion.
+
+	\subsection*{Line drawing}
+	Will cover some of 4 methods for line drawing:
+
+		\begin{itemize}
+			\item Digital Differential Analyser \textbf{DDA} (float)
+			\item Implicit lines
+			\item Bresenhamn (integer)
+			\begin{itemize}
+				\item Steps on pixel centers using integer operation
+				\item 8 connected
+			\end{itemize}
+			\item Parametric lines
+		\end{itemize}
+
+	\subsection*{Differential analyser DDA}
+	A line in 2D is defined as the equation: y = kx + m, where x and y are variables, in this case screen coordinates. The line starts at m=($x_0,y_0$) and ends at ($x_1, y_1$) and the slope is k = $\frac{\Delta y} {\Delta X} $. The algorithm starts at ($x_0,y_0$) increases x by one and y by k. This is repeated until $x=x_1$. Problem with vertical lines. 
+
+	\subsection*{Bresenham}
+	Developed the method in 1965. It is integer arithmetic (fast to compute, important at the time). It starts with f($x_0,y_0$) = 0, the next pixel? choose (x+1,y) or (x+1,y+1), check the sign of f(x+1,y+1/2), depending on the sign set pixel above or below. 
+
+	\subsection*{Polygon filling}
+	Orientation of the polygon changes how we fill the triangle. If angle is greater then 0 we need to split the triangle in two smaller triangles.
+
+		\begin{equation}
+			\omega = (x_1y_2 - x_2y_1)		
+		\end{equation}
+		
+	Line drawing is not as easy as one might think at first glance. The polygon filling is even harder. And then there is also the interpolation of colors or normals. Now day the GPU takes care of it! It also takes care of aliasing and fragments as well as prospectively correct interpolation 
+
+	\subsection*{Hidden surface removal}
+	In this chapter we take a look at clipping, hidden surface elimination and culling. \textbf{Clipping} is the process of clipping everything outside the view frustum. There are different types of actions associated with this process:
+
+		\begin{itemize}
+			\item Accept
+			\item Reject
+			\item Clip
+		\end{itemize}
+
+	With \textbf{normalization} clipping is done in a cube, that is easier than in the COP triangle. This is done with perspective division so we can use \textbf{parallel projection}. Scale the coordinates in the range \textcolor{red}{?}. 
+
+	\subsection*{Clipping in 2D}
+	The clipping is usuaslly done in 2D where all polygons behind the camera are discarded, project on the clipping plane and clip polygons on the projection plane, in 2D. Another way is to clip in the frame buffer (called scissoring). Most of the methods in 2D can be extended to be used in 3D.
+
+	\subsection*{Algorithms}
+	Here are some well known clipping algorithms listed:
+
+		\begin{itemize}
+			\item Cohen-Sutherland
+			\item Liang-Barsky
+			\item Sutherland-Hodgeman
+			\item Weiler-Atherton
+			\item Cyrus-Beck
+		\end{itemize}
+
+	We here take a look at Cohen-Sutherland in 2D for a line and then discuss the extensions to polygon clipping in 3D. 
+
+	\textbf{Cohen-Sutherland}, we start with dividing the space into 9 regions and assign codes to them depending on their positions. The outcode $o_1$ = outcode($x_1,y_1$) = ($b_0,b_1,b_2,b_3$) is assigned by:
+
+		\begin{equation}
+		\begin{aligned}
+		b_0 = \begin{cases}
+		1, \quad \text{if} y > y_{\text{max}},  \\
+		0, \quad \text{otherwise} \\
+		\end{cases} \\
+		b_1 = \begin{cases}
+		1, \quad \text{if} y < y_{\text{min}} \\
+		0, \quad \text{otherwise}
+		\end{cases} \\
+		b_2 = \begin{cases}
+		1, \quad \text{if} x > x_{\text{max}} \\
+		0, \quad \text{otherwise} 
+		\end{cases} \\
+		b_3 = \begin{cases}
+		1, \quad \text{if} x < x_{\text{min}} \\
+		0, \quad \text{otherwise}
+		\end{cases} 
+		\end{aligned}
+		\end{equation}
+
+	Decisions are then made depending on the outcode:
+
+	\begin{itemize}
+		\item $o_1$ = $o_2$ = 0, both endpoints inside clipping window
+		\item $o_1$ != 0 $o_2$ = 0, one endpoint inside, the other outside, line segment most be shortened
+		\item $o_1$ \& $o_2$ != 0, both outside, trivial reject
+		\item $o_1$ \& $o_2$ = 0, outside, but outside different edges, must investigate
+	\end{itemize}
+
+	\subsection*{Parametric lines}
+	We can compute the intersections with the border of the clipping using the \textbf{two point formula}. 
+
+		\begin{equation}
+			y = y_1 + \frac{y_2 - y_1} {x_2-x_1} (x_{\text{max}}-x_1)
+		\end{equation}
+
+	Similar equations are obtained for the other borders. If we have no intersection with the view port, the parameters are out of range. 
+
+	\subsection*{Hybrid approach}
+	Using a 3D Cohen-Sutherland for trivial Reject and trivial accept, then project onto viewport and do final clipping in 2D (or using scissoring instead?)
+
+	\subsection*{Liang-Barsky}
+	Uses the parametric line. Compute the angle $\alpha$ for each border in a clockwise order. Inside:
+
+		\begin{equation}
+			1 > \alpha_4 > \alpha_3 > \alpha_2 > \alpha_1 > 0
+		\end{equation} 
+
+	Change of order will occur when outside. Similar equations can be derived for all possible cases. The clipping is done using these computed $\alpha$'s. In 3D, just add one dimension in the parametric line.
+
+	\subsection*{Sutherland-Hodgeman}
+	This method is a pipeline clipper, going top, bottom, righ and left. Computing the intersections using the two-point forumula. 
+	
+
+	\subsection*{Summary of clipping}
+	The previous explained approaches can be used for clipping polygons, but not that a triangle can have more vertices after clipping. 
+
+		\begin{itemize}
+			\item Cohen-Sutherland - \textbf{Divide space and compute outcodes}
+			\item Liang-Barsky - \textbf{Parametric line}
+			\item Sutherland-Hodgeman - \textbf{Pipeline}
+		\end{itemize}
+
+
+	\subsection*{Hidden surface removal}
+	Problem with many names:
+
+		\begin{itemize}
+			\item Hidden surface elimination
+			\item Hidden surface determination
+			\item Occlusion culling
+			\item Visible surface determination
+		\end{itemize}
+
+	Defining the problem: The 3D world is projected onto a 2D screen. Which one of the polygons will be visible if they partly occupy the same pixels in the framebuffer? Well obviously the one that is closest. 
+
+	\subsection*{Painters algorithm}
+	This algorithm does like a painter, start with the background, then objects closer and closer. We can sort the primitives by Z, but how? the center of the polygon \textcolor{red}{?}, then render from back to front. The problem here is that we dont have a constant Z for the primitives. Making it even harder there can be polygons that intersect. This \textbf{cannot} be handled by the painters algorithm (unless we clip polygons against each other).  
+
+	\subsection*{The Z-buffer algorithm}
+	The Z-buffer is very easy to implement but not perfect, suffers from precissions problem, manifests in flickering of texture for example. It is implemented on the GPU. Renders primitives in arbitrary order and no sorting is needed. The Z-buffer happens in the rasterization part of the pipeline. 
+
+	The Z-buffer or depth buffer has the same resolution as the frame buffer, initiliazed to some value, range 0.0-1.0?. The algorithm: Record the depth value, z into the z-buffer while writing a pixel on the scanline, but, only writye the pixel if the z-value is less than previously recorded. The depth buffer can be used for other things like: compositing effect like: Fog, atmospheric scattering, etc. One problem with this method is that the precision depends on the range of the far and near clipping planes. The longer it is, the worse precision. This result in that algorithm cannot determine if the polygon is behind or in front of the already stored polygon. Setting the clipping planes most be done carefully. Because of the perspective projection this results in better precision in the front. Another problem is that some pixels will be set more than once. 
+
+	In a game engine would z-buffer probably be used in combination with some techniques to speed up rendering, such as: discarding polygons that are easy to detected as hidden. The use of bounding volumes. Some sort of sorting like painter algorithm.
+
+	\subsection*{Portal culling}
+	If we have a world divided up into cells and portals. Using frustrum culling, what can we see from position in the first cell looking through the first portal? If we cannot see anything in cell, don't render antything in that cell. 
+
+	\subsection*{Summary of hidden surfaces}
+	The z-buffer technique is more reliable than the painters algorithm. Speed can be improved by using sorting and bounding volumes. Clipping is also useful for portal culling, dividing the world into cells we can or cannot see. In games and visualization hybrid approaches are used. 
+
+	\subsection*{Backface culling}
+	This is an easy way to discard up to 50\% of the polygons. Doesn't work for not closed objects. Doesn't work for so called impostors either, that are polygons textured on both sides. 
+
+
+	\subsection*{Parallel and perspective projection}
+	\textbf{Parallel}: By checking if the sign of the normal we can determine if it is pointing  away from the camera, if its pointing in the other direction we can discard it.
+	\textbf{Perspective} is a different story: computing the cosine between the normal and the projector which is the dot product, if the result is positive, discard it!
+
+
+	\subsection*{OpenGL}
+	OpenGL perform backface culling after clipping. Use the signed area in device coordinate space: the polygon on the screen will have a negative area if it is backface, therefore there is a need for some consistent ordering of the vertices, like clockwise or counter clockwise. 
+	
+
+
+
+
+
+
+
+
+
+
+
+
+

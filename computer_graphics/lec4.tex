@@ -85,7 +85,7 @@ This lecture will cover rotation around arbritary axis, the "view" coordinate sy
 		 		                0& 0& 0& 0\\
 		 		                0& 0& 0& 1\end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
 		 	\end{equation} 
-		 \noindent \textbf{Perspective} projection is a linear equation:
+		 \textbf{Perspective} projection is a linear equation:
 			 \begin{equation}
 			 \begin{aligned}
 			 	(1) \quad \textbf{p}^{\prime} = t \textbf{p} \\
@@ -97,7 +97,6 @@ This lecture will cover rotation around arbritary axis, the "view" coordinate sy
 			\begin{equation}
 				\textbf{p}^{\prime} = \frac{d}{p_z} \textbf{p} 
 			\end{equation}
-
 		Here we use W to fit the perspective transformation into a matrix multiplication:
 
 			\begin{equation}
@@ -114,10 +113,9 @@ This lecture will cover rotation around arbritary axis, the "view" coordinate sy
 			 		                0& 0& 1& 0\\
 			 		                0& 0& \frac{1}{d} & 0\end{bmatrix} \begin{bmatrix} x \\ y \\ z \\ 1 \end{bmatrix}
 			\end{equation}
-
 		We divide by the homogeneous coordinate W to obtain the final projection, not that this is not a linear transformation. 
 
-		\noindent glm::perspective(fovy, aspect, near, far) can create the projection matrix. 
+		glm::perspective(fovy, aspect, near, far) can create the projection matrix. 
 
 
 

@@ -1,0 +1,131 @@
+\section{Super resolution microscopy}
+This chapter covers super resolution fluorescence microscopy for enhancing spatiotemporal resolution.
+
+	\subsection*{The microscope - short summary}
+	The numerical aperture NA = n$\sin(\theta)$, where n is the refractive index of the medium between the specimen and the objective lens. The resolution limited by diffraction, Abbe diffraction limit for microscopy: $d = \frac{\lambda} {2NA}$. In the 4-F system the magnification M is equal to: $f_1 / f_2$
+
+	\subsection*{Sampling in microscopy}
+	The Nyquist Shannon sampling frequency tells us that a signal should be sampled at least at a factor 2 of the highest frequency component of the signal to avoid aliasing. Important to know what the dynamics of the sample is to avoid blur and aliasing. 
+
+	\subsection*{Microscopy concepts}
+	There are different types of concepts in microscopy, here are a few listed:
+
+	\begin{itemize}
+		\item white light transmission
+		\begin{itemize}
+			\item Phase contrast
+			\item DIC
+		\end{itemize}
+		\item Electron microscopy
+		\begin{itemize}
+			\item SEM
+			\item TEM
+		\end{itemize}
+		\item Fluorescence 
+		\begin{itemize}
+			\item Widefield
+			\item Confocal
+			\item Super resolution
+		\end{itemize}
+	\end{itemize}
+
+	The problem in white light transmission microscopy is that it is quite unspecific in its labeling. Different proteins and structures/substructures cannot be identified/differentiated. 
+
+	\subsection*{Fluorescence}
+	For identifying proteins can fluorescence be used. Electrons absorb high-energy photon and go to higher energy state, undergo vibrational relaxation which means a loss of energy, this is called \textbf{Stokes shift}. It then undergoes a shift to lower energy state and emits a photon when reaching ground state. This is happening during a short time period of 0.5-20ns. \textbf{Phosphorescence} on the other hand is a process that occurs up to hours. 
+
+	\subsection*{Proteins vs Dyes}
+	Proteins such as Green fluorescent protein \textbf{GFP} and \textbf{Dronpa} are good for live cell imaging, the downsides are that it's weak and there can be labeling errors due to the size. Dyes are on the other hand strong and tiny in size but can't be used in living cells. 
+
+	\subsection*{Observing - dead tissue}
+	When observing, taking snapshots of dead tissue involves the following steps. A fixation process with chemicals for preservation, the inactivation of proteolytic(avoid breaking down of the tissue) and strengthening of the tissue for the staining. Then the staining is applied, either direct or indirect immuno staining or biological reactive. The advantages with this process is that a sample will last for weeks/months or even years. Less issue with phototoxicity (sensitive to light, break down), longer exposure time can be used (since dead tissue don't move around). The disadvantages are that the cell is dead and so is the the dynamics of it. The fixation process can be quite difficult to get right and the process is staining specific. 
+
+
+	\subsection*{Live cell fluorescence imaging}
+	In the process of live cell imaging are the incorporation of plasmid DNA into the cells of the target used, \textbf{transfection}. Upon protein synthesis are the plasmid DNA expressed. The fluorescent protein can then be detected with a microscope. The advantages of this is of course that the cell is alive and so the dynamics of it. The potential effects of fixations and the artifacts related to it are not there. A stable transfection is long lasting, "forever". The disadvantages with this technique is that it is sensitive to light, phototoxicity, weak compared to dye, the exposure time that is crucial since the cell is living and there can potentially be labeling errors. 
+
+	\subsection*{Simple Widefield vs confocal microscopy}
+	
+	\begin{table}[ht!]
+	\centering
+	\begin{tabularx}{\textwidth}{XX}\hline
+	 \textbf{Widefield}&  \textbf{Confocal}  \\
+	 Axial out-of-focus light blur&   Axial out-of-focus light blocked (pinhole) \\
+	 Image seen by detector: superposition of all in and out of focus planes& Image is scanned latterly, one point/pixel at a time, yielding 3D volumetric data   \\
+
+	 The pixel i determined by the camera & Any pixel size since iteratively scanned  \\ 
+	 limited by diffraction& limited by diffraction\\ \hline
+	\end{tabularx}
+	\caption{example}
+	\label{tab:tab1}
+	\end{table}
+	
+	\subsection*{Resolution problem and super resolution microscopy}
+	The resolution of fluorescence microscopy is limited to ~ 200nm XY and ~500nm Z. If we want to observe the inside of a mitochondria at ~80nm, that's not possible. For this we need super resolution microscopy or other methods to push the spatial resolution further. 
+
+	\subsection*{Structured illumination microscopy - SIM}
+	The methods basis consists of the theory around Moiré patterns and Fourier transform. Since periodic functions can be expressed as a sum of a series of sine/cosines with specific amplitude and phase coefficients. The optical transfer function specifies to what extent spatial frequencies are captured. 
+	With a well defined periodic illumination pattern, we get a moire image since these patterns are at a lower frequency and can therefore be resolved and captured by the microscope. Taking a series of these and with the known illumination pattern we can reconstruct the high frequency details that created the pattern, the sample!
+
+	The computational reconstruction separates the Fourier components from the raw images, then re-combining \textcolor{red}{(?)}  them. Using Apodization and Wiener filtering \textcolor{red}{(?)}  and then inverse fourier transform to get back to image domain.   
+
+	\subsection*{SIM summary}
+	
+	The advantages with SIM: resolution extension: $d = 1 + \lambda /2NA r_{SIM}$, 2x extension max. There is no additional need for sample preparation. There are a lot of commercial microscopes available. It is compatible with live cell observations. 
+
+	The disadvantages with SIM are the illumination pattern deteriorates deeper into samples. Instead of one image, it need 9 to 15. The computational reconstruction may introduce artifacts. 
+
+
+	\subsection*{STimulated Emission Depletion - STED}
+	STED is a point scanning microscopy technique (similar to confocal). The concept behind STEM is to make all other parts that is not illuminated of the fluorescence to light up creating contrast between the that way. The layout of a STED microscope involves a STED laser beam, an excitation laser beam, bandpass filter and detector. Polarization optics are used for shaping of the depletion beam, dynamic scanning mirrors (scanning technique), high NA objective is needed, dichroic filtes for combining the laser beams and a photo-multiplier tube for detector. 
+
+	\subsection*{Shaping the STED beam}
+	The beam is shaped using phase retardation. The lateral resolution improves with helical phase retardation 0-2$\pi$of STED beam. The axial resolution improves with phase retardation of inner circle area of $\pi$. This may be combined to obtain enhancement of the resolution in all three dimensions \textcolor{red}{???} 
+
+	\subsection*{STEM summary}
+	Very high resolution in 3D, which theoretically is unlimited. The technique is confocal and have 3D capability. The RAW data is of super resolution. Can be possible to use 3-4 colors. The disadvantages of STEM is the need o the strong STEM laser which can be harmful for live cells, it is also quite slow since it is a scanning technique. The dyes needed are also strong which can be a disadvantage. 
+
+	\subsection*{Single molecule localization microscopy - SMLM}
+	A photo-activateable technique were typically a normal flourescent wide-field microscope can be used. THe fluorescent molecules are computationally localized from a diffraction limited sequence of images based on the concept of switching on and off. By activating the single dyes randomly it is possible, by combination off multiple frames to differentiate molecules that otherwise would have been to close to distinguish because of diffraction limit. 
+
+	Some important acronyms:
+	\begin{itemize}
+	 	\item \textbf{PALM} - Photo-Activated-Localization Microscopy
+	 	\item \textbf{STORM} - STochastic Optical Reconstruction Microscopy
+	 	\item \textbf{DNA PAINT} - DNA-based point accumulation for imaging in nanoscale topography
+	 \end{itemize} 
+	
+	\subsection*{Summary SMLM}
+	The technique is 7-8 times better in resolution compared to widefield microscopy. It is a single molecule read out and multicolor is available are two other advantages. The disadvantages are the long light exposure, there is a limited number of on-off dyes, the number of raw images necessary, the process is slow and need data reconstruction. 
+
+
+	\subsection*{Image processing}
+	Common tools are: background correction, denoising, segmentation, labeling and tracking. Some of the challenges with these imaging techniques are: the size of the data sets, signal to noise ratios, object labeling the result can be tedious.
+
+	\begin{itemize}
+		\item Classic algorithms
+		\begin{itemize}
+			\item Simple and computational expensive
+		\end{itemize}
+		\item Deep /machine learning
+		\begin{itemize}
+			\item black box, if trained it is easily applied
+		\end{itemize}
+	\end{itemize}
+
+	\subsection*{Denoising}
+	Two more advanced techniques for improving image quality are \textbf{deconvolution} which is an iterative process that reconstructs which has been blurred by a \textbf{known} point spread function. Machine learning denoising by training a network with pair of high and low SNR. Both techniques are applicable to all imaging techniques. 
+
+	\subsection*{Image segmentation}
+	In microscopy we want to be able to label biological structures such as: Mitochondria, nuclei, specific cell types, cancer and more... 
+
+	\subsection*{Tracking}
+	Tracking is used for observe cellular behavior when drug is induced for example. Can be useful to track cells during development stages. Track Brownian motion of particles, diffusion coefficient. 	
+	  
+
+
+
+
+
+
+

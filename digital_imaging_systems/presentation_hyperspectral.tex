@@ -1,216 +1,351 @@
-\documentclass[12pt,preprintnumbers,amsmath,amssymb,nofootinbib,superscriptaddress]{revtex4-1}
-\usepackage[paperheight=12cm,top=0.5cm,bottom=0.5cm,left=1cm,right=1cm]{geometry}
+
+\documentclass{beamer}
 \usepackage{xparse}
-\NewDocumentCommand{\DIV}{om}{%
-  \IfValueT{#1}{\setcounter{#2}{\numexpr#1-1\relax}}%
-  \csname #2\endcsname
-}
-%\usepackage{pdftex}
 \usepackage[latin1]{inputenc}
 \usepackage{slashed}
 \usepackage{amsmath}
-\usepackage{textcomp}
+
 \usepackage{amssymb}
 \usepackage{amsfonts}
-\usepackage{indentfirst}
-\usepackage{color}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{hyperref}
-\usepackage{subcaption}
-\usepackage{graphicx,graphics}
-\graphicspath{{figures/}}
-\usepackage[skins,theorems,many]{tcolorbox}
-\tcbset{highlight math style={enhanced,
-  colframe=red,colback=white,arc=0pt,boxrule=1pt}}
-\usepackage[abs]{overpic}
-\usepackage{xcolor,varwidth}
+\usepackage{lmodern}
+\mode<presentation> 
+\usetheme{CambridgeUS}
 \usepackage[english]{babel}
-\usepackage{blindtext,tikz}
-\usetikzlibrary{calc}
-\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty, font=tiny}% redefines the caption setup of the figures environment in the beamer class.
 
-\def\bibsection{\section*{}} %Removes black line above refrences
 
 
 \begin{document}
-
-
-
-\pagenumbering{gobble}
-
-
-\vspace{10cm}
-
-\title{Hyperspectral satellite imaging}
-
-
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\title{Hyperspectral satellite imaging }
+\subtitle{Digital imaging systems - 1MD130}
 \author{Linus Falk}
-
-\affiliation{Digital imaging systems - 1MD130}
 
 \maketitle
 
-\newpage
-
 %-----EXAMPLE SLIDES-----%
 
-\newpage
-\DIV[1]{section}{Introduction}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-
-%What is it and what is it used for- images of system and example images the system creates
-
+\begin{document}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\begin{frame}
+\frametitle{Introduction}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+  \item Spectroscopy of reflected light from earth surface
   \begin{itemize}
-    \item Spectroscopy of reflected light from earth surface
+    \item Passive technique
+    \item Acquires images in many spectral bands so for each pixel a reflectance spectrum can be derived
+    \item Important absorption features occur in the 400-2500 nm band (reflected solar radiation dominates natural EMS)
+  \end{itemize}
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+\begin{center}
+\includegraphics[width=1\textwidth]{figures/introduction_IIb.pdf}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+
+% ------------------------------------------------- %
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\begin{figure}
+  \includegraphics[width=0.8\textwidth]{figures/introduction.pdf}
+  \caption{\cite{principles}}
+  \end{figure}
+\end{center}
+        
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+      
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.8 \textwidth]{figures/eachpixel.pdf}
+        \caption{\cite{sensortech}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+
+% ------------------------------------------------- %
+
+\begin{frame}
+\frametitle{Brief History}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+  \begin{itemize}
+    \item \textbf{1660} Division of light - Sir Isaac Newton
+    \item \textbf{1800-1820} Discovery of absorbtion bands - Joseph von Fraunhofer
+    \item \textbf{1982} First imaging spectrometers - Jet propolsion lab (JPL)
+    \item \textbf{2000} First spaceborne imaging spectrometers - NASA EO-1 
+    \item \textbf{2022} Launch of EnMAP - DLR %German Aerospace Center
+  \end{itemize}
+
+  \end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.6\textwidth]{figures/history2.pdf}
+        \includegraphics[width=0.6\textwidth]{figures/history3.pdf}
+        \caption{\cite{sensortech}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+%https://eo-college.org/wp-content/uploads/2022/12/Basis-MOOC_offline_document_v01.pdf
+
+\begin{comment}
+\begin{itemize}
+  \item +30 Years of hyperspectral satellite imaging
+  \begin{itemize}
+    \item Landsat-1 - \textbf{1972 NASA/JPL} (multispectral)
     \begin{itemize}
-      \item Passive technique
-      \item Materials characterized by spectral signature (Absorption and reflection)
-      \item Acquires images in many spectral bands so for each pixel a reflectance spectrum can be derived
-      \item Important absorption features occur in the 400-2500 nm band (reflected solar radiation dominates natural EMS)
+      \item Portable field reflectance spectrometers developed
     \end{itemize}
-  \end{itemize}
-
-\end{minipage}
-\vspace{\fill}
-
-% ------------------------------------------------- %
-
-\newpage
-\DIV[1]{section}{Introduction}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-
-%What is it and what is it used for- images of system and example images the system creates
-  \begin{itemize}
-    \item Hyperspectral imaging used in many fields 
-      \begin{itemize}
-        \item Ecosystem processes
-        \item Surface mineralogy
-        \item Water quality
-        \item Soil type and erosion, 
-        \item vegetation type and more...
-      \end{itemize}
-  \end{itemize}
-
-\end{minipage}
-\vspace{\fill}
-
-% ------------------------------------------------- %
-
-\newpage
-\DIV[1]{section}{Brief History}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-  \begin{itemize}
-    \item +30 Years of hyperspectral satellite imaging
-    \begin{itemize}
-      \item Landsat-1 - \textbf{1972 NASA/JPL} (multispectral)
-      \begin{itemize}
-        \item Portable field reflectance spectrometers developed
-      \end{itemize}
-      \item For a long time was the spectral regions with atmospheric absorption seen as drawback
-      \item Better algorithms and hardware made it possible to correct for this
-      \item First commercial hyperspectral imaging systems for airborne use (DAIS \textbf{1989})
+    \item For a long time was the spectral regions with atmospheric absorption seen as drawback
+    \item Better algorithms and hardware made it possible to correct for this
+    \item First commercial hyperspectral imaging systems for airborne use (DAIS \textbf{1989})
       \item EO1 - Hyperion sensor - \textbf{2000 NASA} %https://earthobservatory.nasa.gov/features/EO1/eo1_2.php
       \item EnMAP - \textbf{2022 DLR}
     \end{itemize}
   \end{itemize}
-
-  %https://www.weather.gov/jetstream/absorb
-  %https://www.l3harrisgeospatial.com/Support/Maintenance-Detail/ArtMID/13350/ArticleID/17333/Atmospheric-Windows-and-Optical-Sensors
-\end{minipage}
-\vspace{\fill}
+\end{comment}
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Use today \& limiting factors}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
 
-\begin{minipage}{0.6\textwidth}
-
+\begin{frame}
+\frametitle{Use today \& limiting factors}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
   \item Used in research
-  \item Drawbacks 
   \begin{itemize}
-    \item Not easy to deploy 
+    \item Ecosystem processes
+    \item Surface mineralogy
+    \item Water quality
+    \item Soil type and erosion, 
+    \item vegetation type and more...
   \end{itemize}
+  \item Global/National scale
+  \begin{itemize}
+    \item Limited use for private sector
+  \end{itemize}
+  \item Defence/military
+
 \end{itemize}
 
-\end{minipage}
-\vspace{\fill}
+
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \includegraphics[width=1\textwidth]{figures/usedforb.pdf}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{How is the image formed}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
 
-\begin{minipage}{0.6\textwidth}
-
+\begin{frame}
+\frametitle{How is the image formed}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
-  \item Sun the source of energy 
-  \item Sensor type:
+  \item Scanning: 
+  \begin{itemize}
+    \item Push-broom
+    \item Whisk-broom
+  \end{itemize}
+  \item Dispersive optics:
   \begin{itemize}
     \item Diffraction Grating Spectrometers
     \item Prism Spectrometers
   \end{itemize}
-  \item Imaging: 
+    \item Sensor types :  
   \begin{itemize}
-    \item Push-broom
-    \item Whiskbroom
+    \item CMOS \& CCD - NVIR
+    \item MCT (Mercury Cadmium Telluride) -SWIR (Cooled)  
   \end{itemize}
+
 \end{itemize}
 
-\end{minipage}
-\vspace{\fill}
+
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \includegraphics[width=0.8\textwidth]{figures/scan.pdf}
+        \includegraphics[width=1\textwidth]{figures/prism.pdf}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{What property of the sample is imaged?}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
+
+
+\begin{frame}
+\frametitle{How is the image formed}
+
+
+    
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.7\textwidth]{figures/instrument.pdf}
+        \caption{\cite{sensortech}}
+        \end{figure}
+        \end{center}
+
+\end{frame}
+
+
+% ------------------------------------------------- %
+\begin{frame}
+\frametitle{What property of the sample is imaged?}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
 \begin{itemize}
-  \item Each material has a unique spectral characteristic
   \item Interaction radiation
   \begin{itemize}
-    \item Absorbtion - material and wavelenght
+    \item Absorption 
     \item Reflection
     \item Transmission 
   \end{itemize}
+    \item Absorption processes
+    \begin{itemize}
+      \item Electron transfer
+      \item Vibrational process
+    \end{itemize}
+    \item Each material has a unique spectral characteristic
 \end{itemize}
 
-\end{minipage}
-\vspace{\fill}
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \includegraphics[width=0.7\textwidth]{figures/propertyofsampleb.pdf}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Resolution and sample size}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
+\begin{frame}
+\frametitle{What property of the sample is imaged?}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{figures/stressedplant.jpg}
+\caption{\cite{plantstress}}
+\end{figure}
+\end{center}
+\end{column}
 
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=1\textwidth]{figures/plantsignature.pdf}
+        \caption{\cite{principles}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+% ------------------------------------------------- %
+
+
+
+
+\begin{frame}
+\frametitle{Atmospheric window}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
+  \item At surface reflectance
+  \item Top-of-atmosphere radiance
+  \item Atmosphere absorption
+  \begin{itemize}
+    \item Water vapor
+    \item Carbon dioxide
+    \item Ozone
+  \end{itemize}
+    \item Atmospheric window largely transparent 
+
+\end{itemize}
+
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.7\textwidth]{figures/clouds.jpg} %https://commons.wikimedia.org/wiki/File:ISS-40_Thunderheads_near_Borneo.jpg
+        \caption{\cite{clouds}}
+        \includegraphics[width=0.8\textwidth]{figures/window.pdf} %https://www.enmap.org/data/doc/Science_Plan_EnMAP_2022_final.pdf
+        \caption{\cite{enmapplan}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+
+% ------------------------------------------------- %
+
+
+
+\begin{frame}
+\frametitle{Resolution and sample size}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+
   \item Spatial resolution
   \begin{itemize}
-    \item Field-of-view (\textbf{FOV})
-    \item Instantaneous-field-of-view (\textbf{IFOV}) 
+    \item Field-of-view (\textbf{FOV}) and Instantaneous \textbf{FOV} (\textbf{IFOV})
     \item Ground-projected instantaneous-field-of-view (\textbf{GIFOV})
     \begin{itemize}
       \item depends on the satellite elevation and varies with the viewing angle
@@ -222,18 +357,26 @@
   \end{itemize}
 \end{itemize}
 
-\end{minipage}
-\vspace{\fill}
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \includegraphics[width=1 \textwidth]{figures/psf.pdf}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Resolution and sample size}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-
+\begin{frame}
+\frametitle{Resolution and sample size}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
   \item Spectral resolution
   \begin{itemize}
@@ -243,111 +386,229 @@
   \item Radiometric resolution
   \begin{itemize}
     \item Ability of the sensor to register differences in radiation
-    \item Typically 8 and 12 bit, (EnMAP 14 bits)
+    \item Typically 8 and 12 bit, 
   \end{itemize}
   \item Temporal resolution
   \begin{itemize}
     \item Time between two acquisitions
-    \item Depends on satelite orbit 
-    \item Vary greatly depending on cloud coverege
+    \item Depends on satellite orbit 
+    \item Vary greatly depending on cloud coverage
   \end{itemize}
 \end{itemize}
 
-\end{minipage}
-\vspace{\fill}
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.7 \textwidth]{figures/bits.pdf}
+        \includegraphics[width=0.8\textwidth]{figures/clouds.jpg}
+        \caption{\cite{clouds}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Resolution and sample size}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
+
+\begin{frame}
+\frametitle{Resolution and sample size}
+\begin{center}
+\begin{table}[ht!]
+
+\begin{tabularx}{\textwidth}{XX}\hline
+& \textbf{EnMAP} \\
+ \textbf{Imaging principle }& Push-broom-prism\\
+ \textbf{Groundsampling resolution}& 30m  \\
+ \textbf{Strip lengths }& 30 - 1000km   \\
+ \textbf{Spectral range}& VNIR: 420 nm - 1000 nm \newline SWIR: 900 nm - 2450 nm\\
+ \raggedright
+ \textbf{Mean spectral sampling distance}& VNIR: 6.5 nm \newline SWIR: 10 nm\\
+ \textbf{Radiometric resolution}& 14 bit \\
+ &   \\ \hline
+\end{tabularx}
+\caption{EnMAP in numbers}
+\label{tab:tab1}
+\end{table}
+ \end{centering}
+ \end{frame}
+     
+
+
+
+% ------------------------------------------------- %
+\begin{frame}
+\frametitle{Calibration & Correction}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+  \begin{itemize}
+    \item Radiometric correction
+    \begin{itemize}
+      \item Sensor data to physical unit
+      \item Use of calibration data
+      \item Linear transform 
+    \end{itemize}
+    \item Geometric correction
+    \begin{itemize}
+      \item Sensor geometry to Object coordinates
+    \end{itemize}
+    \item Atmospheric correction 
+    \begin{itemize}
+      \item Atmospheric scattering
+      \item Absorption effect, adjacency % https://www.researchgate.net/figure/Illustration-of-the-adjacency-effect-Most-of-the-reflectance-observed-for-the-target_fig1_260635763
+      \item Illumination effect (terrain \& clouds)
+    \end{itemize}
+    %\item Spectral non uniformity or "Smile" correction  
+    % \item Geometrically corrected (orthorectified)
+  \end{itemize}
+
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.6\textwidth]{figures/calcorr.pdf}
+        \caption{\cite{sensortech}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
+
+% ------------------------------------------------- %
+
+\begin{frame}
+\frametitle{Cost and limiting factors}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
 \begin{itemize}
-  \item Trade off
+  \item Acquisition cost
+  \begin{itemize}
+    \item EnMAP budget:  330 million euros
+    \item Five years of operations in orbit 
+  \end{itemize}
+  \item Data availability
+  \begin{itemize}
+    \item Repeat interval
+    \item Historic and future data
+  \end{itemize}
+  \item Open source project
+  \begin{itemize}
+    \item EnMAPbox - QGIS
+    \item Visualizing and analyzing
+EnMAP data
+  \end{itemize}
 \end{itemize}
 
-In the relationship of spatial and spectral
-resolution, as one increases the other needs to decrease to gain the same amount
-of photons on the detector. That means you either get an image with high spectral
-but rather low spatial resolution (1), an image with high spatial but low spectral
-resolution (2) or something in-between (both medium resolution). Sensor design tries
-to avoid low SNR (3) and tries to achieve the best trade-off between spectral, spatial
-resolution and high SNR for a certain application.
+\end{column}
 
-\end{minipage}
-\vspace{\fill}
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.7\textwidth]{figures/falcon9.jpg}
+        \caption{\cite{rocket}}
+        \end{figure}
+        \end{center}      
+        \end{column}
+        \end{columns}
+        \end{frame}
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Calibration and correction}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-% https://elib.dlr.de/124009/1/Delosreyes_L2A_DESIS_EnMAP_V02.pdf
-
+\begin{frame}
+\frametitle{Variants and future use}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
-  \item 
-  \item topographic 
-  %https://www.enmap.org/data/doc/EN-PCV-TN-6007_Level_2A_Processor_Atmospheric_Correction_Land.pdf
-  % https://www.enmap.org/data/doc/Science_Plan_EnMAP_2022_final.pdf
+  \item CubeSats - constellation of miniaturized satellites
+  \begin{itemize}
+    \item Better temporal resolution
+  \end{itemize}
+  \item Agriculture
+  \item Monitor hazard and risks 
 \end{itemize}
-\end{minipage}
-\vspace{\fill}
+
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+        \begin{center}
+        \begin{figure}
+        \includegraphics[width=0.7\textwidth]{figures/cubesats.jpg}
+        \caption{\cite{cubes}}
+        \end{figure}
+        \end{center}
+        
+        \end{column}
+        \end{columns}
+        \end{frame}
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Cost and limiting factors}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
 
-\end{minipage}
-\vspace{\fill}
+
+\begin{frame}
+\frametitle{QGIS Demo}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+
+\end{column}
+
+        \begin{column}{0.5\textwidth}  %%<--- here
+        
+
+        \end{column}
+        \end{columns}
+        \end{frame}
+
 
 % ------------------------------------------------- %
 
-\newpage
-\DIV[1]{section}{Variants and future use}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-
-\end{minipage}
-\vspace{\fill}
-
-% ------------------------------------------------- %
-
-\newpage
-\DIV[1]{section}{Title}
-\vspace{-0.2cm}
-\hrule
-\vspace{0.8cm}
-\begin{minipage}{0.6\textwidth}
-
-\end{minipage}
-\vspace{\fill}
-
-% ------------------------------------------------- %
-\newpage 
-\DIV[2]{section}{References}
-\vspace{-0.2cm}\hrule
-
-\bibliography{Bibliography}
-
-\vspace{\fill}
-\centering
+\begin{frame}[allowframebreaks] 
+\frametitle{References}
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
 
 
-
+\end{frame}
 
 
 \end{document}
 
 
+“One important artifact for some imaging spectrometers is the spectral “smile,”
+also known as
+spectral non uniformity or spectral aberration . It is a consequence of optical aberrations causing
+the spectrometer entrance slit , representing the across track swath , to be projected as a curve
+on the rectilinear detector array . This effect can be estimated in flight from atmospheric
+absorption features .“ (Thompson et al.
+
+"In the relationship of spatial and spectral
+resolution, as one increases the other needs to decrease to gain the same amount
+of photons on the detector. That means you either get an image with high spectral
+but rather low spatial resolution (1), an image with high spatial but low spectral
+resolution (2) or something in-between (both medium resolution). Sensor design tries
+to avoid low SNR (3) and tries to achieve the best trade-off between spectral, spatial
+resolution and high SNR for a certain application."
+
+
+"Because of the strong water vapor absorption line near 22 GHz, within the microwave range, we can use microwave radiometers to measure columnar (atmospheric total) water vapor. This is a very accurate measurement due to the high signal-to-noise ratio for this measurement.  With little diurnal variation, the measurements from different satellites at the same location often agree to within a few tenths of a millimeter."
+
+%falcon9 https://commons.wikimedia.org/wiki/File:SpaceX_Falcon_9_rocket_and_Crew_Dragon_spacecraft_lifts_off_from_Launch_Complex_39A.jpg
+% cubesats https://commons.wikimedia.org/wiki/File:ISS-38_Nanosatellites_deployment_(a).jpg
+% temporal https://commons.wikimedia.org/wiki/File:ISS-40_Thunderheads_near_Borneo.jpg
+% stressed plant https://commons.wikimedia.org/wiki/File:Starr-120504-5544-Kanaloa_kahoolawensis-leaves_showing_stress-nursery-Maui_(24511549154).jpg#filelinks

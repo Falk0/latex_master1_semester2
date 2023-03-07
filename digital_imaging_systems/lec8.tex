@@ -1,0 +1,188 @@
+\section{Thermal and multispectral imaging}
+
+	\subsection*{Light and radiation}
+	The light from the sun, created by the nuclear fusion in the core heating up the surfare that radiates towards earth. The radiation that we can see comes from light that is:
+		
+		\begin{itemize}
+			\item Emitted
+			\item Transmitted
+			\item Reflected
+			\item Absorbed
+		\end{itemize}
+
+	The thermal radiation for an object can be approximated as \textbf{black-body} radiation even though the thermodynamic system is not in equilibrium with its surrounding, this is done with Plack's law of black-body radiation:
+
+		\begin{equation}
+			B_v(T) = \frac{2v^2} {c^2} \frac{hv} {e^{\frac{hv} {kT} }-1}   		  
+		\end{equation}
+
+	Where B(T) is the spectral radiance, h placks constant, k Boltzmanns constant, v is the frequency, T is the temperature of the body and c is the speed of light in vacuum.
+	
+	\subsection*{Domain and wavelengths band}
+	The bands are:
+	\begin{itemize}
+		\item  ... X-ray 
+		\item Ultra violet
+		\item Near infrared
+		\item Shartwave infrared
+		\item Thermal infrared
+		\item Far infrared
+		\item Microwave and radio...
+	\end{itemize}
+	Thermal infrared is divided into two bands: \textbf{Midwave infrared} and \textbf{Longwave infrared}, spanning from 3 $\mu$m to 12 $\mu$m. There is a gap in this division due to atmospheric transmission, between 5 and 8 $\mu$.
+	The division into these bands are because of the atmospheric transmission, behavior : reflective domain and missive domain and the type of sensors.
+
+	\subsection*{Radiation and matter}
+	Incoming radiation interacts with matter in three ways: Absorbed, Reflected or transmitted. The matter can then emit radiation formed by processes of the absorption. 
+
+	\begin{equation}
+	\begin{aligned}
+		\alpha + \tau + r = 1 \\
+		\alpha(\lambda) + \tau(\lambda) + r(\lambda) = 1
+	\end{aligned}
+	\end{equation}
+
+	Emissivity ($\epsilon$), $\alpha = \epsilon$ for any object in thermal equilibrium with its environment. 
+
+	\begin{itemize}
+		\item Absorptivity $\alpha$
+		\item Emissivity $\epsilon$
+		\item Transmittance $\tau$
+		\item Reflectance r
+	\end{itemize}
+
+	Dependent on wavelength and the angle. It is common that $\tau$ and r are close zero. 
+
+	\subsection*{From object to sensor}
+	The incoming energy is integrated over a certain bandwidth by the sensor. The radiance at the sensor is a sum of :
+	\begin{itemize}
+		\item Radiation \textbf{emitted} by the object and \textbf{transmitted} through the path to the sensor
+		\item Radiation \textbf{reflected} by the object and \textbf{transmitted} through the path.
+		\item Radiation \textbf{emitted} by the path to the sensor
+		\item Radiation \textbf{scattered} by the path. 
+	\end{itemize}
+
+	\subsection*{Summary: radiation \& matter}
+	\begin{itemize}
+		\item Radiators: Blackbodies, greybodies, general objects
+		\item Properties: Emissivity, absorptivity, reflectance, transmittance
+		\item Radiation: is often measured as flux, radiance and irradiance
+		\item Domains: Reflective vs emissive
+		\item Bands: UV, VIS, NIR, VNIR, SWIR, MWIR, LWIR, TIR, FIR
+	\end{itemize}
+	
+	\subsection*{Thermal cameras}
+	Thermal cameras are used for imaging (non radiometric) in the civilian and military. Radiometric thermal holds an actual temperature value for every pixel in the image. Non radiometric only contains a visual representation of the measured value of radiation for the specific time the image was captured. 
+
+	\subsection*{Cooled and uncooled cameras}
+	Depending on price and bands used for the camera can be either cooled or uncooled. The sensor material is different in uncooled and cooled cameras.
+
+	\begin{itemize}
+		\item \textbf{Cooled}
+		\begin{itemize}
+			\item Mercury cadmium telluride - MCT - \textbf{SWIR,LWIR}
+			\item Indium antimonide - InSb - \textbf{NIR,LWIR}
+			\item Strained layer superlattice - \textbf{MWIR,LWIR} 
+		\end{itemize}
+		\item \textbf{Un-cooled}
+		\begin{itemize}
+			\item Charged-coupled device - CCD - \textbf{VNIR}
+			\item Indium gallium arsenide - InGaAs - \textbf{NIR,SWIR}
+			\item Microbolometer - - \textbf{LWIR}
+		\end{itemize}
+	\end{itemize}
+
+	
+	Pyro-electric detectors commonly used in presence detector. Microbolometer is common in industrial handheld IR cameras.
+
+	\subsection*{Internal radiation}
+	Much of the radiation that hits the sensor of the camera is emitted by the camera itself. Somewhere around 90\% of the radiation is a realistic value. It's therefore necessary to have one or more internal thermometers and onboard processing of the signal. Cooled cameras come with the benefits of having better spatial resolution, higher temperature resolution and faster. The downsides are that they are: louder, heavy, larger and much more expensive.  
+
+	\subsection*{Performance measures}
+	Comparing different camera can be done using these performance measures:
+	\begin{itemize}
+		\item NETD: noise equivalent temperature difference
+		\item MRTF: Minimum resolvable temperature difference
+		\item NEP: Noise equivalent power
+		\item Normalized Detectivity D$^{*}$ 
+	\end{itemize}
+
+	\subsection*{Calibration and Narcissus}
+	The pixel of the sensor needs to be calibrated to give a linear response to temperature. A dead pixel can be either completely dark or white. Narcissus is an unwanted effect where the detector images the reflection of itself. Caused by reflections from lens surfaces. The effect comes from the detector cold shield.
+
+	\subsection*{Optics for thermal cameras}
+	Different parameters to consider when choosing optics for a thermal camera:
+
+	\begin{itemize}
+		\item Durability
+		\item Refractive index
+		\item Variability due to heat
+		\item Cost
+		\item Transmittance
+	\end{itemize}
+
+	One common lens material is: Germanium. It's good for MWIR and LWIR, durable and high refractive index. Have the downside of drop of transmittance with temperature. 
+
+	\subsection*{Summary: thermal cameras}
+	\begin{itemize}
+		\item Cooled vs uncooled
+		\item Sensors: Thermal detectors vs photon detectors
+		\item Optics: Transmitting in different bands
+		\item Most common thermal camera: Uncooled bolometer camera LWIR with Germanium lens. 
+	\end{itemize}
+	
+
+	\subsection*{Hyperspectral imaging}
+	Hyperspectral imaging compared to greyscale, color image and multispectral have many, many contiguous bands. One pixel of the image can be interpolated to a complete spectrum and is therefore very useful to identify different materials for an example. 
+
+	\subsection*{Applications}
+	\begin{itemize}
+		\item Defence
+		\item Mineralogy
+		\item Land-use classification 
+		\item Precision farming
+		\item Food inspection
+		\item Environmental monitoring
+		\item  and a lot more....
+	\end{itemize}
+
+	\subsection*{Imaging concepts}
+
+	\begin{itemize}
+		\item Dispersive
+		\begin{itemize}
+			\item Whiskbroom
+			\item Pushbroom
+		\end{itemize}
+		\item Pushframe
+		\begin{itemize}
+			\item Spatio spectral
+		\end{itemize}
+		\item Snapshot
+		\begin{itemize}
+				\item Mosaic
+				\item Tiled
+			\end{itemize}	
+	\end{itemize}
+
+	Filter wheels can also be used.
+
+	\subsection*{Sensor types}
+	
+	\begin{itemize}
+		\item Diffraction grating
+		\item Interferometer
+		\item Prism
+		\item Continuously variable optical band-pass filter
+	\end{itemize}
+
+	\subsection*{Summary: hyperspectral}
+	\begin{itemize}
+		\item Uses multiple wavebands to see better
+		\item Recognize materials by one pixel
+		\item Many ways of making hyperspectral cameras
+		\item Many applications. 
+	\end{itemize}
+	
+	
+	

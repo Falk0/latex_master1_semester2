@@ -37,7 +37,7 @@ All of these techniques are so called tomography techniques (imaging slices of t
 		\subsubsection*{Scanning}
 		Three modes of PET scanning: Static scans with about 20cm of coverage, Dynamic scans: time series of scans and Whole-body scans: combination of multiple 20cm scans. 
 
-		\subsubsection{Reconstruction}
+		\subsubsection*{Reconstruction}
 		Two types of image reconstruction: Filter back propagation which can be seen as fast and simple and Statistical likelihood-based which is iterative, uses more advanced modelling and corrections. The later one is therefore more computationally demanding. 
 		Corrections for scatter and random coincidences are typically included.
 
@@ -152,10 +152,42 @@ All of these techniques are so called tomography techniques (imaging slices of t
 		\subsubsection*{T1 and T2 in different tissues}
 		T1 and T1 can be seen as tissue properties, but they are dependent on: disease conditions (which is good for diagnostic), contrast agents (that are used for changing relaxation times), the field strength and temperature.
 
-		\subsubsection*{Image generation}
-		\textbf{Spatial encoding}is used to determine what slice is being image and to determine what is up/down and right/left in that slice. The principle for spatial encoding is frequency encoding which can be described like choir that sing brighter the further away they stand from the observer, from this we can determine position from the notes (in one direction at least). This principle is used by adding a linear magnetic field gradient (\textbf{G}) to the static magnetic field (\textbf{B}$_0$) in the scanner. By doing this, the total magnetic field and Larmor frequency will vary linearly with the position. 
+		\subsubsection*{Image generation (2D)}
+		\textbf{Spatial encoding}is used to determine what slice is being image and to determine what is up/down and right/left in that slice. The principle for spatial encoding is \textbf{frequency encoding} which can be described like choir that sing brighter the further away they stand from the observer, from this we can determine position from the notes (in one direction at least). This principle is used by adding a linear magnetic field gradient (\textbf{G}) to the static magnetic field (\textbf{B}$_0$) in the scanner. By doing this, the total magnetic field and Larmor frequency will vary linearly with the position.
+		\textbf{In-slice encoding} two directions are needed for encoding in the 2 dimensional slice, to do this simultaneously we use \textbf{phase encoding} also. The resulting signal readout repeated with different phase encoding results in a \textbf{k-space} image. Using the Fourier transform \textbf{FFT} we go from k-space to \textbf{image space}. To summarize: a combination of RF signals and a sequencing of linear gradients allow imaging.  
 		
+		\subsubsection*{Image generation (3D)}
+		Comparing 2D and 3D imaging:
 
+			\begin{table}[ht!]
+			\centering
+			\begin{tabular}{ll}\hline
+			 \textbf{2D}&   \textbf{3D} \\
+			 Many slices to be excited to cover volume&  Two-phase encoding directions  \\
+			 K-space in 2D& takes time, many TR's  \\
+			 &  Short TR (and TE) needed \\
+			 & Mostly for T1w   \\
+			 & K-space in 3D \\
+			 & Typically most time efficient for volume \\ \hline
+			\end{tabular}
+			\caption{example}
+			\label{tab:tab1}
+			\end{table}
+
+		\textbf{Multi-slicing}, introducing the problem: A T2-weighted image used a long TR and TE, this means that there is a long waiting time to next excitation of the slice. This waiting time results in a lot of "deadtime" in the protocol. To be more effective was multi-slicing introduced. Additional slices are excited during the waiting time which means that the total scan time is reduced if TR increases (so that more slices fits under one TR).
+
+		\subsubsection*{Quantification of T1, T2 and PD}
+		Instead of imaging with contrast weighting its possible to quantify the \textbf{relaxation parameters}. This is done by collecting data (multiple images) with different parameters, for example:
+
+			\begin{itemize}
+				\item For T2: different TEs
+				\item For T1. different TRs 
+			\end{itemize}
+
+		 Then the signal \textbf{model} is fitted to the datapoints - voxel wise. This can be optimized in many ways, modelling and the data collection.  
+
+
+		    
 		
 
 		          

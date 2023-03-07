@@ -1,0 +1,136 @@
+\section{Shading and illumination}
+How can we make an object appear with shading and reflections? This lecture will cover: Phong illumination model, illumination, light sources, shading (Phong and Gaurad) and Mach bands.
+
+	\subsection*{Phong illumination model}
+	The illumination can be described with the following function:
+
+		\begin{equation}
+			I = \frac{1} {a+bd+cd^2}(K_aL_a+K_dL_d \text{max}(\textbf{N} \cdot \textbf{L},0) + K_sL_s(\textbf{R}\cdot \textbf{V})^{\alpha}) 	
+		\end{equation}
+	Which translates into the sum: Ambient + Diffuse + Specular = Phong Reflection.
+
+	\subsection*{Illumination}
+	This term is most often used to describe the process by which the amount of light reaching a surface is determined.
+
+		\begin{itemize}
+			\item Colour
+			\item Light sources
+			\item The Phong illumination model
+			\item Shading algorithms
+			\item Normal Computations
+			\item Tangent vectors
+		\end{itemize}
+
+	An object has flat polygons but can appear smooth thanks to the process of called: \textbf{shading} (Phong/Gouraud). We can compare this shading to how we sketch something (drawing). 
+
+	\subsection*{Shading}
+	Shading is the process of setting the colour values for each of the pixels in the triangles (polygons). The colour depends on the light source (colour and intensity) and material (colour and reflectance properties). 
+
+	\subsection*{Ambient light}
+	Since the light model is local we do not take into account any bouncing light from the surroundings (which raytracing does), only the direct light from the light source. So the ambient light is approximated using only a constant instead. In other words, the shadowed areas have some light from reflection in the real world that is now approximated with our ambient light constant. 
+
+	\subsection*{Point lights}
+	The light originates from one single points and is spread equally in all directions to its surroundings. Examples of such light sources are : light bulbs and candles. In this model the light source/point have zero size, so it is only an approximation. We could think of the stars as such light sources but not the sun in the real world (In terms of size). 
+
+	\subsection*{Parallel light}
+	In the case of parallel light or directional light are the rays parallel, which is the case when the light source is infinitely far away. We can make this approximation, that the light is parallel from the sun (infinity far away)
+	
+	\subsection*{Spot lights}
+	These light sources have direction and so they also have a \textbf{limited width} which results in a spot of light on the "target". 
+
+		\begin{equation}
+			C(\phi) = \text{max}(-\textbf{R} \cdot \textbf{L},0)^{P}
+		\end{equation}
+	C makes a smooth spot and P changes the size of the spot. 
+
+	\subsection*{Distance}
+	Light intensity changes over distance (decreases). If we have a distance d, the intensity can be assumed/approximated to be proportional to:
+
+		\begin{equation}
+			\frac{1} {a+bd+cd^{2}} \quad	d = ||\textbf{d}||
+		\end{equation}
+
+	\textcolor{red}{This is not physically correct!} 
+
+	\subsection*{The Phong illumination model}
+	Proposed by Bui Tuong Phong in 1975. A 3D object can be shaded using 3 types of light added together: Ambient, diffuse and specular. They can be computed separately and then added together. 
+
+	\subsection*{Gauraud}
+	Henri Gouraud hade earlier (1971) proposed that a 3D object can be shaded using the law of cosines (\textbf{Lambert's law}). From this comes the name lambertian surfaces. This type of surface is totally matte and doesn't reflect any light, only diffuses it. It scatters light in all directions equally so that no mirror reflection can be seen. Examples of "quite" matte surfaces are:
+		\begin{itemize}
+			\item Plaster walls
+			\item Skin
+			\item Paper
+			\item Wood
+		\end{itemize}
+
+	\subsection*{Specular and semi-specular surfaces}
+	The optimal specular surface is a mirror that reflects ray of lights, incoming angle = outgoing angle. Some materials are semi-specular meaning that the mirror reflection is a bit blurry, some of the light is diffused, not bouncing in perfect angle from the object. These kind of materials was the goal to model with the Phong illumination model. 
+
+	\subsection*{Laws of cosine and trigonometry}
+	Lambert's law of cosine says that when the light is spread over a larger area the intensity decreases (the maximum is in the normal direction). 
+
+	\begin{itemize}
+		\item A/Hypotenuse = $\cos(\theta)$
+		\item The angle between \textbf{L} and \textbf{N} is equal to $\theta$
+		\item The intensity is inverse proportional to the area it is spread out over
+		\item By definition $\cos(\theta)$ equals \textbf{N} $\cdot$ \textbf{L} 
+		\begin{itemize}
+		 	\item Hence is the intensity proportional to $\cos(\theta)$
+		 \end{itemize} 
+	\end{itemize}
+	
+	\subsection*{Specular light}
+	In the specular light there are two vectors involved: \textbf{R} which is the reflection of \textbf{L} around \textbf{N} and \textbf{V} which is the direction of the viewer (sometimes denoted \textbf{E}). The shininess $\alpha$ is a constant that changes the size of the highlight. An example of the use of shininess is that: the smaller the highlight is, the more the shiny the surface appear to be.
+
+	\subsection*{Compute the reflection vector}
+	
+
+
+
+	\subsection*{The halfway vector}
+	The halfway vector, denoted \textbf{H} is halfway between \textbf{L} and \textbf{V}. The vector halfway between \textbf{L} and \textbf{R} is always \textbf{N}, the definition!. Hence is the halfway vector \textbf{H} close to \textbf{N} when \textbf{R} is close to \textbf{V}. This can be used to calculate the speculare light. 
+
+		\begin{equation}
+			\textbf{H} = \frac{\textbf{L} + \textbf{V}} {||\textbf{L} + \textbf{V}||} 		
+		\end{equation}
+		
+	\subsection*{Shading again}
+	OpenGL supported two types shading traditionally: \textbf{flat} and \textbf{Gouraud/smooth} shading. Flat shading is done per face normals and Gouraud per vertex normals. Both of them uses the Phong illumination model!
+
+	\subsection*{Gouraud and Phong shading}
+	Both shading models, Phong and Gouraud typically apply the Phong illumination model. The difference between them lies in where and where the illumination model is applied. The \textbf{normals} are typically known at the vertices of the polygons, these are sued to apply the Phong illumination model to the \textbf{vertices}.This results in a colour at each \textbf{vertex}. After that is done there is two ways to proceed: 
+
+	BUT first we need to calculate these normals. We can compute them using the cross product of the points given:
+
+		\begin{equation}
+			\textbf{N} = \frac{(\textbf{P}_2 - \textbf{P}_0) \times (\textbf{P}_1 - \textbf{P}_0)} {||(\textbf{P}_2 - \textbf{P}_0) \times (\textbf{P}_1 - \textbf{P}_0)||} 		
+		\end{equation}
+
+	Gouraud also introduced a method but there are many possible approaches. \textbf{Weighted average} is one of the most used ways to compute vertex normals by using the average of the normals of faces which are adjacent to the vertex.
+
+		\begin{equation}
+			\textbf{n} = \sum_{i=1}^{n} \textbf{n}_i ||\textbf{e}_i||||\textbf{e}_{i+1}||\sin(\theta_i) = \sum_{i=1}^{n} \textbf{n}_i ||\textbf{e}_i \times \textbf{e}_{i+1}|| = \sum_{i=1}^{n} \textbf{e}_i \times \textbf{e}_{i+1}
+		\end{equation}
+	Could be compared to the dot product in shading. 
+
+	Now when we have the normals we can continue with the first method: \textbf{Gouraud shading} which will take the colours at the vertices, which we got from the illumination and interpolate these colours across the edge of the polygon and across the \textbf{scan lines}, typically is a bi-linear interpolation used. 
+
+	The second method: \textbf{Phong shading} takes the normals at the vertices and interpolate these across the edges of the polygon and across the scan lines. Then is the illumination model applied to each pixel on the scan line, using that normal. This is more accurate way of shading since the illumination model is applied to each pint on that polygon, instead of interpolating the colours at the vertices, as in the previous method. With few polygons its possible that the \textbf{Gouraud} model will miss highlight when they end up somewhere between two vertices. 
+
+	\subsection*{Mach bands}
+	Mach bands is an illusion that consists of light or dark stripes that are perceived next to the boundary between two region that have different lightness gradients. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
