@@ -41,4 +41,101 @@ The Bidirectional Reflection Distribution Function describes how the incoming li
 that is spanned by the vectors of the incoming light. The physically based BRDF should be reciprocal, conserve the energy and be measured for any physical material. The Phong method doesn't conserve energy and is there for \textbf{not} physically based!
 
 \subsection*{Raytracing}
-The basic idea is to cast rays through our viewing window against the target and let it interact with it, getting the attenuation of the color of the light ray eventually to output in the pixel the ray was cast through. 
+The basic idea is to cast rays through our viewing window against the target and let it interact with it, getting the attenuation of the color of the light ray eventually to output in the pixel the ray was cast through. This process mean a lot of work...
+
+
+\subsection*{Specular vs diffuse}
+Tracing rays in the specular direction if the material is specular is no problem. If the material is matte we must shoot rays in ALL directions which is \textbf{not} possible. This is the reason why raytracing is used mainly for specular and translucent surfaces. 
+
+\subsection*{Super sampling}
+A ray that is shot through the same pixel but in different positions inside the pixel, it can give very different results. To solve this we shoot many rays in each pixel by varying it slightly in how it shots through the pixel. This is called super sampling and can be done stochastic, the more the better. This reduce the jagged edges that can be seen in raytracing otherwise. 
+
+\subsection*{Bounding volumes}
+To speed up the ray traversal one can use bounding volume techniques. This is to reduce the time it takes to check if a ray hits any of the triangles in a scene. By checking what bounding volume it hit first we can save computational time. By placing for example a box over the polygon object we are left with first checking 6 sides instead of thousands of polygons for a hit. The cases we are left with are:
+
+	\begin{itemize}
+		\item Ray hit both the cube and the object
+		\item Ray misses the cube
+		\item Ray hits the cube but misses the object
+	\end{itemize}
+
+If we hit the box we can further create subboxes so we perhaps only have a hundred of polygons to check, while some boxes are empty and simply discarded. The math we need is for computing planes. We have a point in the plane and a vector for that plane, so we have all that we need:
+
+	\begin{equation}
+		\textbf{N} \cdot (\textbf{P}-\textbf{P}_0) = 0
+	\end{equation}
+
+We then check the sign of the plane equation to see if we are inside or outside the plane. Another way to this is to project on the axis and compare min and max for all axis.
+
+Intersections can be computed by regarding the line as a parametric one. This is a linear interpolation with
+
+	\begin{equation}
+		p(\alpha) = (1-\alpha)p_1 + \alpha p_2 \quad 0 \ge \alpha \ge 1 
+	\end{equation}
+
+If we write the line and plane equation in matrix form, n is the normal of the plane and $p_0$ is point on the plane. We then need to solve the following equation:
+
+	\begin{equation}
+	\begin{aligned}
+		p(\alpha) = (1-\alpha) p_1 0 \alpha p_2 \\
+		 n \cdot (p(\alpha)-p_0) = 0
+	\end{aligned}
+	\end{equation}
+
+Solving this result in:
+
+	\begin{equation}
+	\alpha = \frac{n \cdot (p_0 -p_1)} {n \cdot (p_2 - p_1)} 
+	\end{equation}
+
+When we know if a line hits a plane we can continue with computing where it hits. We need to determine if it hits inside or outside the polygon. One way to check this is to check to cross product with the edges counter clockwise and see if the sign of the resulting normal.  The signs will be different if the point is outside. 
+
+
+\subsection*{Bounding spheres}
+In this case there is only one center and a radius to be checked. The downside is that not all objects are suitable for sphere, lot of empty space. Could be partially solved with hierarchy of spheres. To test if inside the sphere we apply the point-sphere test. Compare the point with the center and radius:
+
+	\begin{equation}
+		||\textbf{p}-\textbf{c}||^{2} > r^{2}
+	\end{equation}
+
+The ray sphere intersection can be calculated with this quadratic equation:
+	
+	\begin{equation}
+		(\textbf{d} \cdot \textbf{d})t^{2} + 2(\textbf{o}-\textbf{c}) \cdot  \textbf{d}t + (\textbf{o}-\textbf{c}) - r^{2} = 0
+	\end{equation}
+It is quadratic since it enters and exits in two points. 
+
+\subsection*{Space partitioning}
+A hierarchy of bounding volumes, the idea is to shoot more rays where we have a lot of details and where there is light. Some techniques for this are:
+
+	\begin{itemize}
+		\item Quadtrees - 2D each node has 4 children
+		\item Octrees - 3D each node have 8 children
+		\item K-D - Like a binary search tree
+		\item BSP - Binary space partition tree, for complicated object, 
+	\end{itemize}
+
+\subsection*{Radiosity}
+This is an application of a finite element method to solve the rendering equation. It comes from the field of \textbf{heat transfer}. Example : the "Cornell box". This can actually be solved analytically depending on the triangulation of the scene. The method computes form factors and solves the resulting radiosity matrix. It is a slow approach. 
+
+The form factor is defined as the fraction of energy leaving one surface. This is a purely geometric relationship, independent of the viewpoint or the surface attributes. 
+
+\subsection*{Progressive refinement}
+The first step is for the light sources shoot energy. Then add patches that gather energy. For the next iteration all patches shoots energy, and than they gather energy, we let this continue until equilibrium. This is generally a faster method. We can start by letting all surfaces have some energy. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,129 @@
+\section{Curves and surfaces}
+Until this point we have worked with flat entities such as lines and polygons. They fit well with the graphics hardware and are mathematically simple to work with. But since the world is not composed of only flat entities we need also to be able to work with curves and curved surfaces. We may only need them at the application level, in implementation we render then approximately with flat primitives. 
+
+	\subsection*{Modelling with curves}
+	From data points we approximate a curve and interpolate between the data points. So what is a good representation? There are multiple ways to represent curves and lines and we want our representation to be:
+
+	\begin{itemize}
+		\item Stable
+		\item Smooth
+		\item Easy to evaluate
+	\end{itemize}
+
+	Do we need to interpolate or is it possible just to come close to data? 
+
+	\subsection*{Explicit representation}
+	The most familiar form of a curve in 2D is the equation:
+
+		\begin{equation}
+			y = f(x)		
+		\end{equation}
+
+	The problem with this expression is that it cannot express vertical lines or circles. For an extension i 3D we have:
+
+		\begin{equation}
+		\begin{aligned}
+			y = f(x), z = g(x) \\
+			z = f(x,y)
+		\end{aligned}
+		\end{equation}
+	Where the second form defines a surface. 
+
+	\subsection*{Implicit representation}
+	We can describe a two dimensional curve implicitly:
+
+		\begin{equation}
+			g(x,y) = 0
+		\end{equation}
+
+	This is much more robust:
+
+		\begin{equation}
+		\begin{aligned}
+			\text{Lines } ax+by+c =0 \\
+			\text{Circles } x^{2} + y^{2} - r^{2} = 0
+		\end{aligned}
+		\end{equation}
+
+	In 3D, g(x,y,z) defines a surface, and by intersecting two surfaces we can get a curve. But in general: we cannot find y for a given x
+
+	\subsection*{Parametric curves}
+	Here we separate equation for each spatial variable:
+
+		\begin{equation}
+		\begin{aligned}
+			x = x(u) \\ y = y(u) \\ z = z(u) \\ p(u) = \begin{bmatrix} x(u)& y(u)& z(u) \end{bmatrix}^{T}
+		\end{aligned}
+		\end{equation}
+
+	\subsection*{Parametric lines}
+	
+	We can normalize u to be over the interval $\begin{bmatrix} 0,1 \end{bmatrix}$. A line connecting two points $p_0$ and $p_1$ : $\textbf{p}(u) = (1-u)\textbf{p}_0 + u \textbf{p}_1$. A ray from $\textbf{p}_0$ in the direction \textbf{d} gives us: $\textbf{p}(u) = \textbf{p}_0 +u \textbf{d}$
+
+	\subsection*{Parametric surfaces}
+	Surfaces require 2 parameters. x=(u,v)
+
+		\begin{equation}
+		\begin{aligned}
+			x=x(u,v) \\ y =y(u,v) \\ z =z(u,v) \\ \textbf{p}(u,v) = \begin{bmatrix} x(u,v)& y(u,v)& z(u,v) \end{bmatrix}
+		\end{aligned}
+		\end{equation}
+
+	\subsection*{Normals}
+	We can differentiate with respect to the parameters u and v to obtain the normal at a point \textbf{p} 
+
+	\begin{equation}
+		\frac{\partial \textbf{p}(u,v)} {\partial u} = \begin{bmatrix}  \partial x(u,v) / \partial u \\ \partial y(u,v) / \partial u  \\ \partial z(u,v) / \partial u  \end{bmatrix}  \quad
+		\frac{\partial \textbf{p}(u,v)} {\partial v} = \begin{bmatrix}  \partial x(u,v) / \partial v \\ \partial y(u,v) / \partial v  \\ \partial z(u,v) / \partial v  \end{bmatrix}
+	\end{equation}
+
+	\begin{equation}
+		\textbf{n} = \frac{\partial \textbf{p}(u,v)} {\partial u} \times \frac{\partial \textbf{p}(u,v)} {\partial v} 
+	\end{equation}
+
+	\subsection*{Curve segments}
+	After we have normalizing u, each curve is written : $\textbf{p} = \begin{bmatrix} x(u)& y(u)& z(u) \end{bmatrix}^{T}, 0 \le u \le 1$. In classic numerical methods we can design a single global curve. In computer graphics and in CAD, it is often better to design \textbf{small} connected curve \textbf{segments}. 
+
+	\subsection*{Selecting functions}
+	what we want is functions that can approximate and interpolate our data, it should be easy to evaluate, easy to differentiate and the functions must be smooth.
+
+	\subsection*{Polynomials}
+	We start off with polynomials, these are easy to evaluate, they are continuous and differentiable everywhere. What we must worry about are how the continuity at the joints and the continuity of the derivatives here. 
+
+	\subsection*{Cubic parametric polynomials}
+	Polynomials of degree three gives a balance and is most often used. We got four coefficients to determine for each of x,y and z. Must seek for four independent conditions for the various values of u resulting in 4 equations and 4 unknowns for each of x,y and z. The conditions are a mixture of the requirements for continuity at the joints and fitting to the data.
+
+	\begin{equation}
+		\sum_{n=0}^{3} c_n u^{n} = c_0 + c_1u +c_2u^{2} + c_3 u^{3}, \quad p(u) = \textbf{u}^{T}c = c^{T} \textbf{u}
+	\end{equation}
+
+	\subsection*{Interpolating curve}
+	Given four data points, we want to determine a cubic \textbf{p}(u) which passes through them, meaning we need to find our coefficients $c_0,c_1,c_2,c_3$. We apply the interpolating conditions at u = 0,1/3,2/3,1 and get 4 equations. Putting it in matrix form we can get the interpolation matrix \textbf{M}$_I$ and the resulting curve is :
+
+		\begin{equation}
+			\textbf{p} = u^{T}c = u^{T}\textbf{M}_I \textbf{p}
+		\end{equation}
+
+	The interpolation matrix is only needed to be calculated once since it the same in all interpolation calculation there after. The blending polynomials $\textbf{b}(u) = \textbf{M}_I^{T}u$, each polynomial is a cubic. With this we get continuity at the joint points but \textbf{continuity of derivatives}. 
+	implementing this on a patch would need 16 conditions to determine the 16 coefficients. 
+
+
+	\subsection*{Other types of curves and surfaces}
+	How can we get around the limitations of the interpolating form, the lack of smoothness and discontinuous derivatives of the joints. We have four conditions in the case of cubics that we can use to each segments. 
+
+	\subsection*{Hermite form}
+	Here we use two interpolation conditions and two derivative conditions per segment instead. This ensures that we have continuity and first derivative continuity between the segments. This methods is not typically used in computer graphics or CAD because usually have control points \textbf{but not} derivatives. The Hermite form is the basis of the Bezier form.
+
+	\subsection*{Parametric and geometric continuity}
+	We can either require the derivatives of x, y and z to each be continuous at the joint points or alternatively we only require that the tangents of the resulting curve to be continuous. The latter alternative gives us more flexibility as only two conditions need to be satisfied rather than three at each of the joint points. 
+
+	\subsection*{Bezier's idea}
+	Usually we don't have any derivative data in computer graphics or CAD. Bezier suggested using the same 4 data points as with the cubic interpolating curve to approximate the derivatives in the Hermite form. In the Bezier blend we have all zeros are at 0 and 1 which foreces the function to be smooth over the interval 0,1. 
+	All Bezier curves le in the convex hull of their control points, this means that even though we don't interpolate all the data, we can be that far away. 
+
+	Even though Bezier form is much better than the interpolating form we started off with we still have discontinuous derivatives at join points. What needed is another representation to represent curves that have continuous 2nd derivatives. This means more work per semgent and use of more control points.
+	
+	
+
+
+
