@@ -1,167 +1,148 @@
 \section{Light microscopy}
-short intro of light microscopy ....
+Introduction to light microscopy. This chapter will cover: simple and compound microscopes. The general concepts of 
+\begin{itemize}
+	\item resolution
+	\item magnification
+	\item staining
+\end{itemize}
+It will also cover: Darkfield, phase contrast, Fluorescence and confocal microscopy.
 
-\subsection*{History}
+	\subsection*{History}
+	The father of microscopy: van Leeuwenhoek, he studied Hooke and refined his lenses to create a 1-lens microscope with approximately 270 times magnification. He used this to study insects, blood cells and bacteria. 
 
 
-\subsection*{Operational steps}
+	\subsection*{Simple microscopes/magnifying glass}
+	These types consist of one convex lens that enlarges the object. The magnification can be calculated with: $M = 1 + D/F$, where D is the least distance of distinct vision and F is the focal length of the convex lens. The maximum magnification that can be achieved this way is 10x. 
 
+	\subsection*{Compound microscope}
+	This type of microscopes are often referred to as \textbf{brightfield} microscopes. The concept: light from the light source is focused by a condenser onto the target/specimen. The transmitted light is then collected by the objective and forms a magnified, primary image. The primary image is magnified another time by the ocular lens. The total magnification of a compound microscope is given by the magnification of the ocular lens times the magnification of the objective lens. 
 
-Compound microscope
-	Parts
+		\subsubsection*{Parts of a (typical) compound microscope}
+		Light from the light source/illuminator goes through the condenser lens which focuses all the rays of light onto the specimen to maximize the illumination of it. By opening and closing the \textbf{diaphragm} between the condenser and the specimen it possible to adjust the amount of the light hitting the specimen. It is also possible to control the brightness of the light source with a \textbf{rheostat}. The light that hits the specimen is then differentially transmitted, absorbed, reflected or refracted by the different structures in the specimen. The \textbf{objective lens} collects the light and creates the magnified image which is magnified once again by the \textbf{ocular}. 
 
-	Optics - 
-		Total magnification
-		Possible resolution
-		Numerical aperture 
-		Resolution 
-		Oil immersion lenses
-		Objectives 
-		Airy disc
+	\subsection*{The total magnification}
+	The total magnification of the compound microscope can be expressed: M$_o \times$ M$_e$, or alternatively :
 
-	Staining
-		H\&E staining 
-		Immunostaining
-			Primary immunostaining
-			Secondary immunostaining
+		\begin{equation}
+		 	m = \frac{D} {f_0} \times \frac{L} {f_e} 
+		 \end{equation}
+	Where D is the least distance of distinct vision (25 cm), L the  length of the microscope tube, f$_o$ focal length of the objective lens and f$_e$ the focal length of the eyepiece/ocular. 
 
-	Densitometric - Light transmission, signal type, electromagnetic waves, 
-					physical property Transmission - exponentially absorbed - intensity proportional to absorbing matter. Sample contrast comes from attenuation of light in the sample
-					Active illumination all at once
+	It is the light and optics that define the possible resolution, expressed:
+
+		\begin{equation}
+			d = \frac{\lambda} {2n\sin\theta} 
+		\end{equation}
+
+	Where d is the \textbf{point resolution} (the short the better for us), $\lambda$ which is the \textbf{wavelength}, n the \textbf{refractive index} (1 for air, 1.3 for water or 1.4-1.5 for oil). nsin$\theta$ is the \textbf{numerical aperture}. 
+
+	\subsection*{Numerical aperture}
+	The numerical aperture defined as: NA = $n\sin\theta$ where n is the refractive index for the medium between the specimen and the objective. The angle $\theta$ is the angle of the light cone. A high NA means that the objective collects light efficiently, means that $\theta$ is large. A high NA also means high resolution. 
+
+	\subsection*{Resolution}
+	Resolution, the smallest features that can  be distinguished in the system. In a typical microcscope the resolution is decided by the wavelength of the light $\lambda$ and the \textbf{resolving power} of the microscopes objective, which is defined by its numerical aperture NA. 
+	Somethings to consider: the maximum NA for an objective in air is 1. The resolution limit is given by the \textbf{Rayleight criterion}:
+
+		\begin{equation}
+		r = 0.61 \times \frac{\lambda} {NA} 
+		\end{equation}
+
+	An example using a wavelength of 550nm and objective with a NA of 0.7 gives a limit of 480nm. A cell is in the size of 10-30 $\mu$m and can therefore be observed in a light microscope. Viruses are on the other hand even smaller, $\approx$ 10-200nm and cannot be resolved by a ordinary light microscope. 
+
+	With oil immersion its possible to increase the magnifications. This is possible thanks to the refractive index of oil is higher than air and similar to the glass that the specimen sits on. More light can be collected this way. 
+
+	\begin{wbox}{Remember}
+		  \textbf{Magnification without resolution is useless: empty magnification}
+	\end{wbox}
 	
-	Spatial/Geometrical - Projection of transmission through the object. Resolution limited by wavelength and ... oil immersion 
+	\subsection*{Airy disc}
+	An Airy disc is the optimally focused point of light that can be determined by a circular aperture in the case of a perfectly aligned system limited by diffraction. If we view this from above it appears as a bright point with ripples around, also know as the airy pattern. The diffraction pattern is determined by the wavelength of light and the size of the aperture which the light passes through. The way a system images a point is called the \textbf{point spread function} or PSF for short. 
 
-	Spectral - Wavelength interval visible light. 
+	\subsection*{Staining}
+	Staining the sample is done to create contrast and or highlight details of interest. One very common stain is \textbf{H\&E - Haematoxylin and eosin} 
 
-	Temporal -  still image, no motion to consider
+	\subsection*{Immunostaining}
+	With this type of staining are primary antibodies used that can bind to specific targets. There is also often a secondary antibodies that bind to the primary ones. The secondary antibodies have a dye or fluorescence attached to them or an enzyme that induces a coloring reaction. 
 
+	DAB staining is a derivative of benzene and most often used in immunohistrochemical staining as a chromogen (a colorless chemical compound that can by reaction turned into colored). In DAB staining is DAB oxidized by hydrogen peroxide in a reaction typically catalyzed by HRP. The DAB forms a brown preciptate \textcolor{red}{?} at the locations of the HRP, this can be visualized by a light microscope. 
 
+	\subsection*{Typical immunohistochemistry staining procedure}
+	Step by step:
+	\begin{enumerate}
+		\item Endogenous peroxidase are inactivated with hydrogen peroxide
+		\item Then are the antigen exposed with HIER (heat induced antigen retrieval)
+		\item Non-specific bindings sites and Fc repecptors get blocked by a normal serum (goat serum)
+		\item The primary antibodies are applied and bind to the exposed antigen in the cells and cannot bind to any of the blocked ones. 
+		\item Then is the secondary antibody applied which got peroxide polymer attached bind to the primary antibodies. 
+		\item In the last step are the peroxidase developed with DAB and hydrogen peroxide which gives dark brown deposits at the site of the bound antibody.
+	\end{enumerate}
 
-
-Dark field microscopy
-	-Parts
-
-	-Optics
-	Oil immersion for best scatter light gathering, Illumination of the sample partly blocked 
+	\subsection*{Possible issues - immunolabeling}
 	
-	-Staining
-	allows to increase contrast of images of live unstained and uncolored objects sample makes some of the light scatter even if it's transparent, this light is then refocused on the detector 
+	\begin{itemize}
+		\item High background
+		\begin{itemize}
+			\item Unspecific binding
+			\item Endogenous peroxidase
+			\item Excess peroxidase not washed away
+		\end{itemize}
+		\item Weak signal
+		\begin{itemize}
+			\item Not exposed antigen
+			\item Not good antibodies
+			\item Not enough time for reaction
+		\end{itemize}
+	\end{itemize}
+	
+	Useful to compare the result with correct negatives, correct positive and false positive references. Other sources of errors can be that the sample is old, the chemical / solutions are old or wrong protocol is followed \textcolor{red}{?}. 
 
-	- Densiometric 
-	sample contrast comes from light scattered by the sample, Scatterd light produces the 				image, transmitted light not collected. Resulting in an image of the sample superimposed on a dark background. Low light levels in final image. Strongly illuminated sample, can cause damage. Almost totally Halo artifact free technique 
+	\subsection*{Dark field microscopy}
+	 Microscopy in which the central part of the light cone from the source is \textbf{blocked}, the only light that reaches the objective is light that has been refracted or reflected by the structures in the specimen (scattered light ?). This means that \textbf{no direct} light from the condenser enters the objective lens. The result has good contrast and resolution without any staining. This means that the technique is good for live specimens that otherwise would have been killed by the stains.  
 
-	\textcolor{red}{"Care must be taken when preparing specimens for darkfield microscopy because the features that lie above and below the plane of focus can scatter light and contribute to image degradation."} 
+	 \subsection*{Phase contrast microscopy}
+	 Invented by Fritz Zernike in 1941. Uses the property that light phase shift when passing through a transparent specimen, different refractive index of different constituents turn into amplitude changes that creates the contrast in the image. This technique doesn't need any stain, no fixation, and is good for live cells. Good option for imaging objects with no color. 
 
-	Diffraction patterns artifact. 
+	 \subsection*{Differential interference contrast microscopy}
+	 Invented in the early 50's. It is a technique with good contrast without staining, for transparent objects for an example. It uses polarized light and interferometry. The contrast is created due to the differences in path length for two adjacent points in the sample. It can image small differences in the refractive index between neighboring points.
 
+	 \subsection*{Reflected light microscopy}
+	 Also known as episcopic illumination metallography microscopy. Typically used for imaging the surface of metals, plastic, ores, ceramics, paper and so on. Same principle as but here are mirrors used to reflect the light onto the object. 
 
-	- Spatial/Geometrical 
-	Greater care of interpretation needed since some features may not be visible in darkfield that are visible in brightfield. Darkfield images lacks low spatial frequencies and is a high passed version of the underlying structure. May appear to be a negative of brightfield image but different effects/features are visible in each. 
+	 \subsection*{Confocal microscopy}
+	 First patented in 1957. The method was improved with laser technology and became generally accepted and a very popular technique. A confocal microscope focus on one point at a time and can scan across the specimen in x,y \textbf{and} z direction. The results are 2D images at various depths which can be reconstructed / stacked to form a 3D image. Flourescent stain are often used to increase the contrast and resolution. The image clarity and resolution is improved by a narrow aperture that eliminates light that is not from the z-plane. This technique is useful for examining thick specimens and can also be used on live, unfixed samples. 
 
-	- Spectral
-	Can be coupled with hyperspectral imaging with the right kind of light source, most commonly is the visible light spectrum
+	 \subsection*{Fluorescence microscopy}
+	 A technique that uses fluorescent molecules \textbf{fluorochromes} or \textbf{fluorophores} that absorb energy from a light source and emits the energy as light of a different wavelength. There are natural fluorecents (chlorophylls) and fluorescent stains that are added to the specimen to create contrast for the image.
 
-	- Temporal
+	 The principle behind fluorescent microscopy: 
 
+	 \begin{itemize}
+	 	\item High energy light source emit light 
+	 	\item An excitation filter decides what wavelength to let through to illuminate specimen
+	 	\item The fluorophores in the specimen absorb the energy from the light and emit energy with a longe wavelength. 
+	 	\item A dichroic mirror reflect the light of the excitation wavelength and tramsit light of the emission wavelength, so only the light of interest passes.
+	 	\item This mirror is not perfect so not all light is blocked. 
+	 \end{itemize}
 
+	 \subsection*{Fluorophores}
+	 In microscopy are most fluorophores excited near UV,blue or green light. A mercury arc lamp is an ideal light source that provide high intensity in the wavelength : 365, 405, 436 and 646 nm. 
 
+	 \subsection*{Stoke shift}
+	 The stoke shift is the energy difference between the peak of absorbance and the peak of the highest emission energy. Without the stoke shift it wouldn't be almost no way of distinguish between excitation and emitted light. Probes\textcolor{red}{(?)} with varying Stoke shift are useful for multicolor applications. 
 
-Phase contrast microscopy
+	 \subsection*{Autofluorescence}
+	 Autofluorescence is the natural emission of light by biological structures such as mitochondria and lysosomes after they absorbed light. This is then used to distinguish the light from the artificially added fluorescent markers (fluorophores). \textcolor{red}{?} 
 
-	Parts 
-	No staining. \textcolor{red}{"No staining The phase-contrast microscope made it possible for biologists to study living cells and how they proliferate through cell division."}
+	\subsection*{green fluorescent protein}
+	Green fluorescent protein also know as GFP exhibits green fluorescence when it is exposed to light in the UV range. GFP was first isolated from a jellyfish. This GFP has a major excitation peak at 395nm and a minor one at 475nm while the emission peaks at 509nm. This GFP gene is frequently used as a reporter of expression \textcolor{red}{?}. The gene is inserted together with the gene of interest and if the GPF is expressed then we can assume the  gene of interest is that also.
 
-	-Optics
-	\textcolor{red}{"In a phase-contrast microscope, image contrast is increased in two ways: by generating constructive interference between scattered and background light rays in regions of the field of view that contain the specimen, and by reducing the amount of background light that reaches the image plane. First, the background light is phase shifted by - 90 degrees by passing it through a phase-shift ring, which eliminates the phase difference between the background and the scattered light rays. When the light is then focused on the image plane (where a camera or eyepiece is placed), this phase shift causes background and scattered light rays originating from regions of the field of view that contain the sample (i.e., the foreground) to constructively interfere, resulting in an increase in the brightness of these areas compared to regions that do not contain the sample. Finally, the background is dimmed 70 -90 percent by a gray filter ring: this method maximizes the amount of scattered light generated by the illumination light, while minimizing the amount of illumination light that reaches the image plane."} 
+	\subsection*{Immunofluorescence}
+	Fluoochrome attached to primary or secondary antibodies can be used to visualize the location of targets. This is used a lot in cell biology. 
 
-	- Densiometric
-	Transmission, Sample contrast comes from interference of different path lengths of light through the sample 
-
-	\textcolor{red}{"Phase contrast doesn't work well with thick specimens as these can appear distorted."} 
-
-	-Spatial/Geometrical 
-	\textcolor{red}{"Phase contrast images often have halos surrounding the outline of details that have a high phase shift. These halos are optical artefacts and can make it hard to see the boundaries of details."} 
-	\textcolor{red}{"The resolution of phase images can be reduced due to the phase annuli limiting the numerical aperture of the system."}  
-
-
-	-Spectral
-
-	-Temporal
-
-
-
-Differential interference contrast microscopy
-	Parts
-
-	- Densiometric
-	\textcolor{red}{"Transmission, Contrast created due to difference in path length for two adjacent points in sample. Image small differences in refractive index between neighboring points, Image small differences in refractive index between neighboring points"} 
-	\textcolor{red}{"The technique produces a monochromatic shadow-cast image that effectively displays the gradient of optical paths for both high and low spatial frequencies present in the specimen. Those regions of the specimen where the optical paths increase along a reference direction appear brighter (or darker), while regions where the path differences decrease appear in reverse contrast. As the gradient of optical path difference grows steeper, image contrast is dramatically increased."} 
-	-Spatial/Geometrical 
-	\textcolor{red}{advantage: "There are no confusing halos as may be encountered in phase images."} 
-	-Spectral
-
-	-Temporal
-
-
-
-Confocal microscopy
-	Parts
-
-	\textbf{-Densiometric}
-	Contrast created 
-	\textcolor{red}{"a confocal microscope only focuses a smaller beam of light at one narrow depth level at a time. The CLSM achieves a controlled and highly limited depth of field. "} 
-
-	\textcolor{red}{"confocal microscope uses point illumination (see Point Spread Function) and a pinhole in an optically conjugate plane in front of the detector to eliminate out-of-focus signal – the name "confocal" stems from this configuration. As only light produced by fluorescence very close to the focal plane can be detected, the image's optical resolution, particularly in the sample depth direction, is much better than that of wide-field microscopes. However, a"} 
-
-	\textcolor{red}{"Confocal microscopy provides the capacity for direct, noninvasive, serial optical sectioning of intact, thick, living specimens with a minimum of sample preparation as well as a marginal improvement in lateral resolution compared to wide-field microscopy.[4] Biological samples are often treated with fluorescent dyes to make selected objects visible. However, the actual dye concentration can be low to minimize the disturbance of biological systems:"} 
-
-
-	\textbf{-Spatial/Geometrical} 
-	\textcolor{red}{"The achievable thickness of the focal plane is defined mostly by the wavelength of the used light divided by the numerical aperture of the objective lens, but also by the optical properties of the specimen. The thin optical sectioning possible makes these types of microscopes particularly good at 3D imaging and surface profiling of samples."} 
-
-
-	\textbf{-Spectral}
-
-
-	\textbf{-Temporal}
-	\textcolor{red}{"s much of the light from sample fluorescence is blocked at the pinhole, this increased resolution is at the cost of decreased signal intensity – so long exposures are often required."} 
+	\subsection*{2- or multi-photon microscopy}
+	here the fluorophore is excited with 2 or more photons of lower energy (if two half excitation), hitting it simultaneously. One can use pulsed lasers for this and there is no need for pinhole since the emission will only happen from the focus spot. The advantage of this technique are the reduced phototoxicity and increased image depth. 
+	 
 
 
 
-Reflected light microscopy
-
-	-Densiometric
-	Contrast created 
-
-
-	-Spatial/Geometrical 
-
-	-Spectral
-
-	-Temporal
-
-
-
-Fluorescence microscopy
-
-	-Densiometric
-	Contrast created 
-
-
-	-Spatial/Geometrical 
-
-	-Spectral
-
-	-Temporal
-
-
-\subsection*{Densitometric}
-
-
-
-\subsection*{Geometrical}
-
-\subsection*{Spectral}
-
-\subsection*{Temporal}
 
