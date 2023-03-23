@@ -1,0 +1,115 @@
+\section{A linear classifier}
+This lecture will describe the linear classifier and ways to train it. 
+
+\subsection*{Recap deep learning: "end to end"}
+Working with deep learning can reduce the number of steps that are involved in image analysis comparing it to traditional approaches that are more human driven (engineering and prior knowledge based). The advantages with the "end to end" approach in deep learning is that we remove the prior knowledge needed for the specific case, that also removes any bias when starting to solve the problem also, since there is no pre-formed idea of how the result should look like. This is in the case were the data set can be consider non biased and non skewed. 
+
+The disadvantage of this is that it is typically very data hungry and needs large data sets in order to train well. The deep learning method is data driven and suffers if the data is not satisfying. Traditional image analysis methods c.
+
+
+\subsection*{Problem formulation}
+Given a image we have an array of X $\times$ Y $\times$ 3 values representing the pixels in the image (3 colors). Images poses many challenges since the image is a 2D representation of a 3D object in a environment that can change. 
+
+	\begin{itemize}
+	 	\item  \textbf{viewpoint variations} change of camera angle
+	 	\item \textbf{Illumination variations}, environment  
+	 	\item \textbf{Deformations}, the object may deform/
+	 	\item \textbf{Occlusions} 
+	 	\item \textbf{Background clutter}
+	 	\item \textbf{Intraclass variations}, many different looking cats...
+	 \end{itemize}
+
+ So in contrast to sorting numbers, there is no simple solution to solve this problem with hard-coding. 
+
+
+	 \begin{lstlisting}[language=Python]
+	 def predict(image):
+	 	# no clue....
+	 	return class_label
+	 \end{lstlisting}
+
+\subsection*{Data-driven approach}
+One way to solve it is to collect a lot of images and corresponding labels. Use a machine learning method to train a classifier and then evaluate the result on a test set of images. 
+
+The task is to design a classifier: f(x,\textbf{W}) that can tell us which class $y_i \in \{ 1,2,...,N\}$ an input image $x_i$ belongs to.
+
+	\begin{enumerate}
+		\item Select a classifier type, 
+		\begin{itemize}
+			\item a linear affine classifier for example: y = Wx+b
+		\end{itemize}
+		\item select a performance measure, loss function
+			\begin{itemize}
+				\item Hinge loss
+				\item Negative Log-likelihood 
+			\end{itemize}
+		\item Learning: find the parameters \textbf{W} = $\{W,b\}$ which maximizes the performance, minimizes the overall loss
+	\end{enumerate}
+
+
+\subsection*{Multiclass SVM loss}
+If given an example image with label ($x_i$,$y_i$), where $x_i$ is the image and $y_i$ is the label. The shorthand for the score vector: s = $f(x_i,W)$. Then the SVM loss has the form:
+
+	\begin{equation}
+		L_i = \sum_{j \neq y_i}^{} max(0, s_j-s_{y_i} +1) 
+	\end{equation}
+
+The full training loss is the mean over all examples in the training data:
+
+	\begin{equation}
+		L = \frac{1} {N} \sum_{i=1}^{N} L_i
+	\end{equation}
+
+
+\subsection*{Softmax classifier (Multinomal logistic regression)}
+The scores are unnormalized log probabilities of the classes: $s = f(x_i,W)$.
+
+	\begin{equation}
+		P(Y=k | X = x_i) = \frac{e^{s_k}} {\sum_{j}^{} e^{s_j}} 
+	\end{equation}
+
+We want to maximize the log likelihood (or minimize the loss function, the negative log likelihood)
+
+
+	\begin{equation}
+		L_i = -\log P(Y=y_i | X = x_i)
+	\end{equation}
+
+and in summary we have:
+
+	\begin{equation}
+		L_i = - \log (\frac{e^{s_k}} {\sum_{j}^{} e^{s_j}} ) 
+	\end{equation}
+
+
+\subsection*{Learning}
+
+How do we minimize the loss over the training data then: 
+
+\begin{itemize}
+	\item arg min loss(training data) 
+	\item Follow the slope, gradient descent
+\end{itemize}
+
+
+With the second alternative we want to follow the slope like a blind person finding its way down from the hills. In the 1D case this is done with the derivative, but in the multidimensional case it's done with gradients (partial derivatives). \textbf{Gradient descent} can be used to minimize the loss L by:
+
+\begin{enumerate}
+	\item Initiliaze the weights $\textbf{W}_0$
+	\item Compute the gradient with respect to W, $\nabla$L/($\textbf{W}_k;x$) = ($ \frac{\partial L} {\partial w_1}, \frac{\partial L} {\partial w_2}, ...$)
+	\item Take a small step in the negative direction of the gradient: $\textbf{W}_{k+1} = \textbf{W}_k-$ stepsize $\cdot \nabla L$
+	\item Iterate from (2) until convergence
+\end{enumerate}
+
+\subsection*{Linear regression and classification}
+
+
+
+
+
+
+
+
+
+
+
