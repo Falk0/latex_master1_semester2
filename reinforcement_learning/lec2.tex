@@ -1,0 +1,159 @@
+\section{Markov Decision process}
+This lecture will explain the concepts of Markov decision process, MDP's, the Bellman equation and optimal policy
+
+\subsection*{Recap}
+For a state to have \textbf{Markov property} means that the state contains all the information that is useful to predict the future. In other words, we don't need the previous states to predict the future, the useful information is stored in the current state. A \textbf{Policy}: $\pi$(a|s) choosing an action a when we are in state s, can be deterministic or stochastic. The \textbf{prediction} gives the future cumulative reward following a policy. We want to find the policy that maximize the cumulative future reward by \textbf{control}. 
+
+\subsection*{Markov decision process}
+If we begin with assuming that $\mathcal{S}, \mathcal{A} $ and $\mathcal{R}$ have finite numbers of elements then the \textbf{translation probabilities} are given by:
+
+	\begin{equation}
+		p(^{\prime},r |s,a) = \text{Pr}\{S_{t+1} = s^{\prime}, R_{t+1} = r | S_t = s, A_t = a \}
+	\end{equation}
+
+The Markov property determines the \textbf{dynamics} of the environment, the probability of transitioning to a new state depends only on the current state and action. The \textbf{state transitions}:
+
+	\begin{equation}
+		p(s^{\prime} | s,a) = \sum_{r \in \mathcal{R}} p(s^{\prime},r |s,a) =
+	\end{equation}
+
+With the \textbf{expected reward }
+
+	\begin{equation}
+		r(s,a) = \mathbb{E} [ R_{r+1} | S_t = s, A_t = a ] =  \sum_{r \in \mathcal{R}}^{} \sum_{s^{\prime \in \mathcal{S}}}^{} r p(s^{\prime},r | s,a)  
+	\end{equation}
+
+\subsection*{Episodic vs continuing tasks}
+\begin{itemize}
+	\item \textbf{Episodic tasks}
+	\begin{itemize}
+		\item Has terminating states and the task end in finite time.
+		\item When reaching the terminating state the episode stops.
+		\item If you reach the terminating state you will stay there forever, receiving no future rewards.
+	\end{itemize}
+	\item \textbf{Continuing tasks}
+	\begin{itemize}
+		\item Often not a clear way to divide the task into independent episodes.
+		\item No state were the task is done
+		\item Must take into account infinitely many future rewards.
+	\end{itemize}
+\end{itemize}
+
+
+\subsection*{The return}
+In a given state we want to maximize the future reward we can receive: $R_{t+1},R_{t+2, ...}$. To make it possible to have non finite number of rewards we introduce the \textbf{discounted reward}
+
+	\begin{wbox}{The discounted reward}
+		\begin{equation}
+			G_t = R_{t+1} R_{t+1} + \gamma R_{t+2} + \gamma^{2} R_{t+3} + \ldots = \sum_{k=0}^{\infty} \gamma^{k}R_{t+k+1}, \text{where } 0 < \gamma \le 1
+		\end{equation}
+	\end{wbox}
+
+since we put $\gamma \le 1$ we put less value on future rewards, $\gamma = 0.5 \Rightarrow \gamma^{10} = 0.001, \gamma = 0.9 \Rightarrow \gamma^{10} = 0.35$.
+
+And if $\gamma < 1$ we make sure that $R_t < \overline{R}$ for all t, and then $G_t$ is bounded:
+
+	\begin{equation}
+		\sum_{k=0}^{\infty} \gamma^{k}R_{t+k+1} \le \overline{R}\sum_{k=0}^{\infty} \gamma^{k} = \frac{1} {1-\gamma} \overline{R}
+	\end{equation}
+
+
+If we know that the task ends after a finite number of steps we can get away with using non-discounted returns where $\gamma = 1$
+
+\subsection*{The state value function}
+The state-value function estimates the expected long term rewards the agent will recieve starting from a specific state and following a given policy. Since $S_t$ and $R_t$ are random variables, the return is therefore also a random variable:
+
+	\begin{equation}
+		G_t = R_{t+1} + \gamma R_{t+2} + \ldots
+	\nonumber
+	\end{equation}
+
+We must therefore consider the expected return:
+
+	\begin{wbox}{The state-value function}
+	The state-value function $v_\pi (s)$ of a MDP is the expected return starting from the state s and then following the policy $\pi$:
+
+		\begin{equation}
+			v_\pi (s) = \mathbb{E}[G_t | S_t = s]
+		\end{equation}
+	\end{wbox}
+
+The prediction of cumulative reward is computed with $v_\pi(s)$
+
+
+
+\subsection*{The action-value function}
+Another important value function is the \textbf{action-value function} that estimates the expected long-term reward an agent will receive starting from a specific state, taking a specific action and following a given policy.
+
+	\begin{wbox}{The action-value function}
+	The action-value function $q_\pi(s,a)$ is the exptected return starting from s, taking action a, and \textbf{then} following a policy $\pi$
+		\begin{equation}
+			q_\pi (s,a) = \mathbb{E}[G_t | S_t = s, A_t = a]
+		\end{equation}
+	\end{wbox}
+
+This function is also often called the Q-function. 
+
+\subsection*{Bellman equations}
+Looking at the reward we can note that:
+
+	\begin{equation}
+		G_t = R_{t+1} + \gamma R_{t+2} + \gamma^{2} R_{t+3} + ... = R_{t+1} + \gamma G_{t+1}
+	\end{equation}
+
+Hence, the value function satisfies to following equation:
+
+	\begin{equation}
+	\begin{aligned}
+		v_\pi(s) = \mathbb{E}_\pi [G_t | S_t = s]\\
+		= \mathbb{E}_\pi [R_{t+1} + \gamma G_{t+1} | S_t = s] \\
+		= \mathbb{E}_\pi [R_{t+1} + \gamma v_\pi(S_{t+1}) | S_t =s ]
+	\end{aligned}
+	\end{equation}
+
+The value of s is the expected immediate reward plus the discounted expected vlue of the next state. In the same way is action-value function: 
+
+	\begin{equation}
+		q_\pi (s,a) = \mathbb{E} [R_{t+1} + \gamma q_\pi(S_{t+1}, A_{t+1} | S_t = s, A_t = a)]
+	\end{equation}
+	
+
+\begin{wbox}{}
+	\begin{equation}
+	\begin{aligned}
+		v_\pi(s) = \mathbb{E}_\pi [R_{t+1} + \gamma v_\pi(S_{t+1}) | S_t =s ]\\
+		q_\pi (s,a) = \mathbb{E} [R_{t+1} + \gamma q_\pi(S_{t+1}, A_{t+1} | S_t = s, A_t = a)] 
+	\end{aligned}
+	\end{equation}
+\end{wbox}
+
+\subsection*{The expectation}
+The state-value of a state s, is the expected action-value:
+
+	\begin{equation}
+		v_\pi(s)= \sum_{a}^{} \pi(a |s) q_\pi(s,a)
+	\end{equation}
+
+So for a deterministic policy a = $\pi(s)$ we get $v_\pi(s,\pi(s))$. And given s and a, the immediate reward r and the next state $s^{\prime}$ has probability $p(s^{\prime}, r |s,a)$ so that:
+
+	\begin{equation}
+		q_\pi (s,a) = \sum_{r, s^{\prime}}^{} p(s^{\prime},r | s,a) (r + \gamma v_\pi(s^{\prime})) 		
+	\end{equation} 
+
+
+	\begin{wbox}{The Bellman equation for $v_\pi$ and $q_\pi$}
+		\begin{equation}
+		\begin{aligned}
+			v_\pi = \sum_{a}^{} \pi(a |s)q_\pi(s,a) = \sum_{a}^{} \pi(a,s)\sum_{r, s^{\prime}}^{} p(s^{\prime}, r | s, a)[r + \gamma v_\pi(s^{\prime})] \\
+			q_\pi(s,a) = \sum_{r, s^{\prime}}^{} p(s^{\prime},r |s,a) [r + \gamma \sum_{a^{\prime}}^{} \pi(a^{\prime} |s^{\prime})q_\pi(s^{\prime},a^{\prime})]
+		\end{aligned} 
+		\end{equation}
+	\end{wbox}
+	
+
+
+
+
+
+
+
