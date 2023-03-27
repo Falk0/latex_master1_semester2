@@ -149,7 +149,79 @@ So for a deterministic policy a = $\pi(s)$ we get $v_\pi(s,\pi(s))$. And given s
 		\end{aligned} 
 		\end{equation}
 	\end{wbox}
-	
+
+\subsection*{Solving the Bellman equation}
+Solving the Bellman equation is done by solving a system of linear equation, this is because the dependencies between the different states. Each state $s \in \mathcal{S}$ gives one equation. There is a unique solution that can be expressed analytically. If there is a large number of states, large $\mathcal{S}$,  then there are more efficient ways to solve it with iterative solution. If $p(s^{\prime}, r |s,a)$ is not know, we need to \textbf{learn} $v_\pi(s)$ from \textbf{experience}. If the number of states $\mathcal{S}$ is infinite, we can't compute the value for each state individually, and instead we need to find some function $\hat{v}(s,\textbf{w}) \approx v_\pi(s)$. 
+
+
+\subsection*{Optimal value function}
+This represent the maximum expected cumulative reward that can be achieved from a given state, following the best possible policy. It quantifies the highest long-term reward that the agent can expect to obtain when makin \textbf{optimal decision} from each state. The optimal state-value function is given by:
+
+	\begin{equation}
+		v_*(s) = \max v_\pi(s), \text{for all } s \in \mathcal{S}
+	\end{equation}
+
+The optimal action-value function is given by:
+
+	\begin{equation}
+		q_*(s,a) = \max q_\pi(s,a), \text{for all } s \in \mathcal{S} \text{ and } a \in \mathcal{A}
+	\end{equation}
+
+The optimal $v_*(s)$ should be the maximum of $q_*(s,a)$, so we have:
+
+	\begin{equation}
+		v_*(s) = \underset{a}{\text{max }} q_*(s,a)
+	\end{equation}
+
+The equation for $q_*(s,a)$:
+
+
+	\begin{equation}
+	\begin{aligned}
+		q_*(s,a) = \sum_{r, s^{\prime}}^{} p(s^{\prime},r |s,a)(r + \gamma v_*(s^{\prime})) = \underset{a}{\text{max }} \mathbb{E}[R_{t+1} + \gamma(S_{t+1}) | S_t = s, A_t = a] \\
+		 = \mathbb{E}[R_{t+1} + \gamma \underset{a^{\prime}}{\text{max }} q_* (S_{t+1}, a^{\prime}) |S_t =s, A_t = a]
+	\end{aligned}
+	\end{equation}
+
+
+\begin{wbox}{Solving the Bellman optimality function}
+	\begin{equation}
+		v_*(s) = \underset{a}{\text{max }} \sum_{r,s^{\prime}}^{} p(s^{\prime},s |s,a)[r+\gamma v_*(s^{\prime})]
+	\end{equation}
+\end{wbox}
+
+This is a system of non-linear equation (non linear because of the max function). There is one equation for each state, s. In general there is no closed form solution. But there are iterative methods to solve it. 
+
+\subsection*{Optimal policy}
+\textbf{Partial ordering over policies: } This is the relationship between different policies, where some of them can be ranked as better or worse than others. This is based on their performance or expected returns. For some policy pairs there is no such definitive ranking. This means that the ordering captures the hierarchy of policies in terms of effectiveness  but not necessarily a linear ranking of them. 
+	\begin{equation}
+		\pi \ge \pi^{\prime} \text{ if } v_\pi(s) \ge t_{\pi^{\prime}}(s), \text{ for all }s
+	\end{equation}
+
+\begin{wbox}{Theorem}
+\begin{itemize}
+	\item There exists at least one optimal policy $\pi_*$ such that $\pi_* \ge \pi$ for all policies $\pi$.
+	\item All optimal policies achieve the optimal state-value function $v_{\pi *}(s) = v_*(s)$ 
+	\item All optimal policies achieve the action-value function $q_{\pi *} (s,a) = q_* (s,a)$
+\end{itemize}
+\end{wbox}
+
+
+So how do make a decision in state s?
+
+\begin{enumerate}
+	\item Choose an action, a that maximizes the optimal action-value $q_*(s,a)$
+	\item Then use an optimal policy form $s^{\prime}$
+\end{enumerate}
+
+The \textbf{control} part is to find this optimal policy. Were the policy is described with:
+
+	\begin{equation}
+		\pi_* (s) = \arg \underset{a}{\text{max }} \sum_{r, s^{\prime}}^{} p(s^{\prime},r |s,a) [r + \gamma v_*(s^{\prime})] 
+	\end{equation}
+
+which is optimal. But \textbf{note} if we already know $q_*(s,a)$ then we don't need the dynamics to find an optimal policy. 
+
 
 
 
