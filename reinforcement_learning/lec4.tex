@@ -1,0 +1,327 @@
+\newpage
+
+\section{Model-free prediction}
+Model-free prediction is the process estimating the value functions directly from observed experiences explicitly modeling the environment's dynamics. Methods like Q-learning and SARSA use trial and error interactions with the environment to learn the optimal policies.    
+
+\begin{wbox}{Repetition}
+\begin{itemize}
+	\item \textbf{States, action and rewards: } $ s\in \mathcal{S}, a \in \mathcal{A}, r \in \mathcal{R}$
+	\item \textbf{Dynamic model :} $p(s^{\prime},r|s,a)$
+	\item \textbf{Policy: } $\pi(a|s)$ (for deterministic also )$a=\pi(s)$
+	\item \textbf{The return: } 
+		\begin{equation}
+			G_t = R_{t+1} + \gamma R_{t+2} + \gamma^{2} R_{t+3} + \ldots 
+		\end{equation}
+	\item \textbf{State-value function: } Expected return when starting in s and following policy $\pi$
+		\begin{equation}
+			v_\pi(s) = \mathbb{E}\begin{bmatrix} G_t | S_t=s \end{bmatrix}
+		\end{equation}
+	\item \textbf{Action-value function: } Expected return when starting in s, taking action a and then follow $\pi$
+		\begin{equation}
+			q_{\pi}(s,a) = \mathbb{E}[G_t | S_t = s, A_t = a]
+		\end{equation}
+	\item \textbf{Bellman equation: }
+		\begin{equation}
+			v_\pi = \sum_{a}^{} \pi (a|s) \sum_{s^{\prime}, r}^{}p(s^{\prime},r |s,a)[r+\gamma v_\pi(s^{\prime})], \text{ for all } s \in \mathcal{S}
+		\end{equation}
+	\item \textbf{Policy evaluation: }
+		\begin{equation}
+			v_{k+1}(s) = \sum_{a}^{} \pi (a|s) \sum_{s^{\prime}, r}^{}p(s^{\prime},r |s,a)[r+\gamma v_k(s^{\prime})] \text{ then } v_k(s) \rightarrow v_\pi(s)
+		\end{equation}
+	\item \textbf{Policy improvement: } 
+		\begin{equation}
+		\begin{aligned}
+			q_\pi(s,a) = \sum_{s^{\prime}, r}^{}p(s^{\prime},r |s,a)[r+\gamma v_\pi(s^{\prime})] \\
+			\pi^{\prime}(s) =  \underset{a}{\arg \text{max }} q_\pi(s,a)
+		\end{aligned}
+		\end{equation}
+	\item \textbf{Policy iteration: }
+		\begin{equation}
+			\pi_0 \overset{E}{\rightarrow}v_{\pi_0} \overset{I}{\rightarrow} \pi_1 \overset{E}{\rightarrow} v_{\pi_2} \overset{I}{\rightarrow} \pi_2 \ldots \overset{I}{\rightarrow} pi_* \overset{E}{\rightarrow} v_*	
+		\end{equation}
+	\item \textbf{Bellman optimality equation: }
+		\begin{equation}
+			v_* (s) = \underset{a}{\text{max }} q_* (s,a) = \max \sum_{r, s^{\prime}}^{} p(s^{\prime},r|s,a) [r + \gamma v_*(s^{\prime})]
+		\end{equation}
+	\item \textbf{Value iteration: } (based on Bellman optimality equation)
+		\begin{equation}
+			v_{k+1}(s) = \underset{a}{\text{max}} \sum_{s^{\prime}, r}^{}p(s^{\prime},r |s,a)[r+\gamma v_k(s^{\prime})], \text{then } v_k(s) \rightarrow v_*(s)
+		\end{equation}
+	\item \textbf{Optimal policy: }
+		\begin{equation}
+		\begin{aligned}
+			q_*(s,a) = \sum_{s^{\prime}, r}^{}p(s^{\prime},r |s,a)[r+\gamma v_*(s^{\prime})] \\
+			\pi_* (s) = \underset{a}{\arg \text{max }}q_*(s,a)
+		\end{aligned}
+		\end{equation}
+\end{itemize}
+\end{wbox}
+
+\newpage
+
+\subsection*{Monte-Carlo methods}
+Given the problem that we throw two dice and call their sum G, what is $V = \mathbb{E}[G]$? We can calculate this using different methods:
+
+\begin{itemize}
+	\item \textbf{By hand:}
+	\begin{itemize}
+		\item Each dice has 6 sides, so we can get 36 combinations
+		\item There is no way to get $G=1$, so $p(1)=0$
+		\item There is one way to get $G=2$, so $p(2) = 1/36$
+		\item $\ldots$ and so on. 
+		\item We finally get $\mathbb{E}[G] = \sum_{g=1}^{12}gp(g) = 7$ 
+	\end{itemize}
+	\item \textbf{Monte-Carlo}
+	\begin{itemize}
+		\item Make many throws and get \textbf{independent} observations: $G_1, G_2, \ldots, G_n$
+		\item Use the empirical mean to estimate $V = \mathbb{E}[G]$:
+			\begin{equation}
+				\hat{V}_n = \frac{1} {n} \sum_{k=1}^{n}G_k
+			\end{equation}
+		\item This methods don't require the knowledge of how the dice works!
+	\end{itemize}
+	\item \textbf{Law of large numbers: } $\hat{V}_n \rightarrow \mathbb{E}[G]$ as $n \rightarrow \inf$
+\end{itemize}
+
+\subsection*{Bias and variance}
+Let $\hat{\theta}_n$ be an estimate of $\theta$ using n random samples. Since the samples are random, we got that $\hat{\theta}_n$ is a stochastic variable. This makes it possible to talk about the expected value and variance of $\hat{\theta}_n$. 
+
+\begin{itemize}
+	\item \textbf{Bias: } (unbiased if bias = 0) 
+		\begin{equation}
+			\text{Bias }(\hat{\theta}_n) = \mathbb{E}[\hat{\theta}_n] - \theta
+		\end{equation}
+	\item \textbf{Variance: }
+		\begin{equation}
+			\text{Var }(\hat{\theta}_n) = \mathbb{E}[(\hat{\theta}_n - \mathbb{E}[\hat{\theta}_n])^{2}]
+		\end{equation}
+	\item \textbf{The MSE: }
+		\begin{equation}
+			\text{MSE }(\hat{\theta}_n) = \mathbb{E}[(\hat{\theta}_n - \theta)^{2}] = \text{Var }(\hat{\theta}_n) + \text{Bias }(\hat{\theta}_n)^{2}
+		\end{equation}
+	\item \textbf{Consistent } if $\hat{\theta}_n \rightarrow \theta $ as $n \rightarrow \inf$ 
+\end{itemize}
+
+We want to estimate the expected value $V =\mathbb{E}[G]$ by using the observations: $G_1, G_2, \ldots,G_n$
+
+	\begin{equation}
+		\hat{V}_n = \frac{1} {n} \sum_{k=1}^{n}G_k
+	\end{equation}
+
+Where the bias and variance are: 
+
+	\begin{equation}
+	\begin{aligned}
+		\text{Bias}(\hat{V}_n) = \mathbb{E}[\hat{V}_n] - V = \mathbb{E} \begin{bmatrix} \frac{1} {n} \sum_{k=1}^{n}G_k  \end{bmatrix} -V = \frac{1} {n} \sum_{k=1}^{n} \mathbb{E}[G] -V = \mathbb{E}[G] -V = 0 \\
+		\text{Var }(\hat{\theta}_n) = \mathbb{E} [(\hat{V}_n - \mathbb{E}[\hat{V}_n])^{2}] = \frac{35} {6n} \approx \frac{5.83} {n}   
+	\end{aligned}
+	\end{equation}
+
+So, as n approaches infinity the variance goes to zero. 
+
+\subsection*{Incremental updates}
+We don't have to save the information of all previous observations, wasting memory and recalculate everything for each new observation. We can store the passed information with:
+
+	\begin{equation}
+		\hat{V}_{n-1} = \frac{1} {n-1} \sum_{j=1}^{n-1}G_j 
+	\end{equation}
+
+And when getting one more observation $G_n$:
+
+	\begin{equation}
+		\hat{V}_n = \frac{1} {n} \sum_{j=1}^{n}G_j = \frac{1} {n}(G_n + \sum_{j=1}^{n-1}G_j) = \frac{1} {n}(G_n + (n-1)\hat{V}_{n-1}) = \hat{V}_{n-1} + \frac{1} {n}(G_n - \hat{V}_{n-1})   
+	\end{equation}
+
+With this we can start from that $\hat{V} = 0, n = 0$ and then for each new observation G do this:
+
+	\begin{equation}
+	\begin{aligned}
+		n \leftarrow n+1 \\
+		\hat{V} \leftarrow \hat{V} + \frac{1} {n}(G-\hat{V}) 
+	\end{aligned}
+	\end{equation}
+
+We summarize it more generally like this:
+
+	\begin{equation}
+		\underset{\text{New estimate}}{\hat{V}} \leftarrow \underset{\text{Old estimate}}{\hat{V}}  +\underset{\text{Step size}}{\alpha_n} \begin{bmatrix} \underset{\text{Target}}{G} - \underset{\text{Old estimate}}{\hat{V}} \end{bmatrix} 
+	\end{equation}
+
+With each step we move the estimate a bit closer to the observed "target". For the empirical mean the step size is $\alpha_n = \frac{1} {n} $. For independent and identically distributed (i.i.d) observation of G this will converge to $\mathbb{E}[G]$ if:
+
+	\begin{equation}
+		\sum_{n=1}^{\infty} \alpha_n = \infty, \quad \sum_{n=1}^{\infty} \alpha_n^{2} < \infty
+	\end{equation}
+
+
+In \textbf{non-stationary} problems with a constant $\alpha \in (0,1)$ we "forget" the old observations. The variance will in this case not go to zero, but it can adjust to changing probabilities. The extreme cases when $\alpha = 0$ will give $\hat{V} \leftarrow \hat{V}$, meaning that we don't learn anything. In the case $\alpha = 1$ will give us that $\hat{V} \leftarrow G$ meaning that we forget all past observations. 
+
+\subsection*{Monte-Carlo prediction}
+Lets consider an episodic task (a task that terminates within a finite number of steps). Our goal is to learn $v_\pi(s)$ from experience under policy $\pi$:
+	
+	\begin{equation}
+		S_0, A_0, R_1, S_1, A_1, R_2, \ldots, S_T \sim \pi
+	\end{equation}
+
+The return: 
+
+	\begin{equation}
+		G_t = R_{t+1} + \gamma R_{t+2} + \ldots + \gamma^{T-1}R_T
+	\end{equation}
+
+The value function:
+
+	\begin{equation}
+		v_\pi = \mathbb{E}[G_t |S_t = s]
+	\end{equation}
+
+\textbf{Monte-Carlo: } Estimate $v_\pi(s)$ by using the empirical mean return of many episodes instead of the expected return. With \textbf{Monte-Carlo} we do not need to know what the probability $p(s^{\prime},r|a,s)$ is!
+
+\begin{wbox}{First-visit vs every-visit}
+\begin{itemize}
+	\item \textbf{First-visit}
+		\begin{enumerate}
+			\item Sample an episode $S_0,A_0,R_1,\ldots,S_{T-1, A_{T-1},R_T}$ using policy $\pi$.
+			\item \textbf{The first} time step t that state s is visited, add $G_t$ to Returns(s).
+			\item Let V(s) = average(Returns(s)).
+			\item Go back to step 1.
+		\end{enumerate}
+	\item \textbf{Every-visit}
+		\begin{enumerate}
+			\item Sample an episode $S_0,A_0,R_1,\ldots,S_{T-1, A_{T-1},R_T}$ using policy $\pi$.
+			\item \textbf{Every} time-step t that state s is visited, add $G_t$ to Returns(s).
+			\item Let V(s) = average(Returns(s)).
+			\item Go back to step 1.
+		\end{enumerate}
+\end{itemize}
+\end{wbox}
+
+
+\subsection*{Properties of Monte-Carlo}
+\begin{itemize}
+	\item \textbf{Positive: }
+		\begin{itemize}
+			\item Consistent: $V(s) \rightarrow v_\pi(s) as N(s) \rightarrow \infty$.
+			\item First-visit MC is unbiased (every-visit can be biased).
+			\item Does not make use of the Markov-property
+		\end{itemize}
+	\item \textbf{Negative: }
+	\begin{itemize}
+		\item Does not make use of the Markov-property
+		\item Generally high variance, reducing it may require a lot of experience.
+		\item Must wait until the end of episode to compute $G_t$ and update $V$
+	\end{itemize}
+\end{itemize}
+
+\subsection*{Incremental updates}
+In the Monte-Carlo method we compute the average of all observed returns $G_t$ which is seen in each state. With incremental updates 
+
+	\begin{enumerate}
+		\item Collect a trajectory $S_0, R_1, S_1, R_2, \ldots, S_T$ following the policy $\pi$
+		\item For (the first/every visit) $S_t$ compute $G_t$ and let 
+			\begin{equation}
+			\begin{aligned}
+				N(S_t) \leftarrow N(S_t) + 1\\
+				V(S_T) \leftarrow V(S_t) + \alpha_n (G_T - V(S_t))
+			\end{aligned}
+			\end{equation}
+	\end{enumerate}
+
+Here the empirical mean is: $\alpha_n = \frac{1} {N(S_t)}$. For example non stationary environment we may instead is a constant $\alpha$
+
+\subsection*{Monte-Carlo vs Dynamic programming}
+Here we compare the two methods:
+
+	\begin{equation}
+		v_\pi = \mathbb{E}_\pi[G_t |S_t = s] = \mathbb{E}_\pi [R_{t+1}+\gamma v_\pi(s_{t+1}) | S_t = s]
+	\end{equation}
+
+\begin{itemize}
+	\item \textbf{Dynamic programming: }
+		\begin{equation}
+			V(s) \leftarrow \mathbb{E}[R_{t+1} + \gamma V(S_{t+1}) |S_t = s]
+		\end{equation}
+		\begin{itemize}
+			\item \textbf{Bootstrapping}, each new estimate is based on a previous estimate
+			\item Computes the expectations exactly, but estimates since it is based on estimate $V(S_{t+1})$ 
+			\item In DP we need the model $p(s^{\prime},r|s,a)$ to compute expectation. 
+		\end{itemize}
+	\item \textbf{Monte-Carlo}
+		\begin{equation}
+			V(S_t) \leftarrow V(S_t) + \alpha(G_t - V(S_t))
+		\end{equation}
+		\begin{itemize}
+			\item We do not use bootstrapping, this is because we use the full return $G_t$
+			\item It is an estimate because we use the empirical mean of $G_t$ and not $\mathbb{E}[G_t |S_t = s	]$
+			\item We don't need any model since the samples $G_t$ can be computed from experience we collect.
+		\end{itemize}
+\end{itemize}
+
+Question... Can we combine bootstrapping and learning from experience?
+
+\subsection*{Temporal-difference (TD) learning}
+
+We start again with the expected return for a given state:
+
+	\begin{equation}
+		v_\pi = \mathbb{E}_\pi [G_t | S_t = s] = \mathbb{E}_\pi[R_{t+1} + \gamma v_\pi(S_{t+1})|S_t = s]
+	\end{equation}
+
+In Monte-Carlo we use the target $G_t$ but in TD we use the TD-target $R_{t+1} + \gamma V(S_{t+1})$
+
+	\begin{equation}
+	\begin{aligned}
+		\textbf{MC: } V(S_t) \leftarrow V(S_t) + \alpha (G_t - V(S_t)) \\
+		\textbf{TD: } V(S_t) \leftarrow V(S_t) + \alpha (R_{t+1} + \gamma V(S_{t+1}) - V(S_t))
+	\end{aligned}
+	\end{equation}
+
+This is often called TD(0) since it is a special case of TD($\lambda$) with $\lambda = 0$. TD methods bootstraps since the new estimate $V(S_t)$ is based on the estimate $V(S_{t+1})$. In TD we do not have a complete episode to base the update on. 
+
+
+\begin{wbox}{TD-learning}
+\begin{itemize}
+	\item Initialize the estimate V (for example V(s) = for all s)
+	\item Star in some state S
+	\begin{enumerate}
+		\item Take action $A$ according the policy $\pi (a|S)$
+		\item Observe reward $R$ and new state $S^{\prime}$
+		\item $V(S) \leftarrow V(S) + \alpha [R + \gamma V(S^{\prime}) - V(S)]$
+		\item $S \leftarrow S^{\prime}$
+	\end{enumerate}
+	\item (If the task is episodic, we would have to re-run the above loop for several episodes)
+\end{itemize}
+
+\textbf{Note: } We do not have to complete the episode before we start learning, and we can even learn while continuing the tasks. 
+\end{wbox}
+
+\subsection*{The bias}
+Taking a look at the bias of the method and comparing it to the Monte-Carlo method. 
+
+\begin{itemize}
+	\item \textbf{The MC-target} $G_t$
+	\begin{itemize}
+		\item \textbf{Unbiased} estimate of $v_\pi(S_t$
+		\item It is note based on previous estimates (in other words no bootstrapping)
+	\end{itemize}
+	\item \textbf{The "true TD-target" : } $R_{t+1} + \gamma v_\pi(S_{t+1})$
+	\begin{itemize}
+		\item \textbf{Unbiased} estimate of $v_\pi(S_t)$
+		\item This \textbf{cannot} be computed since we don't know $v_\pi(S_{t+1})$
+	\end{itemize}
+	\item \textbf{The TD-target} $R_{t+1} + \gamma V(S_{t+1})$
+	\begin{itemize}
+		\item Is a \textbf{biased} estimate of  $v_\pi(S_t)$
+		\item Based on old estimate of $V_{t+1}$, bootstrapping 
+	\end{itemize}
+\end{itemize}
+
+
+\subsection*{Comparing TD and MC}
+Monte-Carlo can only be used in episodic environments and have high variance but zero bias. This method converges to $v_\pi(s$ if $\alpha$ is decreased with a suitable rate. The Monte-Carlo method has good convergence properties even for function approximation. Another advantage is also that it is not sensitive to initial conditions. The MC method is usually more efficient in non-MDP environments. Temporal differences on the other hand can be used for both episodic and non-episodic environment and have a low variance but some bias. It also converges to $v_\pi(s)$ if $\alpha$ decreases with suitable rate. In comparison to MC it does not always converge with function approximation. It is more sensitive to initial conditions but usually more efficient in MDP environments.
+
+
+
+
+
+

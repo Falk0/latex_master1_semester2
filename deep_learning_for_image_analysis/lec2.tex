@@ -102,10 +102,109 @@ With the second alternative we want to follow the slope like a blind person find
 \end{enumerate}
 
 \subsection*{Linear regression and classification}
+We will distinguish between two types of problems: regression and classification. In regression, the output y is a continuous quantity, for example a temperature, currency or distance. In classification the output is a discrete class label, for example: true/false and cat/dog/horse etc. 
+But what is a good model? A good model is the one which \textbf{minimizes} our \textbf{Loss function}, so to answer the question we must know what a good Loss function is to begin with. 
+
+\subsection*{The statistical approach}
+One common approach is the statistical \textbf{maximum likelihood} where we make the assumtion that each data points can be described by a linear model + some noise with a normal distribution. The probability density function or PDF for the scalar Normal/Gaussian distribution:
+
+	\begin{equation}
+		\mathcal{N}(z; \mu, \sigma^{2}) = \frac{1} {\sqrt{2 \pi \sigma^{2}}} e^{-\frac{(z-\mu)^{2}} {2 \sigma^{2}} } 
+	\end{equation}
+
+Where $\mu$ is the mean or expected value of the distribution, $\sigma$ is the standard deviation and $\sigma^{2}$ is the variance. $ z \sim \mathcal{N}(z; \mu, \sigma^{2})$ means that z is a Normal/Gaussian random variable with the mean $\mu$ and variance $\sigma^{2}$, $\sim$ : "distributed according to"
+
+\subsection*{Maximum likelihood}
+A linear model with Gaussian noise can be modeled with:
+
+	\begin{equation}
+		y_i = wx_i + b + \epsilon_i, \quad \epsilon_i \sim \mathcal{N}(0, \sigma^{2}), \quad i = 1,\ldots,n
+	\end{equation}
+
+We can also express this as a probability:
+
+	\begin{equation}
+		p(y_i|x_i,w,b) = \mathcal{N}(y_i;wx_i+b,\sigma^{2})
+	\end{equation}
+
+By picking the weights w and bias b that makes the data as likely as possible. 
+
+	\begin{equation}
+		\hat{w},\hat{b} = \arg \text{max } p(y_1,\ldots,y_n|x_1,\ldots,x_n, w, b)
+	\end{equation}
+
+We assume here that all $\epsilon_i$ are independent. y and z are also independent so: $p(y|z) \Rightarrow p(y)p(z)$
+
+	\begin{equation}
+		p(y_1,\ldots,y_n| x_1,\ldots,x_n, w,b) = \prod_{i =1}^{n} (y_i - (wx_i +b))^{2} 
+	\end{equation}
+
+And the loss function is given by
+
+	\begin{equation}
+		L(y,\hat{y}) = \sum_{i=1}^{n} (y_i-\hat{y_1})^{2} = ||y-\hat{y}||^{2}
+	\end{equation}
+
+\subsection*{Data driven approach to image classification}
+The task at hand is to design a classifier f(x,\textbf{w}) that can tell us which class an image $x_i$ belongs to. We formulate an approach:
+
+\begin{enumerate}
+	\item Select a classifier type:
+		\begin{itemize}
+			\item Start off with a linear (affine) classifier y=Wx+b
+		\end{itemize}
+	\item We then select a performance measure
+		 \begin{itemize}
+		 	\item SVM/hinge loss or Softmax + NLL loss
+		 \end{itemize}
+	\item We then need for our data set the parameters W which maximizes the performance, which means minimize the overall loss. We do this by
+	\begin{itemize}
+		\item Solve it with gradient descent (the learning part)
+	\end{itemize}
+\end{enumerate}
+
+Another task is to desing a regression model f(x,W) that tells us the value of $y_i \in \mathbb{R}$ given a sample $x_i$
 
 
+\begin{enumerate}
+	\item Select a regression model
+	\begin{itemize}
+		\item We start with a linear (affine) model y = Wx +b
+	\end{itemize}
+	\item Then select a performance measure
+	\begin{itemize}
+		\item Sum of squared errors for example
+	\end{itemize}
+	\item Then we want for this data set find the parameters W which maximizes the performance aka minimize the loss
+	\begin{itemize}
+		\item Solve the gradient descent
+	\end{itemize}
+\end{enumerate}
+
+\subsection*{The limitations of linear classifiers}
+Some problem are difficult to solve with linear classifiers, since they are linear. A good way to see if it's possible to use a linear classifier is to have a look in the geometric space between the input variable and the output. Is it possible to fit a straight line through the data?
 
 
+\subsection*{Neuaral networks - stacked non-linear classifiers}
+By stacking multiple linear classifiers and adding non-linear activation functions between them, we can do better. Now it's possible to fit non-linear data to the mode. A stacked linear classifier can be expressed as:
+
+	\begin{equation}
+		f(x) = f_2(f_2(x)) = W_2W_1c = W^{*} x
+	\end{equation}
+
+This is however still linear so we need to had an activation function h(x). We then have a generalized linear classifier f(x) = h(Wx). The Logistic regression is of this type with a sigmoid activation function. A stacked non-linear classifier:
+
+	\begin{equation}
+		f(x) = f_2(h(f_1(x))) = W_2h(W_1x) 	
+	\end{equation} 
+
+This gives us a lot more power and versatility model, known as a feed forward artificial neural network (ANN). Hera are some other activation functions:
+
+\begin{itemize}
+	\item sigmoid(x) = $\frac{1} {1+e^{-x}} $
+	\item tanh(x) = $\frac{e^{x}-e^{-x}} {e^{x}+e^{-x}} = 2 sigmoid(2x)-1$
+	\item ReLu(x) = max(0,x)
+\end{itemize}
 
 
 

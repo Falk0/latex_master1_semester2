@@ -1,0 +1,54 @@
+\section{Feed forward neural networks: Backpropagation}
+This lecture will cover how backpropagation works, how to compute the derivatives and some implementation. 
+
+\subsection*{Neural network - construction}
+An artificial neural network is a sequential construction of several generalized linear regression models. It consists of \textbf{Inputs} (1, $x_1, x_2, \ldots, x_p$), \textbf{Hidden units} (1, $q_1,q_2,\ldots, q_U$) and an output $\hat{y}$
+
+	\begin{equation}
+	\begin{aligned}
+		q_1 = h(b^{(1)}_1 + \sum_{j=1}^{p}W^{(1)}_{1j}x_j) \\
+		q_2 = h(b^{(1)}_2 + \sum_{j=1}^{p}W^{(1)}_{2j}x_j) \\
+		\vdots \quad \quad \quad \quad \vdots \\
+		q_U = h(b^{(1)}_U + \sum_{j=1}^{p}W^{(1)}_{Uj}x_j)
+	\end{aligned}
+	\end{equation}
+
+	\begin{equation}
+		\hat{y} = b^{(2)} + \sum_{i=1}^{U}W^{(2)}_iq_i
+	\end{equation}
+
+
+In vector representation:
+
+	\begin{equation}
+	\begin{aligned}
+		W^{1} = \begin{bmatrix} W^{(1)}_{11} & \ldots& W^{(1)}_{1p} \\ \vdots& & \vdots \\ W^{(1)}_{U1} & \ldots& W^{(1)}_{Up}  \end{bmatrix} , b^{(1)} = \begin{bmatrix} b^{(1)}_1 \\ \vdots \\ b^{(1)}_U \end{bmatrix}, q = \begin{bmatrix} q_1 \\ \vdots \\ q_U \end{bmatrix} \\
+		 b^{(2)} = \begin{bmatrix} b^{2} \end{bmatrix}, W^{(2)} = \begin{bmatrix} W^{(2)}_1 \ldots W^{(2)}_U \end{bmatrix} \\
+		 \hat{y} = W^{(2)}q + b^{2} ,
+	\end{aligned}
+	\end{equation}
+
+\subsection*{Deep neural network}
+A deep neural network with $L$ can be written like this: 
+
+	\begin{equation}
+	\begin{aligned}
+		q^{(0)} = x \\
+		q^{\ell}
+	\end{aligned}
+	\end{equation}
+
+
+
+
+
+
+
+% \begin{equation}
+% \begin{aligned}
+% 	f(x,y,z) = (x+y)z \\
+% 	f(q,x) = q \cdot z \\
+% 	q(x,y) = x + y \\
+% 	\frac{\partial f} {\partial x} = \frac{\partial f} {\partial q} \frac{\partial q} {\partial x}
+% \end{aligned}
+% \end{equation}
