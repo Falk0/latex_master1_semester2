@@ -1,0 +1,237 @@
+\section{Model-free control}
+Model-free control is a class of algorithms that aim to learn an optimal policy directly from interacting with the environment without building an explicit model of the environments dynamics. They rely on a trial and error experience to update the estimate of the value-functions or action-value functions. Examples are Q-learning, learning the Q-function and SARSA learning the value-function. 
+
+\subsection*{Model free control}
+How do we improve the policy? One way is to take the greedy policy improvement with respect to the state value-function $v_\pi(s)$:
+	
+	\begin{equation}
+		\pi^{\prime}(s) = \underset{a}{\arg \text{max }} \sum_{s^{\prime}, r}^{}p(s^{\prime},r |s,a)[r+\gamma v_\pi(s^{\prime})]
+	\end{equation}
+
+But this requires us to know the model: $p(s^{\prime},r|s,a)$. If we instead take the greedy policy improvement with respect to the action value function we got:
+
+	\begin{equation}
+		\pi^{\prime}(s) = \underset{a}{\arg \text{max }} q_\pi(s,a) 
+	\end{equation}
+
+In this case we don't need the model. So the first idea is to estimate the action-value function $q_\pi(s,a)$ instead of the state value-function $v_\pi(s)$
+
+\begin{example}{Example: Can we learn enough from greedy actions}
+\begin{itemize}
+	\item \textbf{Initial: } Q(left) = Q(right) = 0
+	\item You open left and get the reward 2:
+		\begin{equation*}
+			\text{Q(left) =2, \text{Q(right)=0}}
+		\end{equation*}
+	\item You open left and get reward 0:
+		\begin{equation*}
+			\text{Q(left) =1, \text{Q(right)=0}}
+		\end{equation*}
+	\item You open left and get reward 4:
+		\begin{equation*}
+			\text{Q(left) =3, \text{Q(right)=0}}
+		\end{equation*}
+\end{itemize}
+
+With this approach we will never learn about what happens if we would open the right door
+\end{example}	
+
+With that example in mind we present idea 2: make sure that we continue to explore different options!
+
+\subsection*{$\epsilon$-greedy exploration}
+There is a trade-off between exploiting current knowledge and exploring new options. A possible solution is to ensure that all actions have non-zero probability. We call this policy $\epsilon$-greedy policy: If $\pi (a|s) \ge \frac{\epsilon} {|\mathcal{A}|} $ for all $a$ and $s$. 
+
+\begin{itemize}
+	\item $\epsilon$-greedy with respect to $q_\pi(s,a)$: 
+	\begin{itemize}
+		\item with probability 1 - $\epsilon$ choose a greedy action $\underset{a}{\arg \text{max }} q_\pi(s,a)$
+		\item with probability $\epsilon$ choose an action at random.
+	\end{itemize}
+\end{itemize}
+
+\begin{wbox}{Policy improvement theorem}
+For any $\epsilon$-soft policy $\pi$, the $\epsilon$-greedy policy $\pi^{\prime}$ with respect to $q_\pi$ is an improvement, i.e.
+
+	\begin{equation}
+		v_{\pi^{\prime}}(s) \ge v_\pi(s), \quad \text{for all } s \in \mathcal{S}
+	\end{equation}
+\end{wbox}
+
+The conclusion is that: policy improvement with $\epsilon$ policies will converge to the best $\epsilon$-soft policy. 
+
+\subsection*{On-policy vs off-policy learning}
+With in-policy learning we can say that we are "learning on the job" by estimating the action value function $q_\pi(s,a)$ by running the policy $\pi$. In off-policy learning we "learn by looking over the shoulder", estimate the action value-function $q_\pi(s,a)$ while running a different policy $\mu$. For example we learn about $q_*(s,a)$ (optimal q-function), while running a policy with more exploration.
+
+
+\subsection*{Monte-Carlo control}
+We use the policy to collect trajectories: $S_0,A_0,R_1,S_1,A_1,R_2,\ldots,S_T$. Then estimating the state-value function by computing the average over all returns seen from each state. The incremental update is:
+
+	\begin{equation}
+		V(S_t) \leftarrow V(S_t) + \alpha(G_t - V(S_t))
+	\end{equation}
+
+For estimating action-value function we compute the average over all returns seen from each state/action-pairs and the incremental update is:
+
+	\begin{equation}
+		Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \alpha(G_t - Q(S_t,A_t))
+	\end{equation}
+
+\subsection*{Exploration is needed!}
+The estimation of the state-values: $V(S_t) \leftarrow V(S_t) + \frac{1} {N(S_t)}(G_t - V(S_t))$, converges to $v_\pi(s)$ as $N(s) \rightarrow \infty$ \\
+Estimation of action-values: $Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \frac{1} {N(S_t,A_t)}(G_t - Q(S_t,A_t)) $, converges to $q_\pi(s,a)$ as $N(s,a) \rightarrow \infty$. However if the policy $\pi (s|a) = 0$ for some s and a then we will not learn this action-value! With a $\epsilon$-soft policies we guarantee that $pi (a|s) > 0$ for all s and a.
+
+As long as we use a $\epsilon$-soft policy $Q(s,a)$ will converge to $q_\pi(s,a)$ as the number of sampled episodes goes to $\infty$. Now it is time to improve the policy!!
+
+\subsection*{Monte-Carlo policy iteration}
+The policy evaluation: Monte-Carlo evaluation is used to get $Q = q_\pi$. The policy improvement: we let a new policy $\pi$ be $\epsilon$-greedy with respect to $q_\pi$. This will converge to the best $\epsilon$-soft policy. For this we need infinitely many episodes to guarantee that $Q = q_\pi$ which is not possible in practice. 
+
+\begin{itemize}
+	\item At every episode:
+	\begin{itemize}
+		\item Policy evaluation: Use MC to update Q.
+		\item Policy improvement: Let new $\pi$ be $\epsilon$-greedy with respect to Q.
+		\item On policy: we always update Q toward $q_\pi$ for the the current policy.
+	\end{itemize}
+\end{itemize}
+
+\begin{wbox}{Monte-Carlo control}
+	\begin{enumerate}
+		\item Initialize Q (in other words Q(s,a) = 0 for all s and a) and let $\pi P \epsilon$-greedy(Q)
+		\item Sample episode using $\pi: S_0,A_0,R_1,\ldots,S_T$
+		\item For each state $S_t$ and action $A_t$ in the episode:
+			\begin{equation}
+			\begin{aligned}
+				N(S_t,A_t) \leftarrow N(S_t,A_t)+1 \\
+				Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \frac{1} {N(S_t,A_t)}(G_t - Q(S_t,A_t)) 
+			\end{aligned}
+			\end{equation}
+		\item Improve policy: $\pi \leftarrow \epsilon$-greedy(Q)
+		\item Go to step 2 
+	\end{enumerate}
+\end{wbox}
+
+\subsection*{Exploration}
+If we converge we get the best policy among the $\epsilon$-soft policies. It is possible to gradually reduce the $\epsilon$ (but not to fast) toward zero, in order to converge to the optimal policy. Then after training we can remove the exploration by setting the $\epsilon = 0$ and thus using the greedy policy with respect to Q. 
+
+\subsection*{SARSA}
+If we return to MC and TD (aka SARSA) and compare these. TD has several advantages over MC-prediction: Lower variance, the capability to run online, without waiting to end of episode and it can be used with incomplete sequences. SARSA can apply TD to $q_\pi(s,a)$ and use $\epsilon$-greedy policy improvements, and improve every time-step. 
+
+	\begin{equation}
+	\begin{aligned}
+		 		v_\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v_\pi(S_{t+1})|S_t =s] \\
+		 		q_\pi(s,a) = \mathbb{E}_\pi[R_{t+1}+ \gamma q_\pi(S_{t+1}, A_{t+1}) | S_t = s, A_t = a]
+	\end{aligned}
+	\end{equation}
+
+Estimating the state-values with given $\{ S_t, R_{t+1},S_{t+1}\} \sim \pi$ the update is:
+
+	\begin{equation}
+		V(S_t) \leftarrow V(S_t) + \alpha (\underset{\text{Target}}{R_{t+1}+\gamma V(S_{t+1}) }- V(S_t))  
+	\end{equation}  
+
+Estimating the action-values with SARSA given $\{S_t,A_t,R_{t+1},S_{t+1},A_{t+1}\} \sim \pi$ the update will be:
+
+	\begin{equation}
+		Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \alpha (\underset{\text{Target}}{R_{t+1} + \gamma Q(S_{t+1},A_{t+1})}-Q(S_t,A_t))
+	\end{equation}
+
+\subsection*{SARSA control}
+
+\begin{itemize}
+	\item At every time-step:
+	\begin{itemize}
+	\item \textbf{Policy evaluation: } Use SARSA to update Q
+	\item \textbf{POlicy improvement: } Let new $\pi$ be $\epsilon$-greedy with respect to Q
+	\item \textbf{On-policy: } We always update Q towards $q_\pi$ for current policy
+\end{itemize}
+\end{itemize}
+
+
+\begin{wbox}{SARSA-algorithm for control}
+\begin{itemize}
+	\item Initialize Q(s,a) in other words Q(s,a) = 0 for all s and a.
+	\item For each episode
+		\begin{enumerate}
+			\item Get initial state S
+			\item Choose A from S that is $\epsilon$-greedy with respect to Q
+			\item For each step of episode:
+			\begin{itemize}
+				\item Take action A and observe $R,S^{\prime}$
+				\item Choose $A^{\prime}$ from $S^{\prime}$ that is $\epsilon$-greedy with respect to Q
+				\item $Q(S,A) \leftarrow Q(S,A) + \alpha (R + \gamma Q(S^{\prime}, A^{\prime}) - Q(S,A)) $
+				\item $S \leftarrow S^{\prime}, A \leftarrow A^{\prime} $
+			\end{itemize}
+		\end{enumerate}
+\end{itemize}
+\end{wbox}
+
+\subsection*{Off-policy control - $\mathcal{Q}$-learning}
+Here the goal is the learn the action-value function $q_\pi(s,a)$ for a target policy $\pi$ with experience from using the \textbf{behavior policy} $\mu$. This is useful when we want to learn by observing how humans or other agents act. It is also useful when we want to re-use experience that is already collected from old policies. It is also useful when we want to learn the optimal $q_*(s,a)$ while following an exploratory policy.
+
+	\begin{equation}
+	 	q_\pi(s,a) = \mathbb{E}_\pi \left[ R_{t+1} + \gamma q_\pi(S_{t+1}, \underset{\sim \pi (a|S_{t+1})}{A_{t+1}}) | S_t=s, A_t = a \right]
+	 \end{equation} 
+
+If we consider the data collect using the behavior policy $\mu$ 
+
+	\begin{equation}
+		S_t,A_t,R_{t+1},S_{t+1},A_{t+1} \sim \mu
+	\end{equation}
+
+Then update: let $A^{\prime} \sim \pi (a|S_{t+1})$ and use the update:
+
+	\begin{equation}
+		Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \gamma(R_{t+1} + \gamma Q(S_{t+1},A^{\prime})-Q(S_t,A_t))
+	\end{equation}
+
+We want both behavior and target policies to improve. The \textbf{target policy}, $\pi$: Greedy with respect to Q(s,a) and \textbf{behavior policy, }$\mu$: $\epsilon$-greedy with respect to Q(s,a). The Q-learning target is then:
+
+	\begin{equation}
+ 		R_{t+1} + \gamma Q(S_{t+1},a)
+ 	\end{equation}
+
+Here is $A^{\prime} = \underset{a}{\arg \text{max }}Q(S_{t+1},a)$. If we insert this we can rewrite the target as:
+
+	\begin{equation}
+	\begin{aligned}
+		R_{t+1} = \gamma Q(S_{t+1}, \underset{a}{\arg \text{max }} q_*(S_{t+1},a)) = \\
+		R_{t+1} + \gamma \underset{a}{\text{max }}q_*(S_{t+1},a)
+	\end{aligned}
+	\end{equation}
+
+We can compare this to the Bellman optimality equation:
+
+	\begin{equation}
+		q_*(s,a) = \mathbb{E}[R_{t+1} + \gamma \underset{a}{\text{max }}q_*(S_{t+1},a)|S_t=s,A_t =A]
+	\end{equation}
+
+\begin{wbox}{The Q-learning theorem}
+Q-learning converges to the optimal action-value function $q_*(s,a)$ as $N(s,a) \rightarrow \infty$ if the step size $\alpha$ decreases toward 0 with a suitable rate.  
+\end{wbox}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
