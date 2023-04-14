@@ -141,7 +141,7 @@ Estimating the action-values with SARSA given $\{S_t,A_t,R_{t+1},S_{t+1},A_{t+1}
 	\item At every time-step:
 	\begin{itemize}
 	\item \textbf{Policy evaluation: } Use SARSA to update Q
-	\item \textbf{POlicy improvement: } Let new $\pi$ be $\epsilon$-greedy with respect to Q
+	\item \textbf{Policy improvement: } Let new $\pi$ be $\epsilon$-greedy with respect to Q
 	\item \textbf{On-policy: } We always update Q towards $q_\pi$ for current policy
 \end{itemize}
 \end{itemize}
@@ -207,6 +207,26 @@ We can compare this to the Bellman optimality equation:
 
 \begin{wbox}{The Q-learning theorem}
 Q-learning converges to the optimal action-value function $q_*(s,a)$ as $N(s,a) \rightarrow \infty$ if the step size $\alpha$ decreases toward 0 with a suitable rate.  
+\end{wbox}
+
+With a good estimate of $q_*(s,a)$ we can find the optimal policy $\pi_*\text{greedy}(q_*)$. In practice it will often work with a constant $\alpha$ if it is small enough. 
+
+\begin{wbox}{Q-learning for off-policy}
+\begin{itemize}
+	\item Initialize $Q(s,a$, in other words $Q(s,a) = 0$ for all $s$ and $a$.
+	\item For each episode:
+	\begin{enumerate}
+		\item Get initial state $S$
+		\item For each step of the episode:
+			\begin{itemize}
+				\item Choose $A$ from $S$ that is $\epsilon$-greedy with respect to $Q$
+				\item Take action $A$ and observe $R,S^{\prime}$.
+				\item $Q(s,a) \leftarrow Q(S,A) + \alpha(R + \gamma \underset{a}{\text{max }}Q(S^{\prime},a) -Q(S,A)$
+				\item $S \leftarrow S^{\prime}$
+			\end{itemize}
+		\item When the training is done. Get the target policy with respect to Q.
+	\end{enumerate}
+\end{itemize}
 \end{wbox}
 
 
