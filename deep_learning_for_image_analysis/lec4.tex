@@ -1,2 +1,34 @@
 %!TEX root = master.tex
 
+\section{Stochastic Gradient Descent}
+The deep learning optimization problem are given by:
+
+	\begin{equation}
+		J(\theta) = \frac{1} {n} \sum_{i=1}^{n}L(f(\textbf{x}_i, \theta)y_i) = \frac{1} {n} \sum_{i=1}^{n}L_i(\theta)
+	\end{equation}
+
+This problem introduces some difficulties since it is non-convex, of large scale (large n and many dimensions of $\theta$) and the data i often, if not always: noisy. For this there are two main classes of optimization methods:
+
+\begin{itemize}
+ 	\item deterministic, looking at the whole bath of training data
+ 	\item Stochastic, looking at a random subset of the training data each time, (c.f. bagging random forests)
+ \end{itemize} 
+
+ Sometimes the deterministic model might terminate at the wrong solution when it finds a local minimum or saddle points. Another disadvantage is the computational cost of computing the gradients over the entire dataset. By instead using stochastic gradient descent we introduce some randomness by using a randomly picked subset of the entire dataset. This approach can help avoiding getting stuck in local minimas and therefor finding better solutions. The disadvantages might be that we pcik the minibatches in order an therefor don't have a representative batch for the whole dataset. It is therefor important to pick data points at random (without replacement). One way to implement stochastic gradient descent is to randomly reshuffle the data before we dived it into minibatches. Then after each epoch we do another reshuffling and a another pass through the dataset. 
+
+
+\begin{wbox}{Minibatch Stochastic gradient descent (SGD)}
+	\begin{enumerate}
+		\item Initialize $\theta_0$, set $k \leftarrow 1$, choose a batch size $n_b$ and number of Epochs $E$
+		\item for j = 1 to $\frac{n} {n_b}$
+		\begin{itemize}
+			\item Approximate the dradient of the loss function using the current minibatch
+		\end{itemize}
+	\end{enumerate}
+\end{wbox}
+
+
+
+\section{Convolutional neural networks}
+
+
