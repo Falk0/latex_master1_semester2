@@ -4,7 +4,7 @@
 Function approximation is a technique used for estimating the value function or policies for large or continuous state-action spaces. It uses various machine learning models, such as decision trees, neural networks or linear regression to generalize and predict values or optimal actions from a limited set of experience that have been observed. Using function approximation, the agent can scale to more complex environments and solve problems that are not suited for making tables of in tabular methods. When applying function approximation one of the challenges are to balance the trade-off between generalization and accuracy, making sure that the model accurately represent the underlying structure of the environment, but still being efficient to learn from limited amount of data. 
 
 \subsection*{Repetition}
-\textbf{What are we trying to do?} We have a \emph{Prediction Problem}prediction problem, for a given policy $\pi$, we want to find the state-value function:
+\textbf{What are we trying to do?} We have a \emph{Prediction Problem} prediction problem, for a given policy $\pi$, we want to find the state-value function:
 
 	\begin{equation}
 		v_\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v_\pi (S_{t+1}|S_t=s)]
@@ -51,10 +51,10 @@ We update the element that corresponds to $(S_t,A_t)$ by using:
 \centering
 \begin{tabular}{llll}\hline
  \textbf{True vf}&  \textbf{Target} \\ \hline
- For $v_pi$& $v_\pi(s) = \mathbb{E}[G_t | S_t=s]$ & MC-target& $G_t= R_{t+1} + \gamma R_{t+2 + \ldots}$  \\
- For $v_pi$& $v_\pi(s) = \mathbb{E}[R_{t+1} + \gamma v_\pi(S_{t+1)}| S_t=s]$ & TD-target & $R_{t+1}++\gamma (V(S_{t+1})$\\
+ For $v_\pi$& $v_\pi(s) = \mathbb{E}[G_t | S_t=s]$ & MC-target& $G_t= R_{t+1} + \gamma R_{t+2 + \ldots}$  \\
+ For $v_\pi$& $v_\pi(s) = \mathbb{E}[R_{t+1} + \gamma v_\pi(S_{t+1)}| S_t=s]$ & TD-target & $R_{t+1}++\gamma (V(S_{t+1})$\\
  For $q_\pi$& $q_\pi(s,a) = \mathbb{E}[R_{t+1} + \gamma q_\pi(S_{t+1}. A_{t+1})|S_t=s,A_t=a]$  &SARSA-target &$R_{t+1}+\gamma Q(S_{t+1},A_{t+1})$  \\
- For optimal $q_*$&  $q_*(s,a)= \mathcal{E}[R_{t+1} + \gamma \underset{a}{\text{max }}q_*(S_{t+1}) |S_t=s, A_t =a] $ & Q-learning target&  $R_{t+1}+\gamma \underset{a}{\text{max }} Q(S_{t+1},a)$\\ \hline
+ For optimal $q_*$&  $q_*(s,a)= \mathbb{E}[R_{t+1} + \gamma \underset{a}{\text{max }}q_*(S_{t+1}) |S_t=s, A_t =a] $ & Q-learning target&  $R_{t+1}+\gamma \underset{a}{\text{max }} Q(S_{t+1},a)$\\ \hline
 \end{tabular}
 \caption{example}
 \label{tab:tab1}
@@ -77,7 +77,7 @@ Here is $\textbf{w}$ the unknown parameters or weights of the what we need to es
 		\item We get an estimate value even for states that we haven't seen before.
 	\end{itemize}
 
-There are many ways to approximate a function: desicion trees, kNN, Gaussian process, linear regression and so on. We will here focus on differentiable function approximators and especially: Linear combination of features and neural networks. Good to know is that in Reinforcement learning is:
+There are many ways to approximate a function: decision trees, kNN, Gaussian process, linear regression and so on. We will here focus on differentiable function approximators and especially: Linear combination of features and neural networks. Good to know is that in Reinforcement learning is:
 
 	\begin{itemize}
 		\item The data is not independent and identically distributed (IID)
@@ -123,7 +123,7 @@ At a point $\overline{\textbf{w}}$, $J(\textbf{w})$ is decreasing fastest in the
 
 This will push $\textbf{w}_k$ into a local minimum. 
 
-\subsection*{Value function approximation with GD}
+\subsection*{Value function approximation with SGD}
 We want to apply gradient descent to approximate $v_\pi(s)$ with $\hat{v}(s,\textbf{w})$. The idea here is to minimize:
 
 	\begin{equation}
@@ -148,7 +148,7 @@ And we express the gradient descent with:
 		\textbf{w} = \textbf{w} - \alpha \mathbb{E}_\pi [(v_\pi(s) - \hat{v}(s, \textbf{w}))\nabla \hat{v}(s,\textbf{w})]
 	\end{equation}
 
-If we instead draw a sample $S$ form the on-policy distibution and use:
+If we instead draw a sample $S$ form the on-policy distribution and use:
 
 	\begin{equation}
 		\textbf{w} = \textbf{w} - \alpha \mathbb{E}_\pi [(v_\pi(S) - \hat{v}(S, \textbf{w}))\nabla \hat{v}(S,\textbf{w})]
@@ -204,7 +204,7 @@ The TD-target is expressed with: $U_t = R_{t+1} + \gamma \hat{v}(S_{t+1}, \textb
 Here we use the fact that $v_\pi(S_t)$ is independent of \textbf{w}. But we replace $v_\pi(S_t)$ with the target $R_{t+1} + \gamma \hat{v}(S_{t+1} \textbf{w})$, not taking into account that a change in \textbf{w} also changes the target.
 
 \subsection*{Model-free control with function approximation}
-In this chapter we consider the case when the action space $\mathcal{A}$ is finite and small. The idea is to predict using function approximation $\hat{q}(s,a,\textbf{w}= \approx q_\pi(s,a)$ and policy improvement which is $\epsilon$ 
+In this chapter we consider the case when the action space $\mathcal{A}$ is finite and small. The idea is to predict using function approximation $\hat{q}(s,a,\textbf{w}) \approx q_\pi(s,a)$ and policy improvement which is $\epsilon$ 
 -greedy with respect to $\hat{q}(s,a,\textbf{w})$. Notice that if $\mathcal{A}$ is large the policy improvement can be hard to do. Here we will only consider \emph{on-policy} methods like MC and SARSA since an \emph{off-policy} methods like Q-learning have several issues when using function approximation.
 
 \subsection*{Action-values with function approximation}
