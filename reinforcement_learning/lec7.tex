@@ -1,0 +1,246 @@
+%!TEX root = master.tex
+
+\section{Function approximation}
+Function approximation is a technique used for estimating the value function or policies for large or continuous state-action spaces. It uses various machine learning models, such as decision trees, neural networks or linear regression to generalize and predict values or optimal actions from a limited set of experience that have been observed. Using function approximation, the agent can scale to more complex environments and solve problems that are not suited for making tables of in tabular methods. When applying function approximation one of the challenges are to balance the trade-off between generalization and accuracy, making sure that the model accurately represent the underlying structure of the environment, but still being efficient to learn from limited amount of data. 
+
+\subsection*{Repetition}
+\textbf{What are we trying to do?} We have a \emph{Prediction Problem}prediction problem, for a given policy $\pi$, we want to find the state-value function:
+
+	\begin{equation}
+		v_\pi(s) = \mathbb{E}_\pi[R_{t+1} + \gamma v_\pi (S_{t+1}|S_t=s)]
+	\end{equation}
+We also have a \emph{Control Problem} to find the optimal policy: $\pi_*$. We solve this by using \emph{Policy Iteration}: for a given policy $\pi$ evaluate $v_\pi(s)$ and do policy improvement:
+
+	\begin{equation}
+		\pi^{\prime}(s) = \underset{a}{\arg \text{max }}q_\pi(s,a)
+	\end{equation}
+
+Where $q_\pi = \sum_{r,s^{\prime}}^{}p(s^{\prime},r|s,a) [r + \gamma v_\pi(s^{\prime})] $
+
+	\begin{equation}
+		\pi_0 \overset{E}{\rightarrow}v_{\pi_0} \overset{I}{\rightarrow} \pi_1 \overset{E}{\rightarrow} v_{\pi_2} \overset{I}{\rightarrow} \pi_2 \ldots \overset{I}{\rightarrow} pi_* \overset{E}{\rightarrow} v_*	
+	\end{equation}
+
+So far we have only considered finite state and action spaces. In these cases we can represent $v_\pi(s)$ as an array with $|\mathcal{S}|$ elements and we can also represent $q_\pi(s,a)$ as a table with $|\mathcal{S}| \times |\mathcal{A}|$ elements. Example with the gridworld:
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{lllll}
+ &  UP& DOWN& LEFT&  RIGHT\\\hline
+ 0&  X& X& X& X\\
+ 1&  X& X& X& X\\
+ $\vdots$&  $\vdots$& $\vdots$& $\vdots$& \\
+ 15&  X& X& X&X \\ \hline
+\end{tabular}
+\caption{example}
+\label{tab:tab1}
+\end{table}
+
+We find an estimate of $Q(s,a)$ by starting to fill in and then update the table with the estimates for each state/action pair that we see. But \textbf{How do we update the estimates of the estimated V or Q?} If we have observed:
+
+	\begin{equation}
+		S_t, A_t, R_{t+1},S_{t+1}, A_{t+1}
+	\end{equation}
+We update the element that corresponds to $(S_t,A_t)$ by using:
+
+	\begin{equation}
+		\text{New estimate} \leftarrow \text{Old estimate} + \text{Step size} [\text{Target} - \text{Old estimate}]
+	\end{equation}
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{llll}\hline
+ \textbf{True vf}&  \textbf{Target} \\ \hline
+ For $v_pi$& $v_\pi(s) = \mathbb{E}[G_t | S_t=s]$ & MC-target& $G_t= R_{t+1} + \gamma R_{t+2 + \ldots}$  \\
+ For $v_pi$& $v_\pi(s) = \mathbb{E}[R_{t+1} + \gamma v_\pi(S_{t+1)}| S_t=s]$ & TD-target & $R_{t+1}++\gamma (V(S_{t+1})$\\
+ For $q_\pi$& $q_\pi(s,a) = \mathbb{E}[R_{t+1} + \gamma q_\pi(S_{t+1}. A_{t+1})|S_t=s,A_t=a]$  &SARSA-target &$R_{t+1}+\gamma Q(S_{t+1},A_{t+1})$  \\
+ For optimal $q_*$&  $q_*(s,a)= \mathcal{E}[R_{t+1} + \gamma \underset{a}{\text{max }}q_*(S_{t+1}) |S_t=s, A_t =a] $ & Q-learning target&  $R_{t+1}+\gamma \underset{a}{\text{max }} Q(S_{t+1},a)$\\ \hline
+\end{tabular}
+\caption{example}
+\label{tab:tab1}
+\end{table}
+
+
+\subsection*{Function approximation}
+If we now consider a very large or continuous state space: $\mathcal{S}$. The function approximation:
+
+	\begin{equation}
+	\begin{aligned}
+		\hat{v} (s, \textbf{w}) \approx v_\pi(s) \\
+		\hat{q} (s,a,\textbf{w}) \approx q_\pi(s,a)
+	\end{aligned}
+	\end{equation}
+
+Here is $\textbf{w}$ the unknown parameters or weights of the what we need to estimate. The number of parameters in \textbf{w} is typically smaller than the number of states. Some generalization:
+	\begin{itemize}
+		\item A change in \textbf{w} may affect the value estimates of many or all states in $\mathcal{S}$
+		\item We get an estimate value even for states that we haven't seen before.
+	\end{itemize}
+
+There are many ways to approximate a function: desicion trees, kNN, Gaussian process, linear regression and so on. We will here focus on differentiable function approximators and especially: Linear combination of features and neural networks. Good to know is that in Reinforcement learning is:
+
+	\begin{itemize}
+		\item The data is not independent and identically distributed (IID)
+		\item Data distribution depends on the policy
+		\item Every time the policy is improved, the distribution changes
+		\item Hence, the data is \emph{Non-stationary}
+	\end{itemize}
+
+\subsection*{Linear function approximation}
+If we consider the approximation of $v_\pi(s)$. We let a \emph{feature vector} $\textbf{x}(s) \in \mathbb{R}^{d}$  associate with each $s \in \mathcal{S}$. The parameters of weights: $\textbf{w} \in \mathbb{R}^{d}$
+
+	\begin{equation}
+		\textbf{x}(s) = \begin{bmatrix} x_1(s) \\ \vdots \\ x_d(s) \end{bmatrix}, \textbf{w} = \begin{bmatrix} w_1 \\ \vdots \\ w_d \end{bmatrix}
+	\end{equation}
+
+Then we can estimate our $\hat{v}(s,\textbf{w})$ by computing:
+
+	\begin{equation}
+		\hat{v}(s, \textbf{w}) = \sum_{i=1}^{d}w_ix_i(s) = \textbf{w}^{T}\textbf{x}(s) = \textbf{x}(s)\textbf{w}
+	\end{equation}
+
+Here are some examples of features (sometimes called \emph{basis functions}):
+
+\begin{itemize}
+	\item Physical consideration
+	\item Polynomials
+	\item Fourier basis
+	\item $\ldots$
+\end{itemize}
+
+\subsection*{Stochastic gradient descent (SGD)}
+In gradient descent we let $J(\textbf{w}): \mathbb{R}^{d} \rightarrow \mathbb{R}$ be a scalar valued function with a vector input. The aim is to find a set of weights \textbf{w} that minimize $J(\textbf{w})$. We do this by using the gradient:
+
+	\begin{equation}
+		\nabla J(\textbf{w}) := \frac{\partial J} {\partial \textbf{w}} := \begin{bmatrix} \frac{\partial J} {\partial w_1} \\ \vdots \\ \frac{\partial J} {\partial w_d}   \end{bmatrix} \in \mathbb{R}^{d}
+	\end{equation}
+
+At a point $\overline{\textbf{w}}$, $J(\textbf{w})$ is decreasing fastest in the direction $- \nabla J(\overline{\textbf{w}})$. To minimize $J(\textbf{w})$ we start with an initial guess of our weights: $\textbf{W}_0$ and then we start moving in the direction of maximum descent with a step size $\alpha$: 
+
+	\begin{equation}
+	 	\textbf{w}_{k+1} = \textbf{w}_k - \alpha \nabla J(\textbf{w}_k)
+	 \end{equation} 
+
+This will push $\textbf{w}_k$ into a local minimum. 
+
+\subsection*{Value function approximation with GD}
+We want to apply gradient descent to approximate $v_\pi(s)$ with $\hat{v}(s,\textbf{w})$. The idea here is to minimize:
+
+	\begin{equation}
+		J(\textbf{w}) = \frac{1} {2} \mathbb{E}_\pi[(v_\pi(s) - \hat{v}(s,\textbf{w}))^{2}]
+	\end{equation}
+
+Where the gradient is:
+
+	\begin{equation}
+		\nabla J(\textbf{w}) = \frac{1} {2} \mathbb{E}_\pi[\nabla (v_\pi(s) - \hat{v}(s,\textbf{w}))^{2}]= - \mathbb{E}_\pi [(v_\pi(s) - \hat{v}(s, \textbf{w}))\nabla \hat{v}(s,\textbf{w})]
+	\end{equation}
+
+And we express the gradient descent with:
+
+	\begin{equation}
+		\textbf{w}_{k+1} = \textbf{w}_k - \alpha \mathbb{E}_\pi [(v_\pi(s) - \hat{v}(s, \textbf{w}))\nabla \hat{v}(s,\textbf{w})]
+	\end{equation}
+
+(Here we find a problem: What if we cannot compute the expected value?). The full gradient descent with all data:
+
+	\begin{equation}
+		\textbf{w} = \textbf{w} - \alpha \mathbb{E}_\pi [(v_\pi(s) - \hat{v}(s, \textbf{w}))\nabla \hat{v}(s,\textbf{w})]
+	\end{equation}
+
+If we instead draw a sample $S$ form the on-policy distibution and use:
+
+	\begin{equation}
+		\textbf{w} = \textbf{w} - \alpha \mathbb{E}_\pi [(v_\pi(S) - \hat{v}(S, \textbf{w}))\nabla \hat{v}(S,\textbf{w})]
+	\end{equation}
+Then the expected update is equal to a full gradient update ("On average we update in the gradient descent direction")
+
+\subsection*{Linear function approximation}
+In the case of linear functions the update looks like this
+
+	\begin{equation}
+		\hat{v}(s,\textbf{w}) = \textbf{w}^{T}\textbf{x}(s) \Rightarrow \nabla \hat{v}(s, \textbf{w}) = \textbf{x}(s)
+	\end{equation}
+
+So the update will be given by:
+
+	\begin{equation}
+		\textbf{w} \leftarrow \textbf{w} + \alpha [v_\pi(S) - \hat{v}(s,\textbf{w})]\textbf{x}(S)
+	\end{equation}
+
+In the case with a linear function approximation $J(\textbf{w})$ only has one optimum and thus any methods that finds a local optimum also finds the global optimum, convex problem. 
+
+\subsection*{Model free prediction}
+We want to estimate $v_\pi(s)$ without a known model. By following a policy $\pi$ to get some data: $S_0,A_0,R_1,S_1,A_1,\ldots,$ and for each step we update or parameters or weights \textbf{w}. 
+
+	\begin{equation}
+		\textbf{w} \leftarrow \textbf{w} - \alpha [(v_\pi(S_t) - \hat{v}(S_t, \textbf{w}))\nabla \hat{v}(S_t,\textbf{w})]
+	\end{equation}
+
+The problem is that: we don't know $v_\pi(S_t)$. One idea is to, as in the tabular case, replace $v_\pi(S_t)$ with a target $U_t$
+
+	\begin{equation}
+		\textbf{w} \leftarrow \textbf{w} - \alpha [(U_t - \hat{v}(S_t, \textbf{w}))\nabla \hat{v}(S_t,\textbf{w})]
+	\end{equation}
+
+If $U_t$ is unbiased estimate of $v_\pi(S_t)$ for all t, then \textbf{w} will converge to a local optimum, if assuming $\alpha$ decreases according to the usual assumptions. The targets we have discussed earlier are: Monte-Carlo and TD.
+
+\subsection*{Monte-Carlo prediction with function approximation}
+The Monte-Carlo target is: $G_t = R_{t+1} + \gamma R_{t+1} + \ldots$, which is an unbiased estimate of $v_\pi(S_t) = \mathbb{E}[G_t | S_t]$. The updates will look like this:
+
+	\begin{equation}
+		\textbf{w} \leftarrow \textbf{w} + \alpha (G_t - \hat{v}(s, \textbf{w}))\nabla \hat{v}(S_t, \textbf{w})
+	\end{equation} 
+
+That will converge to a local optimum. With linear function approximation it will converge to the \emph{global} optimum. And as before, we have to wait until the end of the episode before $G_t$ can be computed. $G_t$ can have high variance since it is a very noisy estimate of $v_\pi(S_t)$, it also means that it can take very long to converge.
+
+\subsection*{TD-prediction with function approximation}
+The TD-target is expressed with: $U_t = R_{t+1} + \gamma \hat{v}(S_{t+1}, \textbf{w})$ and is \emph{biased} since it is based on the estimate $\hat{v}$. Hence the convergence cannot be guaranteed in general but it often works fine. In the case of linear function approximations i will converge to global optimum. As in the tabular case with TD we will often learn faster than with the MC approach and we also don't need to wait until we have finished an episode. This methods is some times called \textbf{semi-gradient}
+
+	\begin{equation}
+		\nabla (v_\pi(S_t) - \hat{v}(S_{t+1},\textbf{w}))^{2} = -2 (v_\pi(S_t) - \hat{v}(S_t, \textbf{w}))\nabla \hat{v}(S_t,\textbf{w})
+	\end{equation}
+
+Here we use the fact that $v_\pi(S_t)$ is independent of \textbf{w}. But we replace $v_\pi(S_t)$ with the target $R_{t+1} + \gamma \hat{v}(S_{t+1} \textbf{w})$, not taking into account that a change in \textbf{w} also changes the target.
+
+\subsection*{Model-free control with function approximation}
+In this chapter we consider the case when the action space $\mathcal{A}$ is finite and small. The idea is to predict using function approximation $\hat{q}(s,a,\textbf{w}= \approx q_\pi(s,a)$ and policy improvement which is $\epsilon$ 
+-greedy with respect to $\hat{q}(s,a,\textbf{w})$. Notice that if $\mathcal{A}$ is large the policy improvement can be hard to do. Here we will only consider \emph{on-policy} methods like MC and SARSA since an \emph{off-policy} methods like Q-learning have several issues when using function approximation.
+
+\subsection*{Action-values with function approximation}
+We aim to approximate $\hat{q}(s,a,\textbf{w}) \approx q_\pi(s,a)$ with the idea that minimizing $J(\textbf{w}) = \mathbb{E} [(q_\pi(S_t,A_t) - \hat{q}(s,a,\textbf{w}))^{2}]$ with stochastic gradient descent:
+
+	\begin{equation}
+	 	\textbf{w} \leftarrow \textbf{w} + \alpha (q_\pi(S_t,A_t) - \hat{q}(s,a,\textbf{w})) \nabla \hat{q}(S_t,A_t,\textbf{w})
+	 \end{equation} 
+
+Replacing $q_\pi(s,a)$ with the estimated target $U_t$ (e.g. MC or TD) and as in the tabular case we must continue to explore by using a policy that is $\epsilon$-greedy with respect to $\hat{q}(s,a,\textbf{w})$. Linear function approximations will converge for both SARSA and MC close to the optimal approximation of q. In the case of nonlinear function approximations there is no guarantee of convergence, but will often work.
+
+\begin{wbox}{SARSA with function approximation}
+\begin{itemize}
+	\item Choose function approximation $\hat{q}(s,a,\textbf{w})$ and an initial \textbf{w}
+	\item For each episode:
+	\begin{enumerate}
+		\item Get initial state $S$
+		\item Choose $A$ from $S$ in other words: $\epsilon$-greedy with respect to $\hat{q}$
+		\item For each step in the episode:
+		\begin{itemize}
+			\item Take action $A$ and observe $R, S^{\prime}$
+			\item Choose action $A^{\prime}$ from $S^{\prime}$, $\epsilon$-greedy with respect to $\hat{q}$
+			\item Let $U_t = \begin{cases}
+			R, \quad \text{ if } S^{\prime} \text{ is terminal }  \\
+			R + \gamma \hat{q}(S^{\prime},A^{\prime},\textbf{w}), \quad \text{otherwise}  
+			\end{cases}$
+			\item  $\textbf{w} \leftarrow \textbf{w} +  \alpha [U_t - \hat{q}(S,A,\textbf{w})] \nabla \hat{q}(S,A,\textbf{w})$
+			\item $S \leftarrow S^{\prime}, A \leftarrow A^{\prime}$	 
+		\end{itemize}
+	\end{enumerate}
+\end{itemize}
+Notice that in tabular SARSA we never update $Q(S,a)$ for terminal states, so it will always be zero if we initialize it to zero. However, for function approximation changes in \textbf{w} may affect all states, including the terminal states, so we need to handle terminal $S^{\prime}$ in a special way.
+\end{wbox}
+
+
+
+
+
+
