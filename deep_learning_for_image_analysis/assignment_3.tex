@@ -66,7 +66,7 @@ In this exercise we implemented the same neural network as in assignment 2. But 
  lr& 0.01\\
 Optimizer& SGD  \\\hline
 \end{tabular}
-\caption{example}
+\caption{Hyperparameters Exercise 1.1}
 \label{tab:tab1}
 \end{table}
 
@@ -85,7 +85,7 @@ Optimizer& SGD  \\\hline
  Accuracy (\%) &  97.26&  97.22\\
  Time (sec)& 289 & 22.28\\ \hline
 \end{tabular}
-\caption{example}
+\caption{Result Exercise 1.1}
 \label{tab:tab2}
 \end{table}
 
@@ -104,7 +104,7 @@ In this exercise we construct a convolutional neural network with the PyTorch li
  lr& 0.005 \\
 Optimizer& SGD  \\\hline
 \end{tabular}
-\caption{example}
+\caption{Hyperparameters Exercise 1.2}
 \label{tab:tab3}
 \end{table}
 
@@ -122,7 +122,7 @@ Optimizer& SGD  \\\hline
  \textbf{FF}&  97.22&  109386\\ 
  \textbf{CNN}& 98.55& 21688 \\\hline
 \end{tabular}
-\caption{example}
+\caption{Result Exercise 1.2}
 \label{tab:tab4}
 \end{table}
 
@@ -185,7 +185,7 @@ Optimizer& SGD  \\\hline
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=120mm]{figures/assignment_3/convnet_adam.png}
-\caption{Training history Exercise 1.3}
+\caption{Training history Exercise 1.4}
 \label{fig:convnetadam}
 \end{figure}
 
@@ -207,7 +207,7 @@ Optimizer& SGD  \\\hline
 \label{tab:tab7}
 \end{table}
 
-\textbf{Model 2:} Included batch normalization layers between all layers which can improve the training by normalizing all activation. In this case it didn't give major improvement since we didn't have a problem with vanishing or exploding gradients which it is most commonly used to improve. 
+\textbf{Model 2:} Including batch normalization layers between layers can improve the training by normalizing the activation \cite{DLbook}. In this case it didn't give major improvement since we didn't have a problem with vanishing or exploding gradients which it is commonly used to improve. 
 
 \begin{table}[ht!]
 \centering
@@ -223,10 +223,10 @@ Optimizer& SGD  \\\hline
 \label{tab:tab7}
 \end{table}
 
-\textbf{Model 3:} Here we change the learning rate strategy by changing the learning rate such that i depends on the iteration number (i) with the function:
+\textbf{Model 3:} Here we change the learning rate strategy by changing the learning rate such that i depends on the iteration number (i) with the function below \cite{SML}.
 
     \begin{equation}
-        \gamma^{(i)} = \gamma_{\text{min}} + (\gamma_{\text{max}} - \gamma_{\text{min}})e^{\frac{i} {2000} }
+        \gamma^{(i)} = \gamma_{\text{min}} + (\gamma_{\text{max}} - \gamma_{\text{min}})e^{\frac{i} {\text{totalNumberOfIterations}} }
     \end{equation}
 
 We set $\gamma_{\text{max}} = 0.003$ and $\gamma_{\text{min}} = 0.0001$ and update it throughout the training.
@@ -266,35 +266,65 @@ We set $\gamma_{\text{max}} = 0.003$ and $\gamma_{\text{min}} = 0.0001$ and upda
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=120mm]{figures/assignment_3/improved_torch4.png}
-\caption{Example of caption}
-\label{fig:example}
+\caption{Training history Exercise 1.5}
+\label{fig:historyimproved}
 \end{figure}
+
+\newpage
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=120mm]{figures/assignment_3/improved_torch4_CM.png}
-\caption{Example of caption}
-\label{fig:example}
+\caption{Exercise 1.5 confusion matrix}
+\label{fig:CM}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=120mm]{figures/assignment_3/convnet_missclassification.png}
+\caption{Exercise 1.5 examples of miss-classification}
+\label{fig:missclass}
 \end{figure}
 
 
-
 \newpage
+
 \section{Semantic segmentation of Biomedical images}
 
-\textit{\textbf{Exercise 2.1}} Modifying our previous neural network by removing the fully connected layers replacing it with a 1 $\times$ 1 convolutional layer, we will now tackle a segmentation problem and evaluate it with Sørensen–Dice coefficient as performance measurement. In Figure: \ref{fig:segexample} we can see the result from the segmentation of a randomly picked test image. The segmentation models worst performance on the test set is presented in Figure: \ref{fig:worst}. Here we can see that it seems like the specimen is ending abrupt in the image, showing a lot of dark areas, presumably the background. Since this case is not well represented in the training set it is not so surprising that it performed badly on this image. 
+\textit{\textbf{Exercise 2.1}} Modifying our previous neural network by removing the fully connected layers replacing it with a 1 $\times$ 1 convolutional layer, we will now tackle a segmentation problem and evaluate it with Sørensen–Dice coefficient as performance measurement. In Figure: \ref{fig:segexample} we can see the result from the segmentation of a randomly picked test image. The segmentation models worst performance on the test set is presented in Figure: \ref{fig:worst}. Here we can see that it seems like the specimen is ending abrupt in the image, showing a lot of dark areas, presumably the "background". Since this case is not well represented in the training set it is not so surprising that it performed badly on this image. 
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Layer} & \textbf{Input Channels} & \textbf{Output Channels} & \textbf{Kernel Size / Stride / Padding} & \textbf{Activation} \\ \hline
+Conv1          & 2                       & 8                        & 3x3 / 1 / 1                             & ReLU                \\ \hline
+MaxPool1       & -                       & -                        & 2x2 / 2 / 0                             & -                   \\ \hline
+ConvTranspose1 & 8                       & 8                        & 4x4 / 2 / 1                             & -                   \\ \hline
+Conv2          & 8                      & 16                        & 3x3 / 1 / 1                             & ReLU                \\ \hline
+MaxPool2       & -                       & -                        & 2x2 / 2 / 0                             & -                   \\ \hline
+ConvTranspose2 & 16                      & 16                       & 4x4 / 2 / 1                             & -                   \\ \hline
+Conv3          & 16                      & 32                       & 3x3 / 1 / 1                             & ReLU                \\ \hline
+MaxPool3       & -                       & -                        & 2x2 / 2 / 0                             & -                   \\ \hline
+ConvTranspose3 & 32                      & 32                       & 4x4 / 2 / 1                             & -                   \\ \hline
+Conv4          & 32                       & 2                       & 1x1 / 1 / 0                             & SoftMax                   \\ \hline
+\end{tabular}
+\caption{Neural network architecture Exercise 2.1}
+\label{table:architecture_no_bn_v2}
+\end{table}
+
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=100mm]{figures/assignment_3/segmentation_test4.png}
-\caption{Segmentation of test-image: image\_05.png}
+\caption{Exercise 2.1: Segmentation of test-image: image\_05.png, }
 \label{fig:segexample}
 \end{figure}
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=100mm]{figures/assignment_3/segmentation_worst.png}
-\caption{Segmentation of test-image: image\_11.png}
+\caption{Exercise 2.1: Segmentation of test-image: image\_11.png}
 \label{fig:worst}
 \end{figure}
 
@@ -305,31 +335,162 @@ We set $\gamma_{\text{max}} = 0.003$ and $\gamma_{\text{min}} = 0.0001$ and upda
  Epochs&  150 \\ 
  Optimizer& Adam  \\
  learning& 0.003 \\ \hline
-\textbf{Result: }&   0.773\% \\ \hline
+\textbf{Result: }&   0.76 \\ \hline
 \end{tabular}
 \caption{Hyperparameters Exercise 2.1}
 \label{tab:tab8}
 \end{table}
 
-\textit{\textbf{Exercise 2.2}}
-\textbf{Model 1: } Using batchnormalization 
+\textit{\textbf{Exercise 2.2}} We are asked to improve the model with various regularization techniques and other methods that are presented throughout the course. When testing different hyperparameters we split up the training set into a validation set and training set (20\% and 80\%). We train and test the different hyperparameters with the validation set and when we decided on a good model we train it with the whole training set and test it with the test set. 
+
+
+\textbf{Model 1}: We here try to increase the sparse training set by using the methods data augmentation. We rotate each image -90 degrees and 180 degrees and add them to the training set before splitting it to a validation and training set. Same architecture as in Exercise 2.1 
+
+\textbf{Model 2:} Here we change the learning rate strategy the same way as described in Exercise 1.5.
+   
+
+\textbf{Model 3:} Batch-regularization is used to normalize the data before the activation, improving the training by avoiding vanishing or exploding gradients. We also add a learning schedule similar to \textbf{model 2} in exercise 1.5. This method showed best improvement on the validation set and was therefore best 
+
+\textbf{Model 4-5: architecture:}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Layer} & \textbf{Input Channels} & \textbf{Output Channels} & \textbf{Kernel Size / Stride / Padding} & \textbf{Activation} \\ \hline
+Conv1          & 2                       & 32                       & 3x3 / 1 / 1                             & ReLu                   \\ \hline
+MaxPool1       & -                       & -                        & 2x2 / 2 / 0                             & -                   \\ \hline
+Conv2          & 32                      & 64                       & 3x3 / 1 / 1                             & ReLu                   \\ \hline
+MaxPool2       & -                       & -                        & 2x2 / 2 / 0                             & -                   \\ \hline
+Conv3          & 64                      & 128                      & 3x3 / 1 / 1                             & ReLu                   \\ \hline
+MaxPool3       & -                       & -                        & 2x2 / 2 / 0                             & -                   \\ \hline
+ConvTranspose1 & 128                     & 64                       & 4x4 / 2 / 1                             & -                   \\ \hline
+Conv4          & 64                      & 64                       & 3x3 / 1 / 1                             & ReLU                \\ \hline
+ConvTranspose2 & 64                      & 32                       & 4x4 / 2 / 1                             & -                   \\ \hline
+Conv5          & 32                      & 32                       & 3x3 / 1 / 1                             & ReLU                \\ \hline
+ConvTranspose3 & 32                      & 4                        & 4x4 / 2 / 1                             & -                   \\ \hline
+Conv6          & 4                       & 2                        & 1x1 / 1 / 0                             & -                   \\ \hline
+\end{tabular}
+\caption{Neural network architecture Exercise 2.2 model 4 \& 5}
+\label{table:architecture_no_bn_v3}
+\end{table}
+
+
+
+\textbf{Model 4:} New architecture with the more classic "wasp-waist" structure. 
+
+\textbf{Model 5:} The new architecture but with Batch-regularization layers.  
+
 
 \begin{table}[ht!]
 \centering
-\begin{tabular}{ll}\hline 
- \textbf{Hyperparameters}&    \\ \hline
- Epochs&  150 \\ 
- Optimizer& Adam  \\
- learning& 0.003 \\ \hline
-\textbf{Result: }&   0.858\% \\ \hline
+\begin{tabular}{llll}\hline 
+ \textbf{Hyperparameters}& \textbf{Model 1}& \textbf{Model 2}& \textbf{Model 3} \\ \hline
+ Method&  Data Augmentation&  Learning Rate Scheduling& Batch-normalization \\ 
+ Epochs&  100&  100& 100 \\ 
+ Optimizer& Adam& Adam& Adam \\
+ learningRate& 0.003& $\gamma^{(i)}$& 0.003  \\ \hline
+\textbf{Result: }& 0.73& 0.77&  0.84\\ \hline
 \end{tabular}
 \caption{Hyperparameters Exercise 2.1, Model 1}
 \label{tab:tab8}
 \end{table}
 
+\begin{table}[ht!]
+\centering
+\begin{tabular}{llll}\hline 
+ \textbf{Hyperparameters}& \textbf{Model 4}& \textbf{Model 5} \\ \hline
+ Method&  - & Batch-normalization \\ 
+ Epochs&  100&  100 \\ 
+ Optimizer& Adam& Adam \\
+ learningRate& 0.003&  0.003  \\ \hline
+\textbf{Result: }& 0.66& 0.94 \\ \hline
+\end{tabular}
+\caption{Hyperparameters Exercise 2.1, Model 1}
+\label{tab:tab8}
+\end{table}
+
+
+
+
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/assignment_3/segmentation_model1_hist.png}
+    \caption{Model 1}
+    \label{fig:image1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/assignment_3/segmentation_model2_hist.png}
+    \caption{Model 2}
+    \label{fig:image2}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/assignment_3/segmentation_model3_hist.png}
+    \caption{Model 3}
+    \label{fig:image3}
+  \end{subfigure}
+  \label{fig:all_images}
+
+  \vfill
+
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/assignment_3/segmentation_model4.png}
+    \caption{Model 4}
+    \label{fig:image1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/assignment_3/segmentation_model5.png}
+    \caption{Model 5}
+    \label{fig:image2}
+  \end{subfigure}
+  \label{fig:both_images}
+   \hfill
+  \begin{subfigure}{0.3\textwidth}
+    \includegraphics[width=\textwidth]{figures/assignment_3/segmentation_model6.png}
+    \caption{Model 5 on training \& test set}
+    \label{fig:image2}
+  \end{subfigure}
+  \label{fig:both_images}
+
+
+
+
+
+\end{figure}
+
+
+Looking at the training history for model 1-3 see no sign of overfitting the validation set. In the case of model 4 it seems to having problem with vanishing gradients being a much "deeper" than the previous design. The batch normalization in model 5 seems to solve some of the problems.
+Taking the model 5 setup and training it with the whole training set and test it on the test set resulted in a dice coefficient of: \textbf{0.82}. Looking at the training history we can see that the training loss is still reducing but the test loss is not, indicating that it has stopped improving in terms of generalization and started to overfit. Interesting to notice is that the result from exercise 2.1 seem to be better at identifying the individual glands even though it scored lower in the the test.
+
+ \begin{figure}[ht!]
+\centering
+\includegraphics[width=100mm]{figures/assignment_3/segmentation_test_best.png}
+\caption{Exercise 2.2: Segmentation of test-image: image\_05.png, }
+\label{fig:segexample}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=100mm]{figures/assignment_3/segmentation_worse_best.png}
+\caption{Exercise 2.2: Segmentation of test-image: image\_11.png}
+\label{fig:worst}
+\end{figure}
+
+
+
+
 \begin{thebibliography}{1}
 
-\bibitem{Asimov} Asimov, Issac (1942). Runaround
+\bibitem{Asimov} Asimov, Isaac (1942). Runaround
+\bibitem{DLbook} Ian J. Goodfellow, Yoshua Bengio and Aaron Courville (2016). Deep Learning
+\bibitem{SML} Lindholm, Andreas and Wahlstr\"om, Niklas and Lindsten, Fredrik (2022). Machine Learning - A First Course for Engineers and Scientists
+
 
 \end{thebibliography}
 
