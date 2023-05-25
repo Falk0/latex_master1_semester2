@@ -1,3 +1,5 @@
+%!TEX root = master.tex
+
 \section{Model-free prediction}
 Model-free prediction is the process estimating the value functions directly from observed experiences explicitly modeling the environment's dynamics. Methods like Q-learning and SARSA use trial and error interactions with the environment to learn the optimal policies.    
 
@@ -57,7 +59,7 @@ Model-free prediction is the process estimating the value functions directly fro
 
 \newpage
 
-\subsection*{Monte-Carlo methods}
+\subsection{Monte-Carlo methods}
 Given the problem that we throw two dice and call their sum G, what is $V = \mathbb{E}[G]$? We can calculate this using different methods:
 
 \begin{itemize}
@@ -81,7 +83,7 @@ Given the problem that we throw two dice and call their sum G, what is $V = \mat
 	\item \textbf{Law of large numbers: } $\hat{V}_n \rightarrow \mathbb{E}[G]$ as $n \rightarrow \inf$
 \end{itemize}
 
-\subsection*{Bias and variance}
+\subsection{Bias and variance}
 Let $\hat{\theta}_n$ be an estimate of $\theta$ using n random samples. Since the samples are random, we got that $\hat{\theta}_n$ is a stochastic variable. This makes it possible to talk about the expected value and variance of $\hat{\theta}_n$. 
 
 \begin{itemize}
@@ -117,7 +119,7 @@ Where the bias and variance are:
 
 So, as n approaches infinity the variance goes to zero. 
 
-\subsection*{Incremental updates}
+\subsection{Incremental updates}
 We don't have to save the information of all previous observations, wasting memory and recalculate everything for each new observation. We can store the passed information with:
 
 	\begin{equation}
@@ -154,7 +156,7 @@ With each step we move the estimate a bit closer to the observed "target". For t
 
 In \textbf{non-stationary} problems with a constant $\alpha \in (0,1)$ we "forget" the old observations. The variance will in this case not go to zero, but it can adjust to changing probabilities. The extreme cases when $\alpha = 0$ will give $\hat{V} \leftarrow \hat{V}$, meaning that we don't learn anything. In the case $\alpha = 1$ will give us that $\hat{V} \leftarrow G$ meaning that we forget all past observations. 
 
-\subsection*{Monte-Carlo prediction}
+\subsection{Monte-Carlo prediction}
 Lets consider an episodic task (a task that terminates within a finite number of steps). Our goal is to learn $v_\pi(s)$ from experience under policy $\pi$:
 	
 	\begin{equation}
@@ -195,7 +197,7 @@ The value function:
 \end{wbox}
 
 
-\subsection*{Properties of Monte-Carlo}
+\subsection{Properties of Monte-Carlo}
 \begin{itemize}
 	\item \textbf{Positive: }
 		\begin{itemize}
@@ -211,7 +213,7 @@ The value function:
 	\end{itemize}
 \end{itemize}
 
-\subsection*{Incremental updates}
+\subsection{Incremental updates}
 In the Monte-Carlo method we compute the average of all observed returns $G_t$ which is seen in each state. With incremental updates 
 
 	\begin{enumerate}
@@ -227,7 +229,7 @@ In the Monte-Carlo method we compute the average of all observed returns $G_t$ w
 
 Here the empirical mean is: $\alpha_n = \frac{1} {N(S_t)}$. For example non stationary environment we may instead is a constant $\alpha$
 
-\subsection*{Monte-Carlo vs Dynamic programming}
+\subsection{Monte-Carlo vs Dynamic programming}
 Here we compare the two methods:
 
 	\begin{equation}
@@ -257,7 +259,7 @@ Here we compare the two methods:
 
 Question... Can we combine bootstrapping and learning from experience?
 
-\subsection*{Temporal-difference (TD) learning}
+\subsection{Temporal-difference (TD) learning}
 
 We start again with the expected return for a given state:
 
@@ -293,7 +295,7 @@ This is often called TD(0) since it is a special case of TD($\lambda$) with $\la
 \textbf{Note: } We do not have to complete the episode before we start learning, and we can even learn while continuing the tasks. 
 \end{wbox}
 
-\subsection*{The bias}
+\subsection{The bias}
 Taking a look at the bias of the method and comparing it to the Monte-Carlo method. 
 
 \begin{itemize}
@@ -315,7 +317,7 @@ Taking a look at the bias of the method and comparing it to the Monte-Carlo meth
 \end{itemize}
 
 
-\subsection*{Comparing TD and MC}
+\subsection{Comparing TD and MC}
 Monte-Carlo can only be used in episodic environments and have high variance but zero bias. This method converges to $v_\pi(s$ if $\alpha$ is decreased with a suitable rate. The Monte-Carlo method has good convergence properties even for function approximation. Another advantage is also that it is not sensitive to initial conditions. The MC method is usually more efficient in non-MDP environments. Temporal differences on the other hand can be used for both episodic and non-episodic environment and have a low variance but some bias. It also converges to $v_\pi(s)$ if $\alpha$ decreases with suitable rate. In comparison to MC it does not always converge with function approximation. It is more sensitive to initial conditions but usually more efficient in MDP environments.
 
 

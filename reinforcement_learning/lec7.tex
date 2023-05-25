@@ -3,7 +3,7 @@
 \section{Function approximation}
 Function approximation is a technique used for estimating the value function or policies for large or continuous state-action spaces. It uses various machine learning models, such as decision trees, neural networks or linear regression to generalize and predict values or optimal actions from a limited set of experience that have been observed. Using function approximation, the agent can scale to more complex environments and solve problems that are not suited for making tables of in tabular methods. When applying function approximation one of the challenges are to balance the trade-off between generalization and accuracy, making sure that the model accurately represent the underlying structure of the environment, but still being efficient to learn from limited amount of data. 
 
-\subsection*{Repetition}
+\subsection{Repetition}
 \textbf{What are we trying to do?} We have a \emph{Prediction Problem} prediction problem, for a given policy $\pi$, we want to find the state-value function:
 
 	\begin{equation}
@@ -61,7 +61,7 @@ We update the element that corresponds to $(S_t,A_t)$ by using:
 \end{table}
 
 
-\subsection*{Function approximation}
+\subsection{Function approximation}
 If we now consider a very large or continuous state space: $\mathcal{S}$. The function approximation:
 
 	\begin{equation}
@@ -86,7 +86,7 @@ There are many ways to approximate a function: decision trees, kNN, Gaussian pro
 		\item Hence, the data is \emph{Non-stationary}
 	\end{itemize}
 
-\subsection*{Linear function approximation}
+\subsection{Linear function approximation}
 If we consider the approximation of $v_\pi(s)$. We let a \emph{feature vector} $\textbf{x}(s) \in \mathbb{R}^{d}$  associate with each $s \in \mathcal{S}$. The parameters of weights: $\textbf{w} \in \mathbb{R}^{d}$
 
 	\begin{equation}
@@ -108,7 +108,7 @@ Here are some examples of features (sometimes called \emph{basis functions}):
 	\item $\ldots$
 \end{itemize}
 
-\subsection*{Stochastic gradient descent (SGD)}
+\subsection{Stochastic gradient descent (SGD)}
 In gradient descent we let $J(\textbf{w}): \mathbb{R}^{d} \rightarrow \mathbb{R}$ be a scalar valued function with a vector input. The aim is to find a set of weights \textbf{w} that minimize $J(\textbf{w})$. We do this by using the gradient:
 
 	\begin{equation}
@@ -123,7 +123,7 @@ At a point $\overline{\textbf{w}}$, $J(\textbf{w})$ is decreasing fastest in the
 
 This will push $\textbf{w}_k$ into a local minimum. 
 
-\subsection*{Value function approximation with SGD}
+\subsection{Value function approximation with SGD}
 We want to apply gradient descent to approximate $v_\pi(s)$ with $\hat{v}(s,\textbf{w})$. The idea here is to minimize:
 
 	\begin{equation}
@@ -155,7 +155,7 @@ If we instead draw a sample $S$ form the on-policy distribution and use:
 	\end{equation}
 Then the expected update is equal to a full gradient update ("On average we update in the gradient descent direction")
 
-\subsection*{Linear function approximation}
+\subsection{Linear function approximation}
 In the case of linear functions the update looks like this
 
 	\begin{equation}
@@ -170,7 +170,7 @@ So the update will be given by:
 
 In the case with a linear function approximation $J(\textbf{w})$ only has one optimum and thus any methods that finds a local optimum also finds the global optimum, convex problem. 
 
-\subsection*{Model free prediction}
+\subsection{Model free prediction}
 We want to estimate $v_\pi(s)$ without a known model. By following a policy $\pi$ to get some data: $S_0,A_0,R_1,S_1,A_1,\ldots,$ and for each step we update or parameters or weights \textbf{w}. 
 
 	\begin{equation}
@@ -185,7 +185,7 @@ The problem is that: we don't know $v_\pi(S_t)$. One idea is to, as in the tabul
 
 If $U_t$ is unbiased estimate of $v_\pi(S_t)$ for all t, then \textbf{w} will converge to a local optimum, if assuming $\alpha$ decreases according to the usual assumptions. The targets we have discussed earlier are: Monte-Carlo and TD.
 
-\subsection*{Monte-Carlo prediction with function approximation}
+\subsection{Monte-Carlo prediction with function approximation}
 The Monte-Carlo target is: $G_t = R_{t+1} + \gamma R_{t+1} + \ldots$, which is an unbiased estimate of $v_\pi(S_t) = \mathbb{E}[G_t | S_t]$. The updates will look like this:
 
 	\begin{equation}
@@ -194,7 +194,7 @@ The Monte-Carlo target is: $G_t = R_{t+1} + \gamma R_{t+1} + \ldots$, which is a
 
 That will converge to a local optimum. With linear function approximation it will converge to the \emph{global} optimum. And as before, we have to wait until the end of the episode before $G_t$ can be computed. $G_t$ can have high variance since it is a very noisy estimate of $v_\pi(S_t)$, it also means that it can take very long to converge.
 
-\subsection*{TD-prediction with function approximation}
+\subsection{TD-prediction with function approximation}
 The TD-target is expressed with: $U_t = R_{t+1} + \gamma \hat{v}(S_{t+1}, \textbf{w})$ and is \emph{biased} since it is based on the estimate $\hat{v}$. Hence the convergence cannot be guaranteed in general but it often works fine. In the case of linear function approximations i will converge to global optimum. As in the tabular case with TD we will often learn faster than with the MC approach and we also don't need to wait until we have finished an episode. This methods is some times called \textbf{semi-gradient}
 
 	\begin{equation}
@@ -203,11 +203,11 @@ The TD-target is expressed with: $U_t = R_{t+1} + \gamma \hat{v}(S_{t+1}, \textb
 
 Here we use the fact that $v_\pi(S_t)$ is independent of \textbf{w}. But we replace $v_\pi(S_t)$ with the target $R_{t+1} + \gamma \hat{v}(S_{t+1} \textbf{w})$, not taking into account that a change in \textbf{w} also changes the target.
 
-\subsection*{Model-free control with function approximation}
+\subsection{Model-free control with function approximation}
 In this chapter we consider the case when the action space $\mathcal{A}$ is finite and small. The idea is to predict using function approximation $\hat{q}(s,a,\textbf{w}) \approx q_\pi(s,a)$ and policy improvement which is $\epsilon$ 
 -greedy with respect to $\hat{q}(s,a,\textbf{w})$. Notice that if $\mathcal{A}$ is large the policy improvement can be hard to do. Here we will only consider \emph{on-policy} methods like MC and SARSA since an \emph{off-policy} methods like Q-learning have several issues when using function approximation.
 
-\subsection*{Action-values with function approximation}
+\subsection{Action-values with function approximation}
 We aim to approximate $\hat{q}(s,a,\textbf{w}) \approx q_\pi(s,a)$ with the idea that minimizing $J(\textbf{w}) = \mathbb{E} [(q_\pi(S_t,A_t) - \hat{q}(s,a,\textbf{w}))^{2}]$ with stochastic gradient descent:
 
 	\begin{equation}

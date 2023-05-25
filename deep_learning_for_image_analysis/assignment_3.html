@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Student Linus Falk" />
+  <meta name="dcterms.date" content="2023-05-13" />
+  <title>Deep Learning for Image Analysis DL4IA – Report for Assignment 3</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title"><strong>Deep Learning for Image
+Analysis</strong><br />
+DL4IA – Report for Assignment 3</h1>
+<p class="author">Student Linus Falk</p>
+<p class="date">2023-05-13</p>
+</header>
+<h1 class="unnumbered" id="introduction">Introduction</h1>
+<p>Third assignment in the course Deep learning for image analysis</p>
+<h1
+id="classification-of-hand-written-digits-using-a-convolutional-neural-network">Classification
+of hand-written digits using a Convolutional Neural Network</h1>
+<p><em><strong>Exercise 1.1</strong></em> In this exercise we
+implemented the same neural network as in assignment 2. But this time we
+used the PyTorch library and GPU support for training. The task was to
+compare the performance in accuracy and training time. The weight were
+initialized in the same way as in assignment 2 and training was done
+with the same hyperparameters, see table:<a href="#tab:tab1"
+data-reference-type="ref" data-reference="tab:tab1">1</a>. As we can see
+in table <a href="#tab:tab2" data-reference-type="ref"
+data-reference="tab:tab2">2</a> the accuracy performance is very similar
+since the architecture and the training methods is the same. The
+difference between the training times are on the other hand noticeably
+shorter for the PyTorch version. This is much thanks to the GPU support,
+but also more effective data handling then the "homeCooked" version has.
+In <a href="#fig:a2torchver" data-reference-type="ref"
+data-reference="fig:a2torchver">1</a> we can see signs that the model is
+starting to overfit. The test loss has stopped to improve while the
+training loss on the subset (6000 samples) of the training set is still
+improving. The model is overfitting to the training data and if we would
+continue to train we would we decrease in performance on the test
+set.</p>
+<div id="tab:tab1">
+<table>
+<caption>Hyperparameters Exercise 1.1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">SGD</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:a2torchver">
+<img src="figures/assignment_3/A2_torchversion.png"
+style="width:120mm" />
+<figcaption>Training history: Assignment 2 Torch version, Accuracy:
+97.22%</figcaption>
+</figure>
+<div id="tab:tab2">
+<table>
+<caption>Result Exercise 1.1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>"HomeCooked NN"</strong></th>
+<th style="text-align: left;"><strong>PyTorch</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Accuracy (%)</td>
+<td style="text-align: left;">97.26</td>
+<td style="text-align: left;">97.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time (sec)</td>
+<td style="text-align: left;">289</td>
+<td style="text-align: left;">22.28</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em><strong>Exercise 1.2</strong></em> In this exercise we construct
+a convolutional neural network with the PyTorch library according to the
+instructions. We compare the accuracy and number of weights between the
+Fully connected and the convolutional NN in table: <a href="#tab:tab4"
+data-reference-type="ref" data-reference="tab:tab4">4</a>. Looking at
+the training history we can conclude that this network doesn’t show the
+same signs of overfitting. The convolutional neural network has improved
+accuracy with fewer trainable weights. By using the CNN we improve the
+accuracy be preserving the spatial information and reduce the risk of
+overfitting by having fewer trainable parameters.</p>
+<div id="tab:tab3">
+<table>
+<caption>Hyperparameters Exercise 1.2</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">60</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.005</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">SGD</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:convnet1">
+<img src="figures/assignment_3/convnet.png" style="width:120mm" />
+<figcaption>Training history Exercise 1.2, Accuracy: 98.35%</figcaption>
+</figure>
+<div id="tab:tab4">
+<table>
+<caption>Result Exercise 1.2</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Architecture</strong></th>
+<th style="text-align: left;">Accuracy (%)</th>
+<th style="text-align: left;">Number of weights</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>FF</strong></td>
+<td style="text-align: left;">97.22</td>
+<td style="text-align: left;">109386</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>CNN</strong></td>
+<td style="text-align: left;">98.55</td>
+<td style="text-align: left;">21688</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em><strong>Exercise 1.3</strong></em> Here we are asked to swap
+place of the maxpooling layer and take the maxpooling before the
+activation function instead. This will result in fewer connections to
+the activation function making the time for calculating the activations
+fewer and therefore reducing the training time which we can see in:
+Table <a href="#tab:tab5" data-reference-type="ref"
+data-reference="tab:tab5">5</a>. If we would use a more complicated
+activation function like the <em>hyperbolic tangent</em> the time
+difference would increase. The worse accuracy in the swapped layer case
+can be caused by the fact that we are passing on less information to the
+activation function.</p>
+<div id="tab:tab5">
+<table>
+<caption>Result Exercise 1.3</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>CNN without swapped
+layers</strong></th>
+<th style="text-align: left;"><strong>CNN with swapped
+layers</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Accuracy (%)</td>
+<td style="text-align: left;">98.55</td>
+<td style="text-align: left;">96.87</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time (sec)</td>
+<td style="text-align: left;">202</td>
+<td style="text-align: left;">135</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:example">
+<img src="figures/assignment_3/convnet_swapped.png"
+style="width:120mm" />
+<figcaption>Training history Exercise 1.3</figcaption>
+</figure>
+<p><em><strong>Exercise 1.4</strong></em> To investigate how the choice
+of optimizer effects the training time, we are here asked to use the
+optimizer: <em>ADAM</em> (with default parameters) instead of
+<em>SGD</em> and compare how much faster the training
+becomes.<em>ADAM</em> is in many cases the best choice of optimizer and
+we can conclude from the result of our test in Table: <a
+href="#tab:tab6" data-reference-type="ref"
+data-reference="tab:tab6">7</a> that we need fewer epochs to achieve the
+same (or better) accuracy as <em>SGD</em> when using <em>ADAM</em>. We
+can see that the training accuracy, in figure: <a
+href="#fig:convnetadam" data-reference-type="ref"
+data-reference="fig:convnetadam">4</a> improving slightly more in the
+last iterations compared to the test set, indicating that were starting
+to get some overfitting.</p>
+<div id="tab:tab3">
+<table>
+<caption>Hyperparameters Exercise 1.4</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">betas</td>
+<td style="text-align: left;">(0.9, 0.999)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">eps</td>
+<td style="text-align: left;">1e-8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">weight_decay</td>
+<td style="text-align: left;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tab:tab6">
+<table>
+<caption>Result Exercise 1.4</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;"><strong>CNN trained with SGD</strong></th>
+<th style="text-align: left;"><strong>CNN trained with
+ADAM</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Accuracy (%)</td>
+<td style="text-align: left;">98.55</td>
+<td style="text-align: left;">98.69</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time (sec)</td>
+<td style="text-align: left;">202</td>
+<td style="text-align: left;">73</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:convnetadam">
+<img src="figures/assignment_3/convnet_adam.png" style="width:120mm" />
+<figcaption>Training history Exercise 1.4</figcaption>
+</figure>
+<p><em><strong>Exercise 1.5</strong></em> In this exercise we try out at
+least 3 different ways to improve our model by changing for example
+architecture, learning rate or using different types of regularization
+methods. The result is presented below with tables of changes for each
+model and performance measure. The result from the best model is also
+presented with a confusion matrix of the test set.</p>
+<p><strong>Model 1:</strong> We increase the last, fully connected
+layers to 50 nodes to improve see if we can improve the model with more
+learnable parameters. To reduce the risk of overfitting we also include
+a dropout layer after this layer with a probability, p=0,25.</p>
+<div id="tab:tab7">
+<table>
+<caption>Hyperparameters Exercise 1.5, Model 1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">98.8%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Model 2:</strong> Including batch normalization layers
+between layers can improve the training by normalizing the activation
+<span class="citation" data-cites="DLbook"></span>. In this case it
+didn’t give major improvement since we didn’t have a problem with
+vanishing or exploding gradients which it is commonly used to
+improve.</p>
+<div id="tab:tab7">
+<table>
+<caption>Hyperparameters Exercise 1.5, Model 2</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">98.89%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Model 3:</strong> Here we change the learning rate strategy
+by changing the learning rate such that i depends on the iteration
+number (i) with the function below <span class="citation"
+data-cites="SML"></span>.</p>
+<p><span class="math display">$$\gamma^{(i)} = \gamma_{\text{min}} +
+(\gamma_{\text{max}} - \gamma_{\text{min}})e^{\frac{i}
+{\text{totalNumberOfIterations}} }$$</span></p>
+<p>We set <span
+class="math inline"><em>γ</em><sub>max</sub> = 0.003</span> and <span
+class="math inline"><em>γ</em><sub>min</sub> = 0.0001</span> and update
+it throughout the training.</p>
+<div id="tab:tab7">
+<table>
+<caption>Hyperparameters Exercise 1.5, Model 3</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.003 - 0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">99.04%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Model 4:</strong> Here we simply combine model 1 and model 3.
+Increasing the number of nodes to 200 in the final fully connected
+layer, add a dropout layer after that and then use the changing training
+rate through the training. Even though we use the drop out layer we can
+see some indication of overfitting in the training history, looking at
+the accuracy. The training accuracy continue to improve but the test
+accuracy stays pretty much the same. Since this was the best performing
+model we also take a look at the confusion matrix. Here we can see that
+the most miss-classification is done on the actual digit 9, often being
+miss-classified as a 4, which is understandable considering the shape of
+the two digits.</p>
+<div id="tab:tab7">
+<table>
+<caption>Hyperparameters Exercise 1.5, Model 4</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BatchSize</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lr</td>
+<td style="text-align: left;">0.003 - 0.0001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">99.11%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:historyimproved">
+<img src="figures/assignment_3/improved_torch4.png"
+style="width:120mm" />
+<figcaption>Training history Exercise 1.5</figcaption>
+</figure>
+<figure id="fig:CM">
+<img src="figures/assignment_3/improved_torch4_CM.png"
+style="width:120mm" />
+<figcaption>Exercise 1.5 confusion matrix</figcaption>
+</figure>
+<figure id="fig:missclass">
+<img src="figures/assignment_3/convnet_missclassification.png"
+style="width:120mm" />
+<figcaption>Exercise 1.5 examples of miss-classification</figcaption>
+</figure>
+<h1 id="semantic-segmentation-of-biomedical-images">Semantic
+segmentation of Biomedical images</h1>
+<p><em><strong>Exercise 2.1</strong></em> Modifying our previous neural
+network by removing the fully connected layers replacing it with a 1
+<span class="math inline">×</span> 1 convolutional layer, we will now
+tackle a segmentation problem and evaluate it with Sørensen–Dice
+coefficient as performance measurement. In Figure: <a
+href="#fig:segexample" data-reference-type="ref"
+data-reference="fig:segexample">17</a> we can see the result from the
+segmentation of a randomly picked test image. The segmentation models
+worst performance on the test set is presented in Figure: <a
+href="#fig:worst" data-reference-type="ref"
+data-reference="fig:worst">18</a>. Here we can see that it seems like
+the specimen is ending abrupt in the image, showing a lot of dark areas,
+presumably the "background". Since this case is not well represented in
+the training set it is not so surprising that it performed badly on this
+image.</p>
+<div id="table:architecture_no_bn_v2">
+<table>
+<caption>Neural network architecture Exercise 2.1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Layer</strong></th>
+<th style="text-align: center;"><strong>Input Channels</strong></th>
+<th style="text-align: center;"><strong>Output Channels</strong></th>
+<th style="text-align: center;"><strong>Kernel Size / Stride /
+Padding</strong></th>
+<th style="text-align: center;"><strong>Activation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Conv1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLU</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MaxPool1</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">2x2 / 2 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ConvTranspose1</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">4x4 / 2 / 1</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Conv2</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLU</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">MaxPool2</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">2x2 / 2 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">ConvTranspose2</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">4x4 / 2 / 1</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Conv3</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLU</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MaxPool3</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">2x2 / 2 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ConvTranspose3</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">4x4 / 2 / 1</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Conv4</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1x1 / 1 / 0</td>
+<td style="text-align: center;">SoftMax</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:segexample">
+<img src="figures/assignment_3/segmentation_test4.png"
+style="width:100mm" />
+<figcaption>Exercise 2.1: Segmentation of test-image: image_05.png,
+</figcaption>
+</figure>
+<figure id="fig:worst">
+<img src="figures/assignment_3/segmentation_worst.png"
+style="width:100mm" />
+<figcaption>Exercise 2.1: Segmentation of test-image:
+image_11.png</figcaption>
+</figure>
+<div id="tab:tab8">
+<table>
+<caption>Hyperparameters Exercise 2.1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">150</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">learning</td>
+<td style="text-align: left;">0.003</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">0.76</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em><strong>Exercise 2.2</strong></em> We are asked to improve the
+model with various regularization techniques and other methods that are
+presented throughout the course. When testing different hyperparameters
+we split up the training set into a validation set and training set (20%
+and 80%), no mini batches. We train and test the different
+hyperparameters with the validation set and when we decided on a good
+model we train it with the whole training set and test it with the test
+set.</p>
+<p><strong>Model 1</strong>: We here try to increase the sparse training
+set by using the methods data augmentation. We rotate each image -90
+degrees and 180 degrees and add them to the training set before
+splitting it to a validation and training set. Same architecture as in
+Exercise 2.1</p>
+<p><strong>Model 2:</strong> Here we change the learning rate strategy
+the same way as described in Exercise 1.5.</p>
+<p><strong>Model 3:</strong> Batch-regularization is used to normalize
+the data before the activation, improving the training by avoiding
+vanishing or exploding gradients. We also add a learning schedule
+similar to <strong>model 2</strong> in exercise 1.5. This method showed
+best improvement on the validation set and was therefore best</p>
+<p><strong>Model 4-5: architecture:</strong></p>
+<div id="table:architecture_no_bn_v3">
+<table>
+<caption>Neural network architecture Exercise 2.2 model 4 &amp;
+5</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Layer</strong></th>
+<th style="text-align: center;"><strong>Input Channels</strong></th>
+<th style="text-align: center;"><strong>Output Channels</strong></th>
+<th style="text-align: center;"><strong>Kernel Size / Stride /
+Padding</strong></th>
+<th style="text-align: center;"><strong>Activation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Conv1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLu</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MaxPool1</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">2x2 / 2 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Conv2</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLu</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MaxPool2</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">2x2 / 2 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Conv3</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">128</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLu</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">MaxPool3</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">2x2 / 2 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ConvTranspose1</td>
+<td style="text-align: center;">128</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">4x4 / 2 / 1</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Conv4</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLU</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ConvTranspose2</td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">4x4 / 2 / 1</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Conv5</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">3x3 / 1 / 1</td>
+<td style="text-align: center;">ReLU</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">ConvTranspose3</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4x4 / 2 / 1</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Conv6</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1x1 / 1 / 0</td>
+<td style="text-align: center;">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Model 4:</strong> New architecture with the more classic
+"wasp-waist" structure.</p>
+<p><strong>Model 5:</strong> The new architecture but with
+Batch-regularization layers.</p>
+<div id="tab:tab8">
+<table>
+<caption>Hyperparameters Exercise 2.1, Model 1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"><strong>Model 1</strong></th>
+<th style="text-align: left;"><strong>Model 2</strong></th>
+<th style="text-align: left;"><strong>Model 3</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Method</td>
+<td style="text-align: left;">Data Augmentation</td>
+<td style="text-align: left;">Learning Rate Scheduling</td>
+<td style="text-align: left;">Batch-normalization</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+<td style="text-align: left;">Adam</td>
+<td style="text-align: left;">Adam</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">learningRate</td>
+<td style="text-align: left;">0.003</td>
+<td style="text-align: left;"><span
+class="math inline"><em>γ</em><sup>(<em>i</em>)</sup></span></td>
+<td style="text-align: left;">0.003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">0.73</td>
+<td style="text-align: left;">0.77</td>
+<td style="text-align: left;">0.84</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tab:tab8">
+<table>
+<caption>Hyperparameters Exercise 2.1, Model 1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Hyperparameters</strong></th>
+<th style="text-align: left;"><strong>Model 4</strong></th>
+<th style="text-align: left;"><strong>Model 5</strong></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Method</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Batch-normalization</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Epochs</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Optimizer</td>
+<td style="text-align: left;">Adam</td>
+<td style="text-align: left;">Adam</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">learningRate</td>
+<td style="text-align: left;">0.003</td>
+<td style="text-align: left;">0.003</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Result:</strong></td>
+<td style="text-align: left;">0.66</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure id="fig:both_images">
+<figure id="fig:image1">
+<img src="figures/assignment_3/segmentation_model1_hist.png" />
+<figcaption>Model 1</figcaption>
+</figure>
+<figure id="fig:image2">
+<img src="figures/assignment_3/segmentation_model2_hist.png" />
+<figcaption>Model 2</figcaption>
+</figure>
+<figure id="fig:image3">
+<img src="figures/assignment_3/segmentation_model3_hist.png" />
+<figcaption>Model 3</figcaption>
+</figure>
+<figure id="fig:image1">
+<img src="figures/assignment_3/segmentation_model4.png" />
+<figcaption>Model 4</figcaption>
+</figure>
+<figure id="fig:image2">
+<img src="figures/assignment_3/segmentation_model5.png" />
+<figcaption>Model 5</figcaption>
+</figure>
+<figure id="fig:image2">
+<img src="figures/assignment_3/segmentation_model6.png" />
+<figcaption>Model 5 on training &amp; test set</figcaption>
+</figure>
+<figcaption>Model 5 on training &amp; test set</figcaption>
+</figure>
+<p>Looking at the training history for model 1-3 see no sign of
+overfitting the validation set. In the case of model 4 it seems to
+having problem with vanishing gradients being a much "deeper" than the
+previous design. The batch normalization in model 5 seems to solve some
+of the problems. Taking the model 5 setup and training it with the whole
+training set and test it on the test set resulted in a dice coefficient
+of: <strong>0.82</strong>. Looking at the training history we can see
+that the training loss is still reducing but the test loss is not,
+indicating that it has stopped improving in terms of generalization and
+started to overfit. Interesting to notice is that the result from
+exercise 2.1 seem to be better at identifying the individual glands (if
+we were to count them) even though it scored lower in the the test.</p>
+<figure id="fig:segexample">
+<img src="figures/assignment_3/segmentation_test_best.png"
+style="width:100mm" />
+<figcaption>Exercise 2.2: Segmentation of test-image: image_05.png,
+</figcaption>
+</figure>
+<figure id="fig:worst">
+<img src="figures/assignment_3/segmentation_worse_best.png"
+style="width:100mm" />
+<figcaption>Exercise 2.2: Segmentation of test-image:
+image_11.png</figcaption>
+</figure>
+<p><em><strong>Exercise 2.3</strong></em> To further improve the network
+was the network converted to U-net design with skipped connections where
+the activations/feature channels are concatenated with filters "across"
+the network, passing spatial information from lower layers to the higher
+<span class="citation" data-cites="UNet"></span>. The new design is
+presented in Figure: <a href="#fig:unet" data-reference-type="ref"
+data-reference="fig:unet">19</a>. We can see in the result in Figure:<a
+href="#fig:unet5" data-reference-type="ref"
+data-reference="fig:unet5">22</a> and <a href="#fig:unet11"
+data-reference-type="ref" data-reference="fig:unet11">23</a> that it
+captures the boundaries of the glands better than the previous models,
+much closer to the label boundaries and not as lumped together. The dice
+coefficient score was <strong>0.83</strong> for this U-net
+implementation. There is still room for improvement but we can see some
+clear benefits using the U-net design. Inspecting the training history
+in Figure: <a href="#fig:unethist" data-reference-type="ref"
+data-reference="fig:unethist">20</a> we can see that the training loss
+is still decreasing but the test loss is not, starting to overfit the
+model to the training data. The model was trained with the same
+hyperparameters as model 2 in exercise 2.2.</p>
+<figure id="fig:both_images">
+<figure id="fig:unet">
+<embed src="figures/assignment_3/unet.pdf" />
+<figcaption>Exercise 2.3: U-net architecture</figcaption>
+</figure>
+<figure id="fig:unethist">
+<img src="figures/assignment_3/segmentation_unet.png" />
+<figcaption>Exercise 2.3: U-net training history</figcaption>
+</figure>
+<figcaption></figcaption>
+</figure>
+<figure id="fig:unet5">
+<img src="figures/assignment_3/segmentation_im5_unet.png"
+style="width:100mm" />
+<figcaption>Exercise 2.3: U-net segmentation of test-image:
+image_5.png</figcaption>
+</figure>
+<figure id="fig:unet11">
+<img src="figures/assignment_3/segmentation_im11_unet.png"
+style="width:100mm" />
+<figcaption>Exercise 2.3: U-net segmentation of test-image:
+image_11.png</figcaption>
+</figure>
+<p><em><strong>Exercise 2.4</strong></em> The network was then converted
+to ResNet design with additional convolution layers and skipped
+connections. The skipped connections help reduce the risk of vanishing
+gradients, making it possible to construct deeper networks <span
+class="citation" data-cites="ResNet"></span>. The architecture is
+presented in Figure: <a href="#fig:resnet" data-reference-type="ref"
+data-reference="fig:resnet">24</a>. This was the best model so far with
+a Dice coefficient of <strong>0.84</strong>, training history is
+presented in Figure: <a href="#fig:resnethist" data-reference-type="ref"
+data-reference="fig:resnethist">25</a>. Looking at the example images we
+can see that this much deeper network does a much better work of
+segmenting the glands and also performs better with the "background"
+image, see Figure:<a href="#fig:resnet11" data-reference-type="ref"
+data-reference="fig:resnet11">28</a>. The boundaries are not as good as
+in the U-net version should be noted. This is expected since U-net is a
+more segmentation specific design. Again, inspecting the training
+history in Figure: <a href="#fig:resnethist" data-reference-type="ref"
+data-reference="fig:resnethist">25</a> we see the gap increasing between
+the training and test loss, indicating that we are overfitting. The
+skipped connections was then removed to compare the training time
+between the architectures, see figure: <a href="#fig:resnetnoskip"
+data-reference-type="ref" data-reference="fig:resnetnoskip">29</a>. No
+major difference can be seen, and this can be caused by multiple factors
+like: architecture not deep enough to see benefits, learning rate not
+properly set and other hyperparameters not ideal for the network. In
+this case it is probably do to that the network is not especially deep.
+Model was trained with the same hyperparameters as model 2 in exercise
+2.2.</p>
+<figure id="fig:both_images">
+<figure id="fig:resnet">
+<embed src="figures/assignment_3/resnet.pdf" />
+<figcaption>Exercise 2.4: ResNet architecture</figcaption>
+</figure>
+<figure id="fig:resnethist">
+<img src="figures/assignment_3/resnet_history.png" />
+<figcaption>Exercise 2.4: ResNet training history</figcaption>
+</figure>
+<figcaption></figcaption>
+</figure>
+<figure id="fig:resnet5">
+<img src="figures/assignment_3/restnet_im5.png" style="width:100mm" />
+<figcaption>Exercise 2.4: ResNet segmentation of test-image:
+image_5.png</figcaption>
+</figure>
+<figure id="fig:resnet11">
+<img src="figures/assignment_3/restnet_im11.png" style="width:100mm" />
+<figcaption>Exercise 2.4: ResNet segmentation of test-image:
+image_11.png</figcaption>
+</figure>
+<figure id="fig:resnetnoskip">
+<img src="figures/assignment_3/resnet_history_noskip.png"
+style="width:100mm" />
+<figcaption>Exercise 2.4: ResNet training history</figcaption>
+</figure>
+<div class="thebibliography">
+<p><span>1</span></p>
+<p>Philip K. Dick (1968). Do Androids Dream of Electric Sheep? Ian J.
+Goodfellow, Yoshua Bengio and Aaron Courville (2016). Deep Learning
+Lindholm, Andreas and Wahlström, Niklas and Lindsten, Fredrik (2022).
+Machine Learning - A First Course for Engineers and Scientists O.
+Ronneberger, P. Fischer, and T. Brox (2015). U-Net: Convolutional
+Networks for Biomedical Image Segmentation. K. He, X. Zhang, S. Ren, and
+J. Sun (2016). Deep Residual Learning for Image Recognition.</p>
+</div>
+</body>
+</html>

@@ -1,3 +1,5 @@
+%!TEX root = master.tex
+
 \section{Introduction}
 Machine learning can typically be separated into three branches: 
 
@@ -9,12 +11,12 @@ Machine learning can typically be separated into three branches:
 
 Reinforcement learning is different from the two other branches in the way that it is not supervised with labeled data, but it doesn't find patterns in data completely on its own as in unsupervised learning. Instead there is a reward signal, and the feedback can be delayed, so time come in as a factor as well. The actions of the so called \textbf{agent} affect the subsequent data it receives. 
 
-\subsection*{The agent-environment interface}
+\subsection{The agent-environment interface}
 In our reinforcement learning setup we have the \textbf{agent} which is the decision maker and the \textbf{environment}, which can be seen as everything else in the setup. The goal is to maximize the cumulative reward. The agents task is to learn this from experience. 
 
 The agent observes the environments state and takes some sort of action, the agent then receives a rewards from the action and the environments state changes. The agent must now observe the new state and take a new action, and so on. Note: in reinforcement learning the environment, agent and/or reward may be stochastic.  
 
-\subsection*{Probability theory - review}
+\subsection{Probability theory - review}
 Lets consider two random variables $X \in \chi$ and $Y \in \gamma$ 
 
 \begin{itemize}
@@ -41,7 +43,7 @@ Lets consider two random variables $X \in \chi$ and $Y \in \gamma$
 \end{itemize}
 
 
-\subsection*{What is a state?}
+\subsection{What is a state?}
 The state S$_t$ is a representation of the environment at time t. The state space $\mathcal{S}$ is a set of all possible states. S$_t$ will be dependent on what happened in the past, before time t. S$_t$ contains all information that is relevant for the prediction of the future at time t.
 
 
@@ -77,7 +79,7 @@ No! we don't have any information about the direction the stick is moving in.
 \end{example}	
 
 
-\subsection*{What is the reward}
+\subsection{What is the reward}
 The reward $R_t$ is a scalar signal that tells how it is doing at that time step t. The goal is the maximize the cumulative reward over \textbf{long-time}. 
 
 In the taxi example could we for example see a reward of -10 if a illegal pick-up or drop-off occurred, a successful drop-off would score +20 and all other actions would score -1 in reward. So in other words, to maximize the total reward we should deliver passenger in as few steps as possible. 
@@ -85,7 +87,7 @@ In the taxi example could we for example see a reward of -10 if a illegal pick-u
 In the inverted pendulum example could the goal be to keep the angle as close to zero as possible, perhaps: $R_{t+1} = - \theta_t^{2}$ and if we also want to use a low torque we could try: $R_{t+1} = -c_1\theta_t^{2} - c_2a_t^{2}$. With $\theta_t = 0$ and $a_t = 0$ we would get the maximum reward $R_{t+1} = 0$
 
 
-\subsection*{Sequential decision making}
+\subsection{Sequential decision making}
 The goal is to select actions that maximize the future reward. So actions may have long term consequences and reward may be delayed. It can also be the case that sacrificing immediate reward can gain more long-term reward. Examples:
 
 \begin{itemize}
@@ -93,23 +95,23 @@ The goal is to select actions that maximize the future reward. So actions may ha
 	\item Fueling a car, prevent fuel stop later 
 \end{itemize}
 
-\subsection*{Designing the reward functions}
+\subsection{Designing the reward functions}
 In this course we will often receive the reward functions. However it is important to note that the design of the reward function is important since it will determine what the agent tries to achieve. In some cases the agent might also find unintended ways to increase the reward and the reward influences \textbf{how} the agent learns. 
 
 an example would be the mountain car with the goal of reaching the top/the flag with as few steps as possible. The reward is -1 for each step until the flag is reached. This is a sparse rewards, all action looks equally bad until the flag is reached the first time. It could be possible to use a more informative reward function, but it is important to make sure that the agent still optimize the correct thing we want. 
 
 
-\subsection*{What is an action}
+\subsection{What is an action}
 An action $A_t$ is the way an agent can affect the state a time t and $\mathcal{A}$ is the set of all possible actions. In the taxi example would an action be for example: go north, go west and pick-up and in the pendulum example could it be: torque.
 
-\subsection*{Stochastic environments}
+\subsection{Stochastic environments}
 A deterministic environment is one which the outcome of an action is determined by the current state and the actions taken. While in the stochastic environment there is some randomness and the outcome of an action is not completely determined by the current state. This means that the same action in the same state might have different outcomes at different times. This means that it is harder for the agent to learn an optimal policy. 
 
 
-\subsection*{The power of feedback}
+\subsection{The power of feedback}
 If no feedback is given we can pre-compute all actions $A_0,A_1,...$ if the first state $S_0$ is given. While with feedback we decide the action $A_t$ after we have observed the state at time t, $S_t$. Example could be to walk with or without blindfold. So instead of trying to find good actions we want to try to find a good policy. 
 
-\subsection*{What is a policy?}
+\subsection{What is a policy?}
 Policy is a distribution over actions given states:
 
 	\begin{equation}
@@ -137,7 +139,7 @@ A policy defines how the agent will behave in different states. If we have a det
 	for some fixed L, that we can find if F and G are know.
 \end{example}	
 
-\subsection*{Terminology}
+\subsection{Terminology}
 
 \begin{table}[ht!]
 \centering
@@ -155,11 +157,11 @@ Learn policy from experience & Use model to find controller (LQC or MPC)\\ \hlin
 \label{tab:tab1}
 \end{table}
 
-\subsection*{Exploration vs exploitation}
+\subsection{Exploration vs exploitation}
 The agent should be able to learn a good policy without losing to much reward. \textbf{Exploration} is used to learn more about the environment and \textbf{exploitation} is the use of information to maximize the reward. We usually have both explore and exploit.
 
 
-\subsection*{Model vs model-free}
+\subsection{Model vs model-free}
 In model based reinforcement learning we learn a model from experience and uses the model to find a good policy and/or predictions. While in model-free learning we learn a policy and/or predictions without first learning the model. In this course the main focus will be on model-free reinforcement learning.  
 
 

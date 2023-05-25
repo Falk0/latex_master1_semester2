@@ -80,14 +80,14 @@ We create images from signals that can be of different types: electromagnetic wa
 
 We can use more than only the visible part of the electromagnetic spectrum, we can use all of it with different techniques. 
 
-\subsection*{Emission, excited emission, transmission or reflection}
+\subsection{Emission, excited emission, transmission or reflection}
 Imaged physical properties can be categories into : \textbf{Emission} (Astronomy, Autoradiography), \textbf{Exited emissions} (Flourescense), \textbf{transmission} (light microscopy, film scanning, classical x-rays) and \textbf{Reflections} (Normal photography, Document scanning, satellite sensors)
 
 Consider where/what is the light source. In case of \textbf{emission} we have a well defined spectral properties, coming directly from the source. \textbf{Transmitted light} on the other hand is exponentially absorbed with a logarithmic intensity that is directly proportional to the absorbing matter. In the case of \textbf{reflection} is the surface orientation as well as the material properties and the direction and the spectral characteristics of the illumination that determines the signal. There is a need to differentiate between diffuse and specular reflection. 
 
 The illumination can be controlled in the case of a \textbf{Active} sensor system. This can be done either all at once for the whole scene or by scanning a pixel or a line at a time. An important example of a \textbf{Active} sensor system is: \textbf{LIDAR:} "laser imaging, detection and ranging".
 
-\subsection*{Densitometric aspects: Resolution}
+\subsection{Densitometric aspects: Resolution}
 It is important to consider what the densitometric resolution is and what is the signal to noise rate SNR. What pixel depth can we get or in other words how many greylevel do we get and are all of them meaningful. And what is the actual property that is measured? 
 
 \begin{itemize}
@@ -108,7 +108,7 @@ We also need to have in mind the spatial consistency and ask: Will all positions
 
 Imperfections is not only present considering spatial consistency where different part of the sensor register differently, we can have non linearity behavior of the registered sensor that must be corrected for with calibration. We need to know if the grey value is linearly or logarithmically  related to the physical property we are interested in. In the field of normal photography is the intensity registered by our sensor linearly related to the reflected light and in transmission imaging is the light absorption logarithmically related to the amount of material the light passes through. If calibration is needed then it will be of importance to investigate of stable it is over time. 
 
-\subsection*{The spatial dimension (x,y,z)}
+\subsection{The spatial dimension (x,y,z)}
 Questions regarding the spatial dimensions to have in mind: How are the spatial dimensions \textbf{x,y,x} mapped into the image? Is the image a slice, a projection a depth map or something else? Are there any distortions that make the image not geometrically correct? What is the spatial resolution. Is it possible to get more than 2 dimensions with the available technology? 
 
 The spatial dimension can be mapped as \textbf{projection} that gives a 2D image of reflections from visible surfaces (in 3D) for the sensor or a transmission through the object. A \textbf{distance} image give explicit information as seen from a single point (2 1/2 D). With a \textbf{slice} we select a slice from a volume. \textbf{Tomographic reconstruction} is a method to compute information about the internal density structure using measurements of numerous line integrals. 
@@ -136,7 +136,7 @@ Reconstructed images like tomographic reconstruction is a type of inverse proble
 	\end{itemize}
 \end{itemize}
 
-\subsection*{The spectral dimension \textbf{w}}
+\subsection{The spectral dimension \textbf{w}}
 In all imaging we need to limit the spectral range we are imaging by choosing a range in a wavelength interval. Different spectral ranges often give different image contrast. The signal in each of the pixels is the result of a convolution between:
 \begin{itemize}
  	\item The spectral distribution of the illumination
@@ -159,7 +159,7 @@ What limit us to only use three spectral channels in image analysis is conventio
 
 A solution to capture a large number of spectral channels is to have a rotating filter wheel in front of a wide band, single channel sensor/sensing chip. This requires the scene to be stationary since there will be several images registered.
 
-\subsection*{Temporal aspects (\textbf{t})}
+\subsection{Temporal aspects (\textbf{t})}
 Each image will register something for defined time interval and if there is only one single temporal slice we have a still image, while if there are multiple exposures we get a film/movie. For each captured image or exposure we need to define the exposure time, the following questions should be considered:
 
 \begin{itemize}
@@ -181,20 +181,20 @@ Sequences can also be used to detect changes in scenes by subtracting the previo
 
 Multiplexing is needed since the intensity must be measured for all pixels to get a complete image matrix and we have multiple spectral channels (color RGB) to consider in the integration process. There are no effective sensors that can capture all dimension at once and we need to multiplex the light collection. The amount of parallelism in this light collection is an aspect imaging system and is strongly influenced by how the light is handled (economically) by the system. 
 
-\subsection*{Area integration}
+\subsection{Area integration}
 Area integration in imaging technology that uses a 2D image sensor to register the light for the whole image in parallel is by far the most common. It started of with image tubes and was later replaced with \textbf{CCD} (Charge Coupled Device) that are now being replaced with \textbf{CMOS} (Complementary Metal Oxide Semiconductor) that could be replaced by new technologies like QIS (photon counting devices) in the future. 
 
 Area integrations gives the best light collection efficiency since it collects "all the light". It also have a rigid geometry and gives stable and predictable imaging geometry that don't suffers from a lot of distortions. There is no need for mechanical motions and they can be mass-produced and therefore inexpensive. The drawbacks with area integration is that it need an even illumination of the whole image surface and there may be varying sensor sensitivities that need to be corrected for. It is also difficult to achieve high fill factor since there are other things that competes for space on the 2D area, multispectral scanning can therefore also be hard to achieve. The image size will be limited by the sensor size. 
 
 CMOS and CCD matrices/sensors are available in many different version with a variety of megapixel resolutions for special applications. In some applications they can be cooled to very low temperatures that allows for long integration times when the light levels are very low. In contrast they can also be used to capture fast events like laser flashes. 
 
-\subsection*{Linewise integration}
+\subsection{Linewise integration}
 This kind of sensors are often find in scanners and can be moved to capture an image of the object, or the object can be moved over the sensor. It is also common in remote sensing like satellites that move along the earth surface. 
 
 The technical advantages with line integrations are much better pointwise integration but worse economy compered to area. In motion the orthogonal line will be "frozen" which can be useful in some applications. It allows the use of the other dimension in a 2D sensor for the wavelength, for RGB and hyper spectral scanners \textcolor{red}{? read more}. It possible to create whats called "intelligent sensors" by having a processor for each pixel. 
 The disadvantages are similar to area integration, it needs an even illumination along the scan line, it needs corrections of sensor sensitivity along the line of pixels. The 1D fill factor is important but not often a problem \textcolor{red}{meaning?}. There is also a risk for x-y in-homogeneity because of the widely different methods of scanning.  
 
-\subsection*{Point-wise integration}
+\subsection{Point-wise integration}
 With this methods we register light from one pixel at a time and it requires motion to create the image. Here we most distinguish between what is moving:
 \begin{itemize}
 	\item The illumination
@@ -216,13 +216,13 @@ The method is mainly used in stationary conditions such as microscopy or scannin
 
 Some of the advantages are that it gives maximal possibilities for optimization of the measurement of each pixel and that i can have optimized optical path and sensor. No differences between the sensor properties of the different pixel sensors, i.e. only one pixel. It also have the advantage of not having a limit to the image size. The disadvantages are that it uses the incoming light poorly and need some sort of complex mechanical system for scanning which also results in it being very slow compared to the other methods. 
 
-\subsection*{Multiplexing for volume imaging}
+\subsection{Multiplexing for volume imaging}
 A few words about multiplexing and volume imaging; It is possible to register single voxels, a line, a plane at a time, the whole volume in parallel. Collecting data in the Fourier domain or through other transforms can be done. Today most tomographic systems collect data from the whole volume or from multiple planes simultaneously which is fast and therefore saves time and signal economy. 
 
-\subsection*{Wavefront imaging}
+\subsection{Wavefront imaging}
 Is new form of imaging that have high information density. The Wavefront sensing measure the amplitude and phase of the incoming optical field simultaneously. It is still under development but show promising results. 
 
-\subsection*{Stored intermediate analogue image}
+\subsection{Stored intermediate analogue image}
 This category is mainly of historic interest and a few example are listed here:
 
 \begin{itemize}

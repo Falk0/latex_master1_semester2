@@ -3,7 +3,7 @@
 \section{Policy gradient methods}
 Policy gradient methods are a class of model-free reinforcement learning algorithms that directly optimizes the policy, maps the states to action by using gradient descent. By using gradient of the expected return with respect to the policy parameters, these class of methods iteratively updates the policy to improve the performance. 
 
-\subsection*{Value-based vs Policy based RL}
+\subsection{Value-based vs Policy based RL}
 The value-based RL methods are what we have looked at so far. Here we learn the value function and act greedily ($\epsilon$-greedy). In policy-based methods we don't use a value function, but learn a policy instead. In the next chapters we will take a look at Actor-critic methods were we learn the value function and policy.
 
 \begin{figure}[ht!]
@@ -14,7 +14,7 @@ The value-based RL methods are what we have looked at so far. Here we learn the 
 \end{figure}
 
 
-\subsection*{Policy based methods}
+\subsection{Policy based methods}
 We parameterize the policy with some unknown parameters $\theta$:
 
 	\begin{equation}
@@ -40,7 +40,7 @@ We can parametrize $h(s,a,\theta)$ either linear or non-linear. Where in the lin
 
 \end{example}	
 
-\subsection*{Random continuous variables}
+\subsection{Random continuous variables}
 If we consider a scalar random continuous variable $a$. The probability density function $p(a)$ describes "the relative likelihood" that a random variable takes on different values:
 
 	\begin{equation}
@@ -76,14 +76,14 @@ In the case of a Neural network, it would take a as an input and output $\mu$ an
 \end{example}	
 
 
-\subsection*{Why policy-based methods}
+\subsection{Why policy-based methods}
 So why do we use policy-based methods? In order to deal with high-dimensional and continuous action spaces directly. We can by using these methods incorporate prior knowledge of the problem. It is possible to adjust the variance and thus also the exploration over time with these methods. Previously we have used for example $\epsilon$-greedy for exploration, but in policy-based the agent can start of by exploring very randomly but then over time adjust the parameters $\theta$ in order to approach a more deterministic optimal policy. Policy-based methods can also learn a stochastic policy. 
 
-\subsection*{Why have a stochastic policy?}
+\subsection{Why have a stochastic policy?}
 Then the question of: why having a stochastic policy arise. For a Markov decision process there will always be a deterministic optimal policy. For exploration it is possible to use $\epsilon$-greedy like discussed earlier, but this will not change the fact that the optimal policy is deterministic. However if we don't observe the full state s, then the optimal policy will not always be deterministic. One important case, if we use function approximation, in other words: $\hat{q}(s,a,\textbf{w}) = \textbf{w}^{T}\textbf{x}(s,a)$ then we only "see" the state through our features \textbf{x}$(s,a$ and may actually lose information ("State-aliasing")
 
 
-\subsection*{Policy-gradient methods}
+\subsection{Policy-gradient methods}
 If we let $J(\theta): \mathbb{R}^{d} \rightarrow \mathbb{R}$ be a scalar valued function with a vector input. We aim to find $\theta$ that \emph{maximizes} $J(\theta)$. For this we can use the gradient:
 
 	\begin{equation}
@@ -92,7 +92,7 @@ If we let $J(\theta): \mathbb{R}^{d} \rightarrow \mathbb{R}$ be a scalar valued 
 
 At a point $\overline{\theta}, J(\theta)$ increases fastest in the direction $+\nabla J(\hat{\theta})$  and the gradient ascent will there for be: $\theta \leftarrow \theta + \alpha J(\theta), \quad \alpha > 0$
 
-\subsection*{What criterion to maximize?}
+\subsection{What criterion to maximize?}
 We will here for simplicity assume that $\gamma = 1$, in other words no discount, so that the return will be $G_t = \sum_{k= t+1}^{T} R_k$. In the RL course literature it is focused on episodic environments starting in $s_0$ and use:
 
 	\begin{equation}
@@ -142,7 +142,7 @@ Here we encounter a challenge, a change in $\theta$ will affect:
 \end{example}	
 
 
-\subsection*{The policy gradient theorem}
+\subsection{The policy gradient theorem}
 We now consider a general Markov decision process MDP again and let the criterion we want our policy to maximize to be: $J(\theta) = v_{\pi_\theta} (s_0)$
 
 \begin{wbox}{The policy gradient theorem}
@@ -156,7 +156,7 @@ here the second equality follows since $\mathbb{E}_{\pi_\theta} [G_t |S_t,A_t] =
 \end{wbox}
 
 
-\subsection*{Stochastic policy-gradient ascent (REINFORCE)}
+\subsection{Stochastic policy-gradient ascent (REINFORCE)}
 	\begin{equation}
 		\nabla J(\theta) = \mathbb{E}_{\pi_\theta} [q_{\pi_\theta}(S_t,A_t)\nabla \ln \pi (A_t|S_t, \theta)] = \mathbb{E}_{\pi_\theta} [G_t \nabla \ln \pi (A_t|S_t, \theta)],
 	\end{equation}

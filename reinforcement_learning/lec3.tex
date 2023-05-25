@@ -1,4 +1,6 @@
-\subsection*{Repetition}
+%!TEX root = master.tex
+
+\subsection{Repetition}
 Here follow some important concepts that were covered in previous lectures:
 
 \begin{wbox}{}
@@ -71,7 +73,7 @@ Dynamic programming is a class of algorithms that solves a problem by breaking i
 \end{itemize}
 
 
-\subsection*{Policy evaluation}
+\subsection{Policy evaluation}
 For the problem we are given: $\pi$, then we compute $v_\pi(s)$ for all $s \in \mathcal{S}$. Using the bellman equation: 
 
 	\begin{equation}
@@ -79,7 +81,7 @@ For the problem we are given: $\pi$, then we compute $v_\pi(s)$ for all $s \in \
 	\end{equation}
 This gives us a system of linear equation that can be solved analytically or with iterative process. For large state and or action space, it's more effective to use the iterative alternative. 
 
-\subsection*{Iterative policy evaluation}
+\subsection{Iterative policy evaluation}
 We start of with making some sort of initial guess. $v_0$, for example: $v_0(s) = 0$ for all $s$. In each of the iterations we use the RHS of the bellman equation: 
 
 	\begin{equation}
@@ -100,7 +102,7 @@ with $u_k$ = $v_\pi$
 \textbf{Bootstrapping} is the process of using the old estimate $v_k$ to improve our new estimate 
 
 
-\subsection*{Implementation}
+\subsection{Implementation}
 For a finite state space $\mathcal{S}$ we can represent the state value function $v(s)$ as an array with one element for each state in $\mathcal{S}$. $v_k \rightarrow v_\pi \text{ as } k \rightarrow \infty$,  but in practice we stop when the difference between the new and old step is small enough. The algorithm is then: 
 
 \begin{wbox}{The algorithm}
@@ -127,7 +129,7 @@ For a finite state space $\mathcal{S}$ we can represent the state value function
 This is easier to implement and only need one array v(s). Notice that now the updates depends on what order we sweep through the states. It also converges to $v_\pi (s)$, often faster. 
 \end{wbox}
 
-\subsection*{Policy improvement}
+\subsection{Policy improvement}
 Given a policy $\pi$ we now need to see how to evaluate $v_\pi(s)$, is it possible to find a better policy? That is the policy $\pi^{\prime}$ such that:
 
 	\begin{equation}
@@ -145,7 +147,7 @@ The \textbf{greedily} action with the respect to the action values i.e.:
 		\pi^{\prime} (s) = \underset{a}{\arg \text{max }} q_\pi(s,a)
 	\end{equation}
 	
-\subsection*{The policy improvement theorem}
+\subsection{The policy improvement theorem}
 Lets consider the deterministic policy $a = \pi(s)$ (the result holds for stochastic $\pi (a|s)$ also). Then the greedy policy with respect to $v_\pi(s)$ is:
 
 	\begin{equation}
@@ -169,7 +171,7 @@ If $q_\pi(s,\pi^{\prime}(s)) \ge v_\pi(s)$ fir all $s \in \mathcal{S}$, then
 This means that $\pi^{\prime}(s) = \underset{a}{\arg \text{max }} q_\pi(s,a)$ is as good as, or better than $\pi(s)$
 
 
-\subsection*{Is this an improvement?}
+\subsection{Is this an improvement?}
 The policy improvement is given by
 
 	\begin{equation}
@@ -185,7 +187,7 @@ this will be \textbf{at least} as good as $\pi$ in all states. But what if there
 This is the Bellman optminality equation, so $\pi$ and $\pi^{\prime}$ are optimal policies! So the \textbf{conclusion} is that $\pi^{\prime}$ will be strictly better than $\pi$, unless $\pi$ is already optimal. 
 
 
-\subsection*{Policy iteration}
+\subsection{Policy iteration}
 If we start with an initial policy $\pi$:
 
 	\begin{enumerate}
@@ -200,7 +202,7 @@ If we start with an initial policy $\pi$:
 
 In the case of a finite MDP this will converge within a finite number of iterations. Some details regarding the implementation: In E: we can start from the previous policy to speed up the computations and in I: if there are several a that maximize $q_\pi(s,a)$, choose one arbitrary or a stochastic policy that picks between them with uniform probability. 
 
-\subsection*{Value iteration}
+\subsection{Value iteration}
 In policy iteration we do the evaluation complete before we improve the policy, this is called \textbf{generalized policy iteration}. We can also stop the evaluation after just one sweep over all states, this is called \textbf{value iteration}
 
 If we take a look on what happens if we do one iteration of evaluation before we improve, that is for all s:
@@ -221,7 +223,7 @@ Or in one equation:
 With this iteration we will converge to the optimal $v_*(s)$. We can for example use in place updates instead of synchronous updates. 
 
 
-\subsection*{Value iteration and the Bellman optimality equation}
+\subsection{Value iteration and the Bellman optimality equation}
 
 \begin{itemize}
 	\item \textbf{Value iteration:} 
@@ -242,7 +244,7 @@ With this iteration we will converge to the optimal $v_*(s)$. We can for example
 		\end{equation}
 \end{itemize}
 
-\subsection*{Summary}
+\subsection{Summary}
 For all methods the idea is to apply the right hand side RHS of the corresponding Bellman equation repeatedly until it convergence. All methods can also be applied to q(s,a) 
 
 \begin{table}[ht!]

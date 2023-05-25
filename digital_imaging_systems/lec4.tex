@@ -14,7 +14,7 @@ All newer telescopes are tracking the objects on the sky with the Alt-Azimuth mo
 	\item English mount
 \end{itemize}
 
-	\subsection*{Imaging: the points spread function}
+	\subsection{Imaging: the points spread function}
 	An image of a Point Spread Function, "PSF" created by a telescope is not a point due to diffraction. The intensity distribution in the focal plane produced by a point source located at infinity is the PSF. The ideal PSF for a circular mirror takes the shape of the Bessel function.
 
 	\textcolor{red}{Image bessel} 
@@ -33,7 +33,7 @@ All newer telescopes are tracking the objects on the sky with the Alt-Azimuth mo
 
 	The magical number in astronomy is therefore: 2.355 for sampling. This is important for making sure that we use a sensor that doesn't have to large pixels or smaller than necessary. 
 
-	\subsection*{Resolution limit}
+	\subsection{Resolution limit}
 	Details that are smaller than the diffraction image of the telescope are smeared out, so after data reduction are anything smaller than $\frac{\lambda} {D} $ an artifact. So, is it possible to do better than the limit set by : $\frac{\lambda} {D} $, can we resolve features of distant objects smaller than the diffraction limit? YES!
 
 		\begin{itemize}
@@ -54,7 +54,7 @@ All newer telescopes are tracking the objects on the sky with the Alt-Azimuth mo
 	  
 	 Radio interferometers are easier since the wavelength is longer making it cheaper to build and use. Here we can digitize the signal and transmit it with fiber cables instead of highly accurate mirrors and trolleys. The correlation between the telescopes can be done in supercomputers so its just to move the telescopes around and keep track of the position of them. This means that the array can be made more compact, not loosing a lot of flux. 
 
-	 \subsection*{Doppler imaging}
+	 \subsection{Doppler imaging}
 	 During the 1900 century astronomers discovered a class of stars that we call "Peculiar". They have a chemical compositions of a lot of rare-earth metals which is unusual. The spectra of the star also showed a periodic variability. After systematic observations of these changes, it became clear that it was not only the strength of the spectral lines that changed but also the shape of them. It later became clear that these stars are fast rotating and have chemical spots on the surface. 
 
 	 These spots of chemicals gives a Doppler effect when rotating around the star, blue shift when the cloud moves towards the observer, the spectrum then appears to be broaden. Setting up the \textbf{forward problem} some assumptions were made: 
@@ -88,7 +88,7 @@ All newer telescopes are tracking the objects on the sky with the Alt-Azimuth mo
 
 	This is an ill-posed problem and belongs to the class of integral equations: \textbf{Fredholm equations}. The properties of the DI kernel makes the problem ill-posed. Take as an example, if we would add a chess pattern to the surface with small/unresolved squares, it would not change the observed spectra? \textcolor{red}{meaning?}
 
-	\subsection*{Remote sensing problems}
+	\subsection{Remote sensing problems}
 	Doppler imaging is an example of remote sensing problems. These types of problems arrise when it is impossible or impractical to reach the actual target and measure it properly. What we do instead is to measure other properties that are related to what we want to measure with linear or non-linear transformations. Many of these problems are ill-posed (interferometric image reconstruction is an example). The solution to this is to introduce regularization.
 
 	Solving an inverse problem we need: 
@@ -107,10 +107,10 @@ All newer telescopes are tracking the objects on the sky with the Alt-Azimuth mo
 			    \end{equation}
 	    \end{itemize}
 
-	\subsection*{Extension of Doppler imaging}
+	\subsection{Extension of Doppler imaging}
 	Doppler imaging is also used for monitoring active regions on solar-types starts (solar spots) where temperature variation influences line intensity differences. Can also be used for binary systems which is eclipsing (eclipsing binaries) were the geometry becomes more complex due to the eclipses. Can also be used for medical imaging such as computer aided tomography. 
 
-	\subsection*{Conclusion}
+	\subsection{Conclusion}
 	The inverse problems are used to infer information about an object that is not possible to measure directly. The solution in these cases are not often unique. For such cases we replace the problem with a regularized inverse problem. There exist various forms of regularization. 
 	        
 

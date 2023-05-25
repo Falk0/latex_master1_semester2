@@ -1,10 +1,12 @@
+%!TEX root = master.tex
+
 \section{Markov Decision process}
 This lecture will explain the concepts of Markov decision process, MDP's, the Bellman equation and optimal policy
 
-\subsection*{Recap}
+\subsection{Recap}
 For a state to have \textbf{Markov property} means that the state contains all the information that is useful to predict the future. In other words, we don't need the previous states to predict the future, the useful information is stored in the current state. A \textbf{Policy}: $\pi$(a|s) choosing an action a when we are in state s, can be deterministic or stochastic. The \textbf{prediction} gives the future cumulative reward following a policy. We want to find the policy that maximize the cumulative future reward by \textbf{control}. 
 
-\subsection*{Markov decision process}
+\subsection{Markov decision process}
 If we begin with assuming that $\mathcal{S}, \mathcal{A} $ and $\mathcal{R}$ have finite numbers of elements then the \textbf{translation probabilities} are given by:
 
 	\begin{equation}
@@ -23,7 +25,7 @@ With the \textbf{expected reward }
 		r(s,a) = \mathbb{E} [ R_{r+1} | S_t = s, A_t = a ] =  \sum_{r \in \mathcal{R}}^{} \sum_{s^{\prime \in \mathcal{S}}}^{} r p(s^{\prime},r | s,a)  
 	\end{equation}
 
-\subsection*{Episodic vs continuing tasks}
+\subsection{Episodic vs continuing tasks}
 \begin{itemize}
 	\item \textbf{Episodic tasks}
 	\begin{itemize}
@@ -40,7 +42,7 @@ With the \textbf{expected reward }
 \end{itemize}
 
 
-\subsection*{The return}
+\subsection{The return}
 In a given state we want to maximize the future reward we can receive: $R_{t+1},R_{t+2, ...}$. To make it possible to have non finite number of rewards we introduce the \textbf{discounted reward}
 
 	\begin{wbox}{The discounted reward}
@@ -60,7 +62,7 @@ And if $\gamma < 1$ we make sure that $R_t < \overline{R}$ for all t, and then $
 
 If we know that the task ends after a finite number of steps we can get away with using non-discounted returns where $\gamma = 1$
 
-\subsection*{The state value function}
+\subsection{The state value function}
 The state-value function estimates the expected long term rewards the agent will recieve starting from a specific state and following a given policy. Since $S_t$ and $R_t$ are random variables, the return is therefore also a random variable:
 
 	\begin{equation}
@@ -82,7 +84,7 @@ The prediction of cumulative reward is computed with $v_\pi(s)$
 
 
 
-\subsection*{The action-value function}
+\subsection{The action-value function}
 Another important value function is the \textbf{action-value function} that estimates the expected long-term reward an agent will receive starting from a specific state, taking a specific action and following a given policy.
 
 	\begin{wbox}{The action-value function}
@@ -94,7 +96,7 @@ Another important value function is the \textbf{action-value function} that esti
 
 This function is also often called the Q-function. 
 
-\subsection*{Bellman equations}
+\subsection{Bellman equations}
 Looking at the reward we can note that:
 
 	\begin{equation}
@@ -127,7 +129,7 @@ The value of s is the expected immediate reward plus the discounted expected vlu
 	\end{equation}
 \end{wbox}
 
-\subsection*{The expectation}
+\subsection{The expectation}
 The state-value of a state s, is the expected action-value:
 
 	\begin{equation}
@@ -150,11 +152,11 @@ So for a deterministic policy a = $\pi(s)$ we get $v_\pi(s,\pi(s))$. And given s
 		\end{equation}
 	\end{wbox}
 
-\subsection*{Solving the Bellman equation}
+\subsection{Solving the Bellman equation}
 Solving the Bellman equation is done by solving a system of linear equation, this is because the dependencies between the different states. Each state $s \in \mathcal{S}$ gives one equation. There is a unique solution that can be expressed analytically. If there is a large number of states, large $\mathcal{S}$,  then there are more efficient ways to solve it with iterative solution. If $p(s^{\prime}, r |s,a)$ is not know, we need to \textbf{learn} $v_\pi(s)$ from \textbf{experience}. If the number of states $\mathcal{S}$ is infinite, we can't compute the value for each state individually, and instead we need to find some function $\hat{v}(s,\textbf{w}) \approx v_\pi(s)$. 
 
 
-\subsection*{Optimal value function}
+\subsection{Optimal value function}
 This represent the maximum expected cumulative reward that can be achieved from a given state, following the best possible policy. It quantifies the highest long-term reward that the agent can expect to obtain when makin \textbf{optimal decision} from each state. The optimal state-value function is given by:
 
 	\begin{equation}
@@ -192,7 +194,7 @@ The equation for $q_*(s,a)$:
 
 This is a system of non-linear equation (non linear because of the max function). There is one equation for each state, s. In general there is no closed form solution. But there are iterative methods to solve it. 
 
-\subsection*{Optimal policy}
+\subsection{Optimal policy}
 \textbf{Partial ordering over policies: } This is the relationship between different policies, where some of them can be ranked as better or worse than others. This is based on their performance or expected returns. For some policy pairs there is no such definitive ranking. This means that the ordering captures the hierarchy of policies in terms of effectiveness  but not necessarily a linear ranking of them. 
 	\begin{equation}
 		\pi \ge \pi^{\prime} \text{ if } v_\pi(s) \ge t_{\pi^{\prime}}(s), \text{ for all }s

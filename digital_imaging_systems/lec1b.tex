@@ -1,7 +1,7 @@
 \section{Photography}
 The focus of this course are ways of creating images for scientific or medical applications but its worth noting that a majority of all digital images created are digital photography. Digital photography has grown tremendously the last 20 years and analog photography is now limited for some small applications or enthusiast. 
 
-\subsection*{Description of digital photography}
+\subsection{Description of digital photography}
 Digital photography is an optical imaging technology and the aspects of it are the same as for analogue cameras: Lens quality, aperture, depth of focus and focal length. 
 
 The lenses come in large variety of sized and qualities and it should be chosen with the application in mind. Some basic guidelines are that: bigger is better and glass is better than plastic. Compact lenses has become better and there is a trend towards more compact lenses such as liquid based lenses that can change focal length and focus very rapidly. 
@@ -53,22 +53,22 @@ Comparing priorities between consumer and scientific cameras we can see that con
 
 A paradigm shift might be taking place with \textbf{Photon counting} sensors being developed. These sensors count each photon separately and is as sensitive as it is possible to be. This allow for new capabilities such as trade off in sensitivity and resolution that can be dependent on the scene. It will allow for motion blur compensation for multiple targets and high apparent SNT for a low photo flux. 
 
-\subsection*{Operational steps}
+\subsection{Operational steps}
 We start of with the lens that most often includes a IR blocking filter and an optical anti-aliasing filter. The focal length is often adjustable (zoom lens) and the focus is controlled by the focus motor. Exposure and focus measuring is done by pressing the shutter button halfway. The lens focuses the light from the scene onto the sensor. The analog signal that is produced by the sensor is then converted to a digital signal (A/D converter). Then the shutter button is fully pressed down the the image is captured and stored on in DRAM. To long exposure times can lead to motion blur in the image which can be solved by active image stabilization, either by moving the lens or the sensor. Exposure control can be used to exposing different parts of the image differently to optimize quality of the image. 
 
 
 The final high-resolution image is processed by a digital image processor in the camera. The first step is to \textbf{de-mosaicing} since most cameras use the Bayer color filter array, here is interpolation used to fill in the missing color values for each pixel. An algorithm decides if the "missing" color values are in a smooth area or along an edge to determine the value for each missing color value. This process results in a full-color image but not a perfect one. To improve the result there is need for white balancing to compensate for spectral variations in the illumination of the scene. Both daylight from the sun and indoor lightning provides white light is the daylight more "high energy" in the blue portions while indoor lightning is more "high energy" in the red portion of the spectrum. An algorithm is used to analyze the scene and adjust the red and blue signal strength to match the green signal strength in white and neutral parts of the image. Continuing with color correction that is needed since the sensor has a different sensitivity than our eyes and the colors can for the human eye be perceived as unsaturated without correction. The color correction compensate for this and transform the output image to the output color space (often sRGB) that is ready to be displayed on a monitor.  
 
 
-\subsection*{Densitometric}
+\subsection{Densitometric}
 
-\subsection*{Geometrical}
+\subsection{Geometrical}
 
-\subsection*{Spectral}
+\subsection{Spectral}
 
-\subsection*{Temporal}
+\subsection{Temporal}
 
-\subsection*{History}
+\subsection{History}
 
 
 

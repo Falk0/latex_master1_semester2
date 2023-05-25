@@ -1,13 +1,13 @@
 \section{PET, CT and MRI}
 All of these techniques are so called tomography techniques (imaging slices of the sample). They are used in both clinical routine and in research. In common that they are: expensive, risks involved in using them (Radioactivity, Ionizing radiation and strong magnetic fields). The geometrical accuracy is good for all of them with some exceptions for MRI. Can perform both static and dynamic imaging (time series). They share the challenges of tunnel size (PET/MRI and MRI). Much development is ongoing, PET tracers, hardware and software. 
 
-	\subsection*{PET - Positron Emission Tomography}
+	\subsection{PET - Positron Emission Tomography}
 	Uses a \textbf{tracer} or radio pharmaceutical that is emitting positrons. This radionuclide isotope is attached on a molecule of interest, glucose for an example in Fluorodeoxyglucose $^{18}F$. The doses are small (microdosing) and there is no expected pharmacological effect of the patient. The PET systems create an image of the concentration of tracer. There are many different types of tracers, and more under development. Depending on what is needed to be imaged or what is being looked for the tracer is chosen. The images are typically of quite low resolution and don't give much anatomical information, it is therefore most often combined with MRI or CT. 
 
-		\subsubsection*{Workflow}
+		\subsubsection{Workflow}
 		The unstable isotope is created in a cyclotron often close to the PET facility, since the halftime is often short. It is then combined with the molecule of interest and we have the tracer that can be injected into or in some cases inhaled by the patient. The tracer emits positrons (beta particles) that can only travel short distances (mm) before it annihilates with an electron and create two 2 gamma rays shooting of approx 180 degrees apart. The detector rings picks up these gamma rays (Coincidence detection) and counts them, giving a line of response (LoR). This results in a\textbf{Sinogram} that is reconstructed with reconstruction algorithms including corrections for \textbf{random counts, attenuation and scatter}. 
 
-		\subsubsection*{Use cases}
+		\subsubsection{Use cases}
 		PET scanning is used to diagnose cancer, dementia and cardiac problems. It is also used in drug development. Examples of some measurements are:
 
 			\begin{itemize}
@@ -18,7 +18,7 @@ All of these techniques are so called tomography techniques (imaging slices of t
 				\item Receptor expression \textcolor{red}{?} 
 			\end{itemize}
 
-		\subsubsection*{Tracers and isotopes}
+		\subsubsection{Tracers and isotopes}
 		There are many different types of tracers for different kind of research and diagnosis purposes. Here are some to mention a few: 
 			\begin{itemize}
 			 	\item $^{18}$F-FDG used in oncology and neurology
@@ -34,10 +34,10 @@ All of these techniques are so called tomography techniques (imaging slices of t
 				\item $^{11}$C-Carbon	\textbf{20}
 			\end{itemize}
 		
-		\subsubsection*{Scanning}
+		\subsubsection{Scanning}
 		Three modes of PET scanning: Static scans with about 20cm of coverage, Dynamic scans: time series of scans and Whole-body scans: combination of multiple 20cm scans. 
 
-		\subsubsection*{Reconstruction}
+		\subsubsection{Reconstruction}
 		Two types of image reconstruction: Filter back propagation which can be seen as fast and simple and Statistical likelihood-based which is iterative, uses more advanced modelling and corrections. The later one is therefore more computationally demanding. 
 		Corrections for scatter and random coincidences are typically included.
 
@@ -61,7 +61,7 @@ All of these techniques are so called tomography techniques (imaging slices of t
 			  	\end{itemize}
 			  \end{itemize}  
 
-	\subsection*{CT - Computed Tomography}
+	\subsection{CT - Computed Tomography}
 	This technique uses X-rays that are sent through the body from different angles by rotating X-ray source and detector around the body. The X-rays are attenuated differently by different tissues and an image can be reconstructed from this "attenuation map". Arms up during the scan gives better image quality. It is a axial technique that is fast and high resolution. There are variations of it:
 		\begin{itemize}
 		  	\item High and low dose
@@ -83,10 +83,10 @@ All of these techniques are so called tomography techniques (imaging slices of t
 		\label{tab:tab1}
 		\end{table}
 
-		\subsubsection*{Use cases}
+		\subsubsection{Use cases}
 		CT scanning is used for diagnosis and follow up in \textbf{Cancer}, Acute medicine such as \textbf{trauma}, \textbf{strokes} and \textbf{hemorrhage}, \textbf{Surgery} (planning: inflammatory disease) and \textbf{Cardiac} function (requires fast machines).
 
-		\subsubsection*{Scanning}
+		\subsubsection{Scanning}
 		The scanning is always done in axial plane. The result is of high resolution Sinogram that needs reformatting afterwards. Alternatives are :
 			\begin{itemize}
 		 		\item Axial (can be preferred for brain scan)
@@ -95,28 +95,28 @@ All of these techniques are so called tomography techniques (imaging slices of t
 		 		\item Dual-energy CT
 		 	\end{itemize} 		
 		
-		\subsubsection*{Photon counting CT}
+		\subsubsection{Photon counting CT}
 		There has recently been a major breakthrough in CT imaging thanks to photon counting sensors. These makes it possible to make smaller detector pixels that improves spatial resolution. \textcolor{red}{Intrinsic spectral sensitivity: multi energy information}, results in lower radiation exposure since there is lower electronic noise. Example of slice thickness: 0.2mm
 
-	\subsection*{MRI - Magnetic resonance imaging}
+	\subsection{MRI - Magnetic resonance imaging}
 	Previously called: Nuclear Magnetic Resonance - NMR. The pros of MRI is the good soft tissue contrast, it uses no ionizing radiation and is very versatile: many different contrast mechanisms, used from morphology to physiology down to metabolism, can image angled slices. The Cons of the MRI systems are that they are: time consuming (examination time, patient motion problem), it is expensive, claustrophobia and competence need. 
 
-		\subsubsection*{What is imaged}
+		\subsubsection{What is imaged}
 		The hydrogen "protons" have a property called \textbf{spin} that is used for the creation if the MR images. Spin is a quantum mechanical property, something that spins have angular momentum. Isotopes that have an odd number of protons or neutrons have a spin that is non zero. These can be studied by MR, they are usually : $^{1}$H or ($^{13}$C, $^{31}$P, $^{3}$H, $^{129}$Xe). Hydrogen is the most common atom in the human body with spin. 
 
-		\subsubsection*{Trade-off in MRI}
+		\subsubsection{Trade-off in MRI}
 		To acquire an image with higher resolution means that it takes longer time if we want to maintain the same SNR, if we accept more noise we can do it with the same time. Since it can be required of the patient to hold their breath it might not be possible to change the time to much. 
 
 		\textcolor{red}{trade-off triangle image}
 
-		\subsubsection*{General properties}
+		\subsubsection{General properties}
 		The image elements are non-isotropic voxels and can be of the size: 1x1x6mm for an example. The intensities of the voxels are typically arbitrary units but can in some images be absolute. There are like in other imaging techniques artifacts. In MR there are often: intensity inhomogeneities, motion artifacts ans geometric distortions.
 
 		
-		\subsubsection*{Spin, Precession, Larmor frequency}
+		\subsubsection{Spin, Precession, Larmor frequency}
 		The hydrogen (proton) spin with a \textbf{Precession} (Like the earth has an angle in its rotation). This correspond to a frequency, the \textbf{Larmor frequency} which depends on the \textbf{B}$_0$ field: 64MHz at 1.5T and 128MHz at 3T. We can think of this "spin" as small magnets. Even though we apply a strong magnetic field, the net magnetization \textbf{M}$_0$ is very small, a few ppm compared to the unordered state without the magnetic field \textbf{B}$_0$ applied. Increasing \textbf{B}$_0$ increases the this magnetization \textbf{M}$_0$.
 
-		\subsubsection*{Excitation and relaxation}
+		\subsubsection{Excitation and relaxation}
 		Hitting the spins with a radio wave with the \textbf{Larmor frequency} changes the net magnetezation into a state of \textbf{Excitation}, the spins precess in phase. Enter a state with \textbf{Longitudinal} and \textbf{Longitudinal}-magnetization (can detected). After that comes \textbf{Relaxation} where the "echo" is picked up by RF-antenna.
 
 			\begin{wbox}{Image contrast}
@@ -124,7 +124,7 @@ All of these techniques are so called tomography techniques (imaging slices of t
 				"The whole process is repeated many times to collect the data needed"	
 			\end{wbox}
 
-		\subsubsection*{T1 and T2 relaxation}
+		\subsubsection{T1 and T2 relaxation}
 		The Longitudinal relaxation, when M$_z$ increases is called \textbf{T1} relaxation. The transverse relaxation, when M$_{XY}$ decreases is called \textbf{T2} relaxation. 
 
 			\begin{itemize}
@@ -132,7 +132,7 @@ All of these techniques are so called tomography techniques (imaging slices of t
 				\item Difference in \textbf{T2} relaxation between tissues determine the contrast in \textbf{T2-weighted} imaging
 			\end{itemize}	
 		
-		\subsubsection*{Repetition time (TR), Echo time (TE)}
+		\subsubsection{Repetition time (TR), Echo time (TE)}
 		By changing the scanning parameters TR and TE the weighting of the contrast for different tissues changes. 
 
 			\begin{table}[ht!]
@@ -149,14 +149,14 @@ All of these techniques are so called tomography techniques (imaging slices of t
 
 		\textcolor{red}{INSERT TR TE IMAGE} 
 		
-		\subsubsection*{T1 and T2 in different tissues}
+		\subsubsection{T1 and T2 in different tissues}
 		T1 and T1 can be seen as tissue properties, but they are dependent on: disease conditions (which is good for diagnostic), contrast agents (that are used for changing relaxation times), the field strength and temperature.
 
-		\subsubsection*{Image generation (2D)}
+		\subsubsection{Image generation (2D)}
 		\textbf{Spatial encoding}is used to determine what slice is being image and to determine what is up/down and right/left in that slice. The principle for spatial encoding is \textbf{frequency encoding} which can be described like choir that sing brighter the further away they stand from the observer, from this we can determine position from the notes (in one direction at least). This principle is used by adding a linear magnetic field gradient (\textbf{G}) to the static magnetic field (\textbf{B}$_0$) in the scanner. By doing this, the total magnetic field and Larmor frequency will vary linearly with the position.
 		\textbf{In-slice encoding} two directions are needed for encoding in the 2 dimensional slice, to do this simultaneously we use \textbf{phase encoding} also. The resulting signal readout repeated with different phase encoding results in a \textbf{k-space} image. Using the Fourier transform \textbf{FFT} we go from k-space to \textbf{image space}. To summarize: a combination of RF signals and a sequencing of linear gradients allow imaging.  
 		
-		\subsubsection*{Image generation (3D)}
+		\subsubsection{Image generation (3D)}
 		Comparing 2D and 3D imaging:
 
 			\begin{table}[ht!]
@@ -176,7 +176,7 @@ All of these techniques are so called tomography techniques (imaging slices of t
 
 		\textbf{Multi-slicing}, introducing the problem: A T2-weighted image used a long TR and TE, this means that there is a long waiting time to next excitation of the slice. This waiting time results in a lot of "deadtime" in the protocol. To be more effective was multi-slicing introduced. Additional slices are excited during the waiting time which means that the total scan time is reduced if TR increases (so that more slices fits under one TR).
 
-		\subsubsection*{Quantification of T1, T2 and PD}
+		\subsubsection{Quantification of T1, T2 and PD}
 		Instead of imaging with contrast weighting its possible to quantify the \textbf{relaxation parameters}. This is done by collecting data (multiple images) with different parameters, for example:
 
 			\begin{itemize}
